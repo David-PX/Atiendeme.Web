@@ -9,6 +9,7 @@ namespace Atiendeme.Services
 {
     public class EmailSender : IEmailSender
     {
+        //Agregar Configuration
         public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
             Options = optionsAccessor.Value;
@@ -26,7 +27,7 @@ namespace Atiendeme.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("enmanuelparedesr@hotmail.com", Options.SendGridUser),
+                From = new EmailAddress("Atiendeme-rd@yopmail.com", Options.SendGridUser),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
