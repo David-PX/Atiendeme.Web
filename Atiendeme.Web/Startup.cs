@@ -109,13 +109,7 @@ namespace Atiendeme.Web
                 endpoints.MapRazorPages();
             });
 
-            //app.Use(spa =>
-            //{
-            //    spa.Options.DefaultPage = "/";
-            //});
-            //startup configuration
-
-            CreateRoles.Configure(serviceProvider, _moduleLogger).ConfigureAwait(false);
+            CreateRoles.Configure(serviceProvider, _moduleLogger);
         }
     }
 }

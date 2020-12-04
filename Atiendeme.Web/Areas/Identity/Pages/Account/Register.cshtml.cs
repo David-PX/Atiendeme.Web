@@ -50,19 +50,43 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Correo")]
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "El campo {0} debe de tener mínimo {2} y máximo  {1} caracteres", MinimumLength = 3)]
+            [Display(Name = "Nombre")]
+            public string Name { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "El campo {0} debe de tener mínimo {2} y máximo {1} caracteres", MinimumLength = 3)]
+            [Display(Name = "Apellido")]
+            public string LastName { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "El campo {0} debe de tener mínimo {2} y máximo {1} caracteres", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Contraseña")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmar Contraseña")]
+            [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
             public string ConfirmPassword { get; set; }
+
+            [DataType(DataType.Date)]
+            [Required]
+            [Display(Name = "Cumpleaños")]
+            public string Birthday { get; set; }
+
+            [DataType(DataType.PhoneNumber)]
+            [Required]
+            [Display(Name = "Teléfono")]
+            public string Telephone { get; set; }
+
+            [Required]
+            [Display(Name = "Género")]
+            public string Genre { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
