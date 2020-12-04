@@ -1,4 +1,5 @@
 ﻿using Atiendeme.Entidades.Constante;
+using Atiendeme.Entidades.Entidades.SQL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,7 +11,7 @@ namespace Atiendeme.Web.Configuration
     {
         public static void Configure(IServiceProvider serviceProvider, ILogger _logger)
         {
-            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             //Mover esto y volverlo
             string[] rolesNames = { DefaultRoles.Administrador, DefaultRoles.Paciente, DefaultRoles.Doctor, DefaultRoles.Secretario };
@@ -19,12 +20,12 @@ namespace Atiendeme.Web.Configuration
             CreateDefaultRoles(serviceProvider, _logger, rolesNames);
 
             string email = "admin@atiendeme.com";
-            IdentityUser testUser = userManager.FindByEmailAsync(email).Result;
+            ApplicationUser testUser = userManager.FindByEmailAsync(email).Result;
 
             //Add admin user if is not created
             if (testUser == null)
             {
-                IdentityUser administrator = new IdentityUser() { Email = email, UserName = email };
+                ApplicationUser administrator = new ApplicationUser() { Email = email, UserName = email };
 
                 IdentityResult newUser = userManager.CreateAsync(administrator, "Atiendeme123").Result;
 

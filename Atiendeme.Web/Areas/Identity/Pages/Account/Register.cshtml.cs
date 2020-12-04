@@ -1,4 +1,6 @@
-﻿using Atiendeme.Entidades.Constante;
+﻿using Atiendeme.BL.Validators;
+using Atiendeme.Entidades.Constante;
+using Atiendeme.Entidades.Entidades.SQL;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,17 +22,17 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly ILogger<RegisterModel> _logger;
 
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -41,6 +44,8 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
+
+        public List<string> genres = new List<string>() { "Masculino", "Femenino" };
 
         public string ReturnUrl { get; set; }
 
@@ -76,8 +81,9 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
 
             [DataType(DataType.Date)]
             [Required]
+            [MinimumAge(18, ErrorMessage = "Debe de tener mas de 18 años.")]
             [Display(Name = "Cumpleaños")]
-            public string Birthday { get; set; }
+            public DateTime Birthday { get; set; }
 
             [DataType(DataType.PhoneNumber)]
             [Required]
@@ -101,14 +107,23 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    LastName = Input.LastName,
+                    Name = Input.Name,
+                    Birthday = Input.Birthday,
+                    Genre = Input.Genre,
+                    PhoneNumber = Input.Telephone
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
-                //Users created by the register method can just  be Pacientes
-                await _userManager.AddToRoleAsync(user, DefaultRoles.Paciente);
 
                 if (result.Succeeded)
                 {
+                    //Users created by the register method can just  be Pacientes
+                    await _userManager.AddToRoleAsync(user, DefaultRoles.Paciente);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

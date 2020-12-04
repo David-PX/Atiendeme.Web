@@ -1,4 +1,5 @@
 using Atiendeme.Entidades.Entidades.Sengrid;
+using Atiendeme.Entidades.Entidades.SQL;
 using Atiendeme.Services;
 using Atiendeme.Web.Configuration;
 using Atiendeme.Web.Data;
@@ -33,7 +34,7 @@ namespace Atiendeme.Web
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                  .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
