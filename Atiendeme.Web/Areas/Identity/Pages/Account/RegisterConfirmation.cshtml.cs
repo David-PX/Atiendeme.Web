@@ -83,7 +83,7 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
                 values: new { area = "Identity", userId = user.Id, code = code, returnUrl = '/' },
                 protocol: Request.Scheme);
 
-            await _sender.SendEmailAsync(Email, "Atiendeme - Confirma tu correoConfirm ",
+            await _sender.SendEmailAsync(Email, "Atiendeme - Confirma tu correo",
                 $"Favor confirmar su correo dando <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
 
             EmailResended = true;
