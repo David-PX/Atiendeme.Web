@@ -4,46 +4,71 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Atiendeme</title>
+    @*<link rel="stylesheet" href="~/css/site.css" />*@
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/NoAuth/main.css" />
+    <link rel="stylesheet" href="~/lib/owl/owl.carousel.min.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <header class="default-header">
+
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Atiendeme.Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <a class="navbar-brand" href="index.html">
+                    <img src="~/assets/images/logo.png" alt="">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="fa fa-bars"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+                <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li><a class="active" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a href="#about-us">Sobre Nosotros</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+
+                        <li><a href="">Contactanos</a></li>
+                        <partial name="_LoginPartial" />
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    @RenderBody()
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer-area section-gap">
         <div class="container">
-            &copy; 2020 - Atiendeme - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row footer-bottom d-flex justify-content-between">
+                <p class="col-lg-8 col-sm-12 footer-text m-0 text-white">
+                    Copyright
+                    &copy; 2020 - Atiendeme - Todos los derechos reservados.
+                </p>
+                <div class="col-lg-4 col-sm-12 footer-social">
+                    <a href="#"><i class="fab fa-facebook-f icon-fontawesome-service"></i></a>
+                    <a href="#"><i class="fab fa-twitter icon-fontawesome-service"></i></a>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/NoAuth/jquery.ajaxchimp.min.js"></script>
+    <script src="~/js/NoAuth/parallax.min.js"></script>
+    <script src="~/js/NoAuth/owl.carousel.min.js"></script>
+    <script src="~/js/NoAuth/isotope.pkgd.min.js"></script>
+    <script src="~/js/NoAuth/jquery.nice-select.min.js"></script>
+    <script src="~/js/NoAuth/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/NoAuth/jquery.sticky.js"></script>
+
+    <script src="~/js/NoAuth/main.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
