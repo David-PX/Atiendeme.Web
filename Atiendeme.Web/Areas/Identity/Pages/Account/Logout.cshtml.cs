@@ -35,7 +35,8 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
             }
             else
             {
-                return RedirectToPage();
+                //Just in case, i dont want to use the confirmation page
+                return RedirectToPage("/");
             }
         }
     }

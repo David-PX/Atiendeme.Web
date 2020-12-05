@@ -1192,7 +1192,13 @@ section-gap-test {
     font-size: 13px;
     font-weight: 500;
     color: #fff;
-    padding: 32px 20px
+    padding: 32px 20px 
+} 
+    
+@media (max-width: 1025px) {
+    .navbar-nav a {
+        font-size: 10px;
+    }
 }
 
     .navbar-nav a:hover,

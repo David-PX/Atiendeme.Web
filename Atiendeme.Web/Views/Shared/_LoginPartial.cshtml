@@ -10,9 +10,14 @@
         <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola, @User.Identity.Name!</a>
     </li>
     <li>
+
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            <button type="submit" class="nav-link btn text-white" style="padding-top: 2px;">
+                <span style="font-size: 20px" class="fa fa-sign-out-alt icon-fontawesome-service"></span>
+            </button>
         </form>
+
+       
     </li>
 }
 else

@@ -1,10 +1,10 @@
 ﻿@page
 @model RegisterConfirmationModel
+@using System.Threading;
 @{
-    ViewData["Title"] = "Register confirmation";
+    ViewData["Title"] = "Confirmar Correo";
 }
 
-<h1>@ViewData["Title"]</h1>
 @{
     if (@Model.DisplayConfirmAccountLink)
     {
@@ -15,8 +15,40 @@
     }
     else
     {
-        <p>
-            Verifique su correo para la confirmacion de su cuenta.
-        </p>
+
+        <section class="home-banner-area relative" id="home" data-parallax="scroll" data-image-src="/assets/images/odontologia.jpg">
+            <div class="overlay-bg overlay"></div>
+            <h1 class="template-name">ATIENDEME</h1>
+            <div class="container">
+                <div class="row fullscreen">
+                    <div class="banner-login-content col-lg-12 ">
+
+                        <div class="row p-5 bg-gra-01">
+
+                            <div class="col-md-12">
+
+                                <h2 class="text-white">
+                                    ¡Ya casi es miembro de nuestra comunidad! <br />
+                                    Verifique su correo para la confirmacion de su cuenta.
+                                </h2>
+                            </div>
+
+                            @if (!Model.EmailResended)
+                            {
+                                <div class="col-md-12 mt-3">
+
+                                    <form method="post" asp-route-email="@Model.Email">
+                                        <p class="text-white">
+                                            ¿No llego el correo?
+                                            <button type="submit" class="btn btn-outline-light ml-3">Reenviar</button>
+                                        </p>
+                                    </form>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     }
 }

@@ -53,22 +53,22 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido")]
             [EmailAddress]
             [Display(Name = "Correo")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido")]
             [StringLength(100, ErrorMessage = "El campo {0} debe de tener mínimo {2} y máximo  {1} caracteres", MinimumLength = 3)]
             [Display(Name = "Nombre")]
             public string Name { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido")]
             [StringLength(100, ErrorMessage = "El campo {0} debe de tener mínimo {2} y máximo {1} caracteres", MinimumLength = 3)]
             [Display(Name = "Apellido")]
             public string LastName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido")]
             [StringLength(100, ErrorMessage = "El campo {0} debe de tener mínimo {2} y máximo {1} caracteres", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Contraseña")]
@@ -86,11 +86,11 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account
             public DateTime Birthday { get; set; }
 
             [DataType(DataType.PhoneNumber)]
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido")]
             [Display(Name = "Teléfono")]
             public string Telephone { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido")]
             [Display(Name = "Género")]
             public string Genre { get; set; }
         }

@@ -15,12 +15,7 @@ $(document).ready(function () {
   $(".default-header").sticky({
     topSpacing: 0
   });
-
-
-  if (document.getElementById("default-select")) {
-    $('select').niceSelect();
-  };
-
+ 
   /*----------------------------------------------------*/
   /*  Magnific Pop up js (Home Video)
   /*----------------------------------------------------*/
@@ -371,10 +366,7 @@ $(document).ready(function () {
         }
       ]
     });
-  }
-
-  $("select").niceSelect();
-
+  } 
 
   $(document).ready(function () {
     $('#mc_embed_signup').find('form').ajaxChimp();
