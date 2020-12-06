@@ -15,6 +15,8 @@ namespace Atiendeme.Contratos.DAL.SQL
 
         public DbSet<Specialties> Specialties { get; set; }
 
+        public DbSet<SpecialtiesDoctor> SpecialtiesDoctors { get; set; }
+
         Task<int> SaveChangesAsync();
 
         int SaveChanges();

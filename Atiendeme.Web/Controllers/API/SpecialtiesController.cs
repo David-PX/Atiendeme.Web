@@ -1,5 +1,7 @@
 ﻿using Atiendeme.Contratos.Repository;
+using Atiendeme.Entidades.Entidades.Dtos;
 using Atiendeme.Entidades.Entidades.SQL;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,14 +20,17 @@ namespace Atiendeme.Web.Controllers.API
 
         private readonly IAtiendemeUnitOfWork _atiendemeUnitOfWork;
 
-        public SpecialtiesController(ILogger<SpecialtiesController> logger, IAtiendemeUnitOfWork atiendemeUnitOfWork)
+        private readonly IMapper _mapper;
+
+        public SpecialtiesController(ILogger<SpecialtiesController> logger, IMapper mapper, IAtiendemeUnitOfWork atiendemeUnitOfWork)
         {
             _logger = logger;
             _atiendemeUnitOfWork = atiendemeUnitOfWork;
+            _mapper = mapper;
         }
 
-        [HttpGet("[action]/{id}")]
-        public async Task<ActionResult<List<Specialties>>> Get(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<Specialties>>> Specialty(int id)
         {
             if (id == 0)
                 return BadRequest("Id no puede ser nulo");
@@ -39,17 +44,25 @@ namespace Atiendeme.Web.Controllers.API
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Specialties>>> GetAll()
+        public async Task<ActionResult<List<Specialties>>> Specialties()
         {
             var result = await _atiendemeUnitOfWork.SpecialtiesRepository.GetSpecialties();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Specialties>> Post(Specialties specialty)
+        public async Task<ActionResult<Specialties>> Specialty(Specialties specialty)
         {
             specialty.Id = 0; //prevent issue with identity
             var result = await _atiendemeUnitOfWork.SpecialtiesRepository.SaveSpecialty(specialty);
+            return StatusCode((int)HttpStatusCode.Created, result);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<SpecialtiesDoctorDto>> SpecialtiesDoctor(List<SpecialtiesDoctorDto> specialtiesDoctor)
+        {
+            var specialtiesDoctorEntity = _mapper.Map<List<SpecialtiesDoctor>>(specialtiesDoctor);
+            var result = await _atiendemeUnitOfWork.SpecialtiesRepository.SaveSpecialtiesFromDoctor(specialtiesDoctorEntity);
             return StatusCode((int)HttpStatusCode.Created, result);
         }
     }

@@ -10,6 +10,9 @@ namespace Atiendeme.Web.Mapping
         {
             CreateMap<ApplicationUser, ApplicationUserDto>()
                 .ForMember(dest => dest.Password, opt => opt.AddTransform(s => null)).ReverseMap();
+
+            CreateMap<SpecialtiesDoctor, SpecialtiesDoctorDto>()
+                   .ForMember(dest => dest.Id, opt => opt.AddTransform(s => 0)).ReverseMap();
         }
     }
 }

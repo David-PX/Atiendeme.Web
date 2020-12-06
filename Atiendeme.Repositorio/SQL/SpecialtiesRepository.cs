@@ -32,5 +32,16 @@ namespace Atiendeme.Repositorio.SQL
             await _applicationDbContext.SaveChangesAsync();
             return saveResult.Entity;
         }
+
+        public async Task<List<SpecialtiesDoctor>> SaveSpecialtiesFromDoctor(List<SpecialtiesDoctor> specialtiesDoctors)
+        {
+            foreach (var item in specialtiesDoctors)
+            {
+                _ = await _applicationDbContext.SpecialtiesDoctors.AddAsync(item);
+            }
+
+            await _applicationDbContext.SaveChangesAsync();
+            return specialtiesDoctors;
+        }
     }
 }
