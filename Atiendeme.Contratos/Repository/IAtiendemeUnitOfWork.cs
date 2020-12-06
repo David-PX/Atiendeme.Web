@@ -5,5 +5,7 @@ namespace Atiendeme.Contratos.Repository
     public interface IAtiendemeUnitOfWork
     {
         IDoctorRepository DoctorRepository { get; }
+
+        ISpecialtiesRepository SpecialtiesRepository { get; }
     }
 }

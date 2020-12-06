@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Atiendeme.Web.Controllers.API
@@ -23,11 +24,33 @@ namespace Atiendeme.Web.Controllers.API
             _atiendemeUnitOfWork = atiendemeUnitOfWork;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<Specialties>>> Get()
+        [HttpGet("[action]/{id}")]
+        public async Task<ActionResult<List<Specialties>>> Get(int id)
         {
-            var result = await _atiendemeUnitOfWork.DoctorRepository.GetDoctorsAsync();
+            if (id == 0)
+                return BadRequest("Id no puede ser nulo");
+
+            var result = await _atiendemeUnitOfWork.SpecialtiesRepository.GetSpecialty(id);
+
+            if (result == null)
+                return NotFound();
+
             return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Specialties>>> GetAll()
+        {
+            var result = await _atiendemeUnitOfWork.SpecialtiesRepository.GetSpecialties();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Specialties>> Post(Specialties specialty)
+        {
+            specialty.Id = 0; //prevent issue with identity
+            var result = await _atiendemeUnitOfWork.SpecialtiesRepository.SaveSpecialty(specialty);
+            return StatusCode((int)HttpStatusCode.Created, result);
         }
     }
 }

@@ -3,6 +3,7 @@ using Atiendeme.Entidades.Entidades.SQL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Atiendeme.DAL.SQL
 {
@@ -19,6 +20,16 @@ namespace Atiendeme.DAL.SQL
 
         public DbSet<IdentityUserRole<string>> AspNetUserRoles { get; set; }
 
-        public DbSet<Specialties> Especialidades { get; set; }
+        public DbSet<Specialties> Specialties { get; set; }
+
+        Task<int> IApplicationDbContext.SaveChangesAsync()
+        {
+            return SaveChangesAsync();
+        }
+
+        int IApplicationDbContext.SaveChanges()
+        {
+            return SaveChanges();
+        }
     }
 }
