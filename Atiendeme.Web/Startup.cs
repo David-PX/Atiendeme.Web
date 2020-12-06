@@ -1,10 +1,16 @@
+using Atiendeme.Contratos.DAL.SQL;
+using Atiendeme.Contratos.Repository;
+using Atiendeme.Contratos.Repository.SQL;
+using Atiendeme.DAL.SQL;
 using Atiendeme.Entidades.Entidades.Sengrid;
 using Atiendeme.Entidades.Entidades.SQL;
+using Atiendeme.Repositorio;
+using Atiendeme.Repositorio.SQL;
 using Atiendeme.Services;
 using Atiendeme.Web.Configuration;
-using Atiendeme.Web.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +19,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Atiendeme.Web
 {
@@ -24,6 +33,8 @@ namespace Atiendeme.Web
 
         public IConfiguration Configuration;
 
+        public static readonly Task CompletedTask = Task.CompletedTask;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,13 +44,20 @@ namespace Atiendeme.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+               options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                     .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            services.AddScoped<IMedicoRepository, MedicoRepository>();
+            services.AddScoped<IAtiendemeUnitOfWork, AtiendemeUnitOfWork>();
+
+            //
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -71,10 +89,43 @@ namespace Atiendeme.Web
                 options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
+
+                //Check
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    //Return unathorized for api instead of 302
+                    if (context.Request.Path.Value.StartsWith("/api"))
+                    {
+                        var result = JsonSerializer.Serialize(Configuration["Mensajes:AccesoRestringido"]);
+
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        context.HttpContext.Response.ContentType = "application/json";
+
+                        return context.HttpContext.Response.WriteAsync(result);
+                    }
+                    context.Response.Redirect(context.RedirectUri);
+                    return CompletedTask;
+                };
+
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    if (context.Request.Path.Value.StartsWith("/api"))
+                    {
+                        var result = JsonSerializer.Serialize(Configuration["Mensajes:AccesoRestringido"]);
+
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        context.HttpContext.Response.ContentType = "application/json";
+
+                        return context.HttpContext.Response.WriteAsync(result);
+                    }
+                    context.Response.Redirect(context.RedirectUri);
+                    return CompletedTask;
+                };
             });
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,6 +138,15 @@ namespace Atiendeme.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Atiendeme API");
+                });
             }
             else
             {

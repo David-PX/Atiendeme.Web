@@ -1,4 +1,5 @@
 ﻿using Atiendeme.Entidades.Entidades.SQL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,5 +11,7 @@ namespace Atiendeme.Web.Data
             : base(options)
         {
         }
+
+        public DbSet<IdentityRole> AspNetUserRoles { get; set; }
     }
 }

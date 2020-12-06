@@ -25,10 +25,13 @@
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Atiendeme.BL\Atiendeme.BL.csproj" />
+    <ProjectReference Include="..\Atiendeme.DAL\Atiendeme.DAL.csproj" />
+    <ProjectReference Include="..\Atiendeme.Repositorio\Atiendeme.Repositorio.csproj" />
     <ProjectReference Include="..\Atiendeme.Services\Atiendeme.Services.csproj" />
   </ItemGroup>
 
