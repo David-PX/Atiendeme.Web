@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Atiendeme.Contratos.Repository.SQL
 {
-    public interface IMedicoRepository
+    public interface IDoctorRepository
     {
-        Task<List<ApplicationUserDto>> ObtenerMedicosAsync();
+        Task<List<ApplicationUserDto>> GetDoctorsAsync();
 
         Task<ApplicationUser> CrearMedicoAsync(ApplicationUser medico, string pswd);
     }

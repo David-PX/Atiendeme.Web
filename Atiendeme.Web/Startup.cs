@@ -58,7 +58,7 @@ namespace Atiendeme.Web
 
             //
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-            services.AddScoped<IMedicoRepository, MedicoRepository>();
+            services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IAtiendemeUnitOfWork, AtiendemeUnitOfWork>();
 
             //

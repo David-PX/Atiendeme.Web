@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace Atiendeme.Repositorio.SQL
 {
-    public class MedicoRepository : IMedicoRepository
+    public class DoctorRepository : IDoctorRepository
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public MedicoRepository(IApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
+        public DoctorRepository(IApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
         {
             _applicationDbContext = applicationDbContext;
             _userManager = userManager;
         }
 
-        public async Task<List<ApplicationUserDto>> ObtenerMedicosAsync()
+        public async Task<List<ApplicationUserDto>> GetDoctorsAsync()
         {
             var users = await (from u in _applicationDbContext.AspNetUsers
                                join ur in _applicationDbContext.AspNetUserRoles on u.Id equals ur.UserId

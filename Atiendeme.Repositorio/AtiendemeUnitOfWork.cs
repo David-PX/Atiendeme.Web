@@ -15,10 +15,10 @@ namespace Atiendeme.Repositorio
         {
             _applicationDbContext = applicationDbContext;
 
-            MedicoRepository = new MedicoRepository(_applicationDbContext, userManager);
+            DoctorRepository = new DoctorRepository(_applicationDbContext, userManager);
         }
 
-        public IMedicoRepository MedicoRepository { get; }
+        public IDoctorRepository DoctorRepository { get; }
 
         public void Complete()
         {

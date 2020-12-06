@@ -18,5 +18,7 @@ namespace Atiendeme.DAL.SQL
         public DbSet<ApplicationUser> AspNetUsers { get; set; }
 
         public DbSet<IdentityUserRole<string>> AspNetUserRoles { get; set; }
+
+        public DbSet<Specialties> Especialidades { get; set; }
     }
 }

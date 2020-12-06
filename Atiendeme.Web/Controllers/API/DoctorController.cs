@@ -14,15 +14,15 @@ namespace Atiendeme.Web.Controllers.API
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class MedicoController : ControllerBase
+    public class DoctorController : ControllerBase
     {
-        private readonly ILogger<MedicoController> _logger;
+        private readonly ILogger<DoctorController> _logger;
 
         private readonly IAtiendemeUnitOfWork _atiendemeUnitOfWork;
 
         public readonly IMapper _mapper;
 
-        public MedicoController(ILogger<MedicoController> logger, UserManager<ApplicationUser> userManager,
+        public DoctorController(ILogger<DoctorController> logger, UserManager<ApplicationUser> userManager,
             IAtiendemeUnitOfWork atiendemeUnitOfWork, IMapper mapper)
         {
             _logger = logger;
@@ -31,10 +31,9 @@ namespace Atiendeme.Web.Controllers.API
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<List<ApplicationUserDto>>> Get()
         {
-            var result = await _atiendemeUnitOfWork.MedicoRepository.ObtenerMedicosAsync();
+            var result = await _atiendemeUnitOfWork.DoctorRepository.GetDoctorsAsync();
             return Ok(result);
         }
 
@@ -49,7 +48,7 @@ namespace Atiendeme.Web.Controllers.API
         {
             var _medicoMapper = _mapper.Map<ApplicationUser>(medico);
 
-            var result = await _atiendemeUnitOfWork.MedicoRepository.CrearMedicoAsync(_medicoMapper, medico.Password);
+            var result = await _atiendemeUnitOfWork.DoctorRepository.CrearMedicoAsync(_medicoMapper, medico.Password);
 
             ApplicationUserDto mapperResult = _mapper.Map<ApplicationUserDto>(result);
 
