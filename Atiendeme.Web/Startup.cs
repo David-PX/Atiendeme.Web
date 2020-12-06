@@ -8,6 +8,8 @@ using Atiendeme.Repositorio;
 using Atiendeme.Repositorio.SQL;
 using Atiendeme.Services;
 using Atiendeme.Web.Configuration;
+using Atiendeme.Web.Mapping;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -124,6 +126,15 @@ namespace Atiendeme.Web
                     return CompletedTask;
                 };
             });
+
+            //Auto mapper
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AtiendemeMapper());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            //
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
