@@ -46,8 +46,10 @@ namespace Atiendeme.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                     .AddRoles<IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                       .AddRoles<IdentityRole>()
+                       .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //services.AddAuthorization(options => options.AddPolicy("Administrador", authBuilder => { authBuilder.RequireRole("Administrador"); }));
 
             services.AddControllersWithViews();
             services.AddRazorPages();
