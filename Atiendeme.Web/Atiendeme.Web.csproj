@@ -37,8 +37,4 @@
     <ProjectReference Include="..\Atiendeme.Services\Atiendeme.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\js\AngularJS\" />
-  </ItemGroup>
-
 </Project>

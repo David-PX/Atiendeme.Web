@@ -35,7 +35,7 @@ namespace Atiendeme.Web.Controllers.API
         public async Task<ActionResult<List<DoctorDto>>> Doctor()
         {
             var result = await _atiendemeUnitOfWork.DoctorRepository.GetDoctorsAsync();
-            return StatusCode((int)HttpStatusCode.Created, result);
+            return Ok(result);
         }
 
         /// <summary>
