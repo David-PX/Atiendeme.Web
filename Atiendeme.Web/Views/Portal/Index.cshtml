@@ -1,0 +1,89 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="myApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
+</head>
+
+<body>
+    <script type="text/ng-template" id="pages/home.html">
+        <h1>Home</h1>
+        <h3>{{message}}</h3>
+    </script>
+
+    <script type="text/ng-template" id="pages/AngularJS.html">
+        <h1>Welcome to AngularJS</h1>
+        <h3>{{message}}</h3>
+    </script>
+
+    <script type="text/ng-template" id="pages/Code2Succeed.html">
+        <h1>Welcome to Code2Succeed</h1>
+        <h3>{{message}}</h3>
+    </script>
+
+    <!--Navigation definition-->
+    <a href="#/">Home</a>
+    <a href="#/AngularJS">AngularJS</a>
+    <a href="#/Code2Succeed">Code2Succeed</a>
+
+    <div ng-view></div>
+
+    @*<script src="js/spaApp.js" type="text/javascript"></script>*@
+
+    <script type="text/javascript">
+         
+        var app = angular.module('myApp', ['ngRoute']); //ngRoute dependency injection
+
+        app.config(function ($routeProvider) {
+            $routeProvider.
+
+                //The below will be loaded when url is at home page
+                when('/', {
+                    templateUrl: 'pages/home.html',
+                    controller: 'HomeController'
+                })
+
+                //The below will be loaded when url is changed to pageURL/AngularJS
+                .when('/AngularJS', {
+                    templateUrl: 'pages/AngularJS.html',
+                    controller: 'AngularJSController'
+                })
+
+                //The below will be loaded when url is changed to pageURL/Code2Succeed
+                .when('/Code2Succeed', {
+                    templateUrl: 'pages/Code2Succeed.html',
+                    controller: 'Code2SucceedController'
+                })
+
+                //If clicked on any other link from navigation which has not been handled here, will be directed to home page
+                .otherwise({ redirectTo: '/' });
+        });
+
+        //Controller Definition
+
+        //HomeController which will be injected for home view
+        app.controller('HomeController', function ($scope) {
+            $scope.message = 'Hello from HomeController';
+        });
+
+        //AngularJSController which will be injected for AngularJS view
+        app.controller('AngularJSController', function ($scope) {
+            $scope.message = 'Hello from AngularJSController';
+        });
+
+        //Code2SucceedController which will be injected for Code2Succeed view
+        app.controller('Code2SucceedController', function ($scope) {
+            $scope.message = 'Hello from Code2SucceedController';
+        });
+    </script>
+</body>
+@*<body>
+    </body>*@
+</html>
