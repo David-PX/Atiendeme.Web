@@ -1,0 +1,647 @@
+﻿<!-- Header starts here -->
+<header class="main-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="logo d-flex align-items-center">
+                    <a href="{{main.context.componentUrl}}">
+                        <img ng-src={{main.context.logo}} class="logo__image" alt="">
+                    </a>
+                    <span class="logo__separator d-none d-sm-block">|</span>
+                    <span class="logo__description">Sistema de Reporte de Gastos</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="user-profile d-flex align-items-md-center justify-content-md-end">
+
+                    <img ng-src="{{main.context.currentUser.userPicture}}" class="user-profile__image">
+
+                    <div class="user-profile-name user-profile-name--responsive">
+                        <p class="user-profile-name__name">{{main.context.currentUser.fullName}}</p>
+                        <p class="user-profile-name__position">{{main.context.currentUser.jobTitle || 'posicion'}}, {{main.context.currentUser.department || 'departamento'}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Header ends here -->
+<!-- Nav list starts here -->
+<nav class="nav-list">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <ol class="breadcrumb-list d-md-flex align-items-center">
+                    <li class="breadcrumb-list__item"><a href="{{main.context.componentUrl}}" ng-click="main.relocate()">Inicio</a></li>
+                    <li class="breadcrumb-list__item breadcrumb-list__item--active">Solicitud</li>
+                </ol>
+            </div>
+            <div class="col-md-6 d-md-flex align-items-center" ng-show="main.context.requestID">
+                <h3 class="title title--right title" style="color: #ffffff;">
+                    Estado de solicitud:
+                    <span class="number
+                          number{{main.expenseRepository.expenseRequest.request.State === 'Rechazada' ? '--red' : main.expenseRepository.expenseRequest.request.State === 'Requiere Modificación' ? '--yellow' : main.expenseRepository.expenseRequest.request.State === 'Completada' ? '--green' : '--gray'}}">
+                        {{main.context.visualState}}
+                    </span>
+                </h3>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- Nav list ends here -->
+
+<div class="modal fade  modal-upload" id="modalRequest" tabindex="-1" role="dialog"
+     aria-labelledby="modalRequestLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="col-md-12">
+                    <div class="modal-upload-header modal-upload-header--center">
+                        <h3 class="modal-upload-header__title">Exportar solicitud</h3>
+                        <p class="modal-upload-header__text">
+                            Haz click sobre el formato de tu preferencia para
+                            comenzar la descarga.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="actions-expenses actions-expenses--flex-fix actions-expenses--margin">
+                        <button class="actions-expenses__button actions-expenses__button--expenses">
+                            Descargar como
+                            EXCEL
+                        </button>
+                        <button class="actions-expenses__button actions-expenses__button--expenses">
+                            Descargar como
+                            PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--main starts here -->
+<main class="main" ng-show="main.context.haveClaims">
+
+    <div class="container">
+        <!--START-->
+        <div class="user-info --form-margin" ng-show="main.context.requestID">
+            <div class="row">
+                <div class="col-md-3 ">
+                    <div class="profile-process profile-process--side-padding">
+                        <div class="user-profile user-profile--justify-start d-flex align-items-md-center">
+                            <img ng-src="{{main.expenseRepository.expenseRequest.request.UserPicture}}" alt="" class="user-profile__image user-profile__image--shrink">
+                            <div class="user-profile-name">
+                                <p class="user-profile-name__name ">
+                                    {{main.expenseRepository.expenseRequest.request.Author.Title}}
+                                </p>
+                                <span class="user-profile-name__member d-none d-md-block">
+                                    {{main.expenseRepository.expenseRequest.request.Author.JobTitle}}
+                                </span>
+
+                                <span class="user-profile-name__member d-none d-md-block">
+                                    {{main.expenseRepository.expenseRequest.request.CreatedAsNow}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 ">
+                    <div class="datos-solicitante">
+                        <div class="actions-expenses actions-expenses--no-margin">
+                            <button data-toggle="collapse" href="#collapseHistory"
+                                    aria-expanded="false" aria-controls="collapseHistory"
+                                    type="button"
+                                    class="actions-expenses__button actions-expenses__button--border">
+                                Historial
+                            </button>
+                            <button class="actions-expenses__button actions-expenses__button--border"
+                                    type="button"
+                                    ng-show="main.context.haveExpenseGroupClaims"
+                                    ng-click="main.generateExcel();">
+                                Exportar
+                            </button>
+
+                            <button class="actions-expenses__button actions-expenses__button--border"
+                                    type="button"
+                                    ng-show="main.context.haveExpenseGroupClaims && main.expenseRepository.expenseRequest.request.State !== 'Requiere Modificación'"
+                                    ng-click="main.confirmPrint();">
+                                Exportar PDF
+                            </button>
+
+                            <button type="button" ng-show="main.context.canApprove"
+                                    class="actions-expenses__button actions-expenses__button--yellow"
+                                    ng-click="main.showApproveModal('Requiere Modificación');">
+                                Modificación
+                            </button>
+
+                            <!--ng-click="main.showApproveModal('Requiere Modificación');"-->
+                            <button type="button" ng-show="main.context.canApprove"
+                                    class="actions-expenses__button actions-expenses__button--red" ng-click="main.showApproveModal('Rechazada');">
+                                Rechazar
+                            </button>
+                            <button type="button" ng-show="main.context.canApprove"
+                                    class="actions-expenses__button actions-expenses__button--blue" ng-click="main.showApproveModal('Aprobada');">
+                                Aprobar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="datos-solicitante --no-padding-t-b">
+                        <div id="collapseHistory" class="collapse">
+                            <div class="story-request">
+
+                                <div class="story-request-container" ng-repeat="log in main.expenseRepository.expenseRequest.workFlowLog">
+                                    <div class="story-request-element">
+                                        <span class="story-request-element__text story-request-element__text--flex">
+                                            <img class="story-request-element__text__img" ng-src="{{log.UserPicture}}"
+                                                 alt="">
+                                            <span class="story-request-element__text__name">
+                                                <span>
+                                                    {{log.Author.Title}}
+                                                </span> <br>
+                                                <small class="--sicen-date">{{log.Created | date: 'dd/mm/yyyy hh:mm a'}}</small>
+                                            </span>
+                                        </span>
+                                        <span class="story-request-element__text story-request-element__text{{log.style}}">{{log.visualState}}</span>
+
+                                        <p class="story-request-element__text story-request-element__text--justification" ng-show="log.Comment">
+                                            {{log.Comment}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="stepper1" class="bs-stepper">
+            <div class="bs-stepper-header mb-4">
+                <div class="step" data-target="#test-l-1">
+                    <button class="step-trigger">
+                        <span class="bs-stepper-circle feather icon-clipboard"></span>
+                        <span class="bs-stepper-label">Solicitud</span>
+                    </button>
+                </div>
+                <div class="line"></div>
+                <div class="step" data-target="#test-l-2">
+                    <button class="step-trigger"
+                            ng-class="{'--disabled2': !main.context.showAllTheRequest}">
+                        <span class="bs-stepper-circle feather icon-truck"></span>
+                        <span class="bs-stepper-label">Transporte</span>
+                    </button>
+                </div>
+                <div class="line"></div>
+                <div class="step" data-target="#test-l-3">
+                    <button class="step-trigger"
+                            ng-class="{'--disabled2': !main.context.showAllTheRequest}">
+                        <span class="bs-stepper-circle feather icon-credit-card"></span>
+                        <span class="bs-stepper-label">Otros Víaticos</span>
+                    </button>
+                </div>
+                <div class="line"></div>
+                <div class="step" data-target="#test-l-4">
+                    <button class="step-trigger">
+                        <span class="bs-stepper-circle feather icon-file-text"></span>
+                        <span class="bs-stepper-label">Facturas</span>
+                    </button>
+                </div>
+            </div>
+            <div class="bs-stepper-content">
+                <!--PUT THIS IN ANOTHER FILE-->
+                <div id="test-l-1" class="content">
+                    <!--steps here-->
+                    <div class="row" ng-form="main.mainForm">
+                        <div class="col-md-12">
+                            <div class="form-container --form-margin">
+                                <div action="" class="form-body">
+                                    <div class="form-row">
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="">Identificación o Código</label>
+                                                <input type="text" class="form-body__text  form-control"
+                                                       ng-model="main.expenseRepository.expenseRequest.request.userCode"
+                                                       name="userCode"
+                                                       ng-blur="main.getUserInfoFromEIKON()"
+                                                       ng-disabled="!main.context.isEditable"
+                                                       ng-class="{'--invalid': main.mainForm.userCode.$error.required && main.mainForm.userCode.$dirty, '--disabled': !main.context.isEditable}"
+                                                       required>
+
+                                                <div class="--invalid-text"
+                                                     ng-if="main.mainForm.userCode.$error.required && main.mainForm.userCode.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="">Nombre</label>
+                                                <input type="text" class="form-body__text  form-control --disabled"
+                                                       disabled="disabled"
+                                                       ng-model="main.expenseRepository.expenseRequest.request.Author.Title"
+                                                       name="fullName"
+                                                       required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="">Departamento</label>
+                                                <input type="text" class="form-body__text form-control --disabled"
+                                                       disabled="disabled"
+                                                       ng-model="main.expenseRepository.expenseRequest.request.Author.Department" required
+                                                       name="department">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="">Posición</label>
+                                                <input type="text" class="form-body__text form-control --disabled"
+                                                       disabled="disabled"
+                                                       ng-model="main.expenseRepository.expenseRequest.request.Author.JobTitle" name="jobTitle" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="main.mainForm.name.$error.required && main.mainForm.name.$dirty"></span>
+                                                <label class="form-body__label" for="">Tipo de viaje</label>
+                                                <select type="text" class="form-body__select form-control" placeholder="Tipo"
+                                                        name="tripType" required
+                                                        ng-model="main.expenseRepository.expenseRequest.request.tripType"
+                                                        ng-class="{'--invalid': main.mainForm.tripType.$error.required && main.mainForm.tripType.$dirty, '--disabled': !main.context.isEditable}"
+                                                        ng-options="trip for trip in main.context.tripTypes"></select>
+                                                <div class="--invalid-text"
+                                                     ng-if="main.mainForm.tripType.$error.required && main.mainForm.tripType.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="main.mainForm.expenseFromDate.$error.required && main.mainForm.expenseFromDate.$dirty"></span>
+                                                <label class="form-body__label" for="expense-until-date">Desde:</label>
+                                                <div moment-picker="main.expenseRepository.expenseRequest.request.expenseFromDate" ng-model="main.expenseRepository.expenseRequest.request.momentExpenseFromDate"
+                                                     format="DD/MM/YYYY hh:mm a" today="false"
+                                                     max-view="minute"
+                                                     change="main.oldExpenseDate(newValue, oldValue, 'expenseFromDate')"
+                                                     max-date="main.expenseRepository.expenseRequest.request.momentExpenseUntilDate"
+                                                     class="datePicker">
+                                                    <span class="feather icon-calendar"></span>
+                                                    <input type="text"
+                                                           ng-model="main.expenseRepository.expenseRequest.request.expenseFromDate"
+                                                           id="expense-until-date"
+                                                           ng-class="{'--invalid': main.mainForm.expenseFromDate.$error.required && main.mainForm.expenseFromDate.$dirty, '--disabled': !main.context.isEditable}"
+                                                           name="expenseFromDate" required
+                                                           ng-disabled="!main.context.isEditable"
+                                                           class="form-body__text form-group__text form-body__text--right-fix form-control"
+                                                           autocomplete="off">
+                                                </div>
+                                                <div class="--invalid-text"
+                                                     ng-if="main.mainForm.expenseFromDate.$error.required && main.mainForm.expenseFromDate.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="main.mainForm.expenseUntilDate.$error.required && main.mainForm.expenseUntilDate.$dirty"></span>
+                                                <label class="form-body__label" for="expense-from-date">Hasta:</label>
+                                                <div moment-picker="main.expenseRepository.expenseRequest.request.expenseUntilDate" ng-model="main.expenseRepository.expenseRequest.request.momentExpenseUntilDate"
+                                                     format="DD/MM/YYYY hh:mm a" today="false"
+                                                     max-view="minute"
+                                                     change="main.oldExpenseDate(newValue, oldValue, 'expenseUntilDate')"
+                                                     class="datePicker"
+                                                     min-date="main.expenseRepository.expenseRequest.request.momentExpenseFromDate">
+                                                    <span class="feather icon-calendar"></span>
+                                                    <input type="text"
+                                                           ng-model="main.expenseRepository.expenseRequest.request.expenseUntilDate"
+                                                           id="expense-from-date"
+                                                           ng-class="{'--invalid': main.mainForm.expenseUntilDate.$error.required && main.mainForm.expenseUntilDate.$dirty, '--disabled': !main.context.isEditable}"
+                                                           name="expenseUntilDate" required
+                                                           ng-disabled="!main.context.isEditable"
+                                                           class="form-body__text form-group__text form-body__text--right-fix form-control"
+                                                           autocomplete="off">
+                                                </div>
+                                                <div class="--invalid-text"
+                                                     ng-if="main.mainForm.expenseUntilDate.$error.required && main.mainForm.expenseUntilDate.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="">Días Calendario</label>
+                                                <input type="text" class="form-body__text form-control --disabled"
+                                                       disabled="disabled"
+                                                       ng-model="main.expenseRepository.expenseRequest.request.calendarDaysQuantity" name="calendar-days" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="">Días Laborables</label>
+                                                <input type="text" class="form-body__text form-control --disabled"
+                                                       disabled="disabled"
+                                                       ng-model="main.expenseRepository.expenseRequest.request.laborDaysQuantity" name="labor-days" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="main.mainForm.currency.$error.required && main.mainForm.currency.$dirty"></span>
+                                                <label class="form-body__label" for="">Moneda</label>
+                                                <select type="text" class="form-body__select form-control" placeholder="Tipo"
+                                                        name="currency" required
+                                                        ng-change="main.changeCurrencyValue()"
+                                                        ng-model="main.expenseRepository.expenseRequest.request.currency"
+                                                        ng-class="{'--invalid': main.mainForm.currency.$error.required && main.mainForm.currency.$dirty, '--disabled': !main.context.isEditable}"
+                                                        ng-options="trip for trip in main.context.currencies"></select>
+                                                <div class="--invalid-text"
+                                                     ng-if="main.mainForm.currency.$error.required && main.mainForm.currency.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="gasoline-cost">Pago por KM</label>
+                                                <input type="text" class="form-body__text form-control --disabled"
+                                                       readonly="readonly"
+                                                       value="{{main.expenseRepository.expenseRequest.request.gasolineCost | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}" name="gasoline-cost" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="">Detalles</label>
+                                                <textarea class="form-body__textarea" name="details"
+                                                          ng-class="{'--disabled': !main.context.isEditable}"
+                                                          ng-disabled="!main.context.isEditable"
+                                                          placeholder="Favor desglosar aquí información sobre su cuenta bancaria."
+                                                          ng-model="main.expenseRepository.expenseRequest.request.details"
+                                                          cols="30" rows="10"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="test-l-2" class="content">
+                    <!--steps here-->
+                    <transport-component is-editable="main.context.isEditable"></transport-component>
+                </div>
+                <div id="test-l-3" class="content ">
+                    <other-expenses-component is-editable="main.context.isEditable"></other-expenses-component>
+                    <!--steps here-->
+                </div>
+                <div id="test-l-4" class="content ">
+                    <invoices-component is-editable="main.context.isEditable"></invoices-component>
+                    <!--steps here-->
+                </div>
+            </div>
+        </div>
+        <!--TOTALS TODO: SEE IF it HAVE TO BE MOVE TO A COMPONENT-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-container --form-margin">
+                    <div class="form-body">
+                        <h3 class="title-form">Totales</h3>
+                        <hr>
+                    </div>
+                    <div action="" class="form-body form-body--nopaddin-top">
+                        <div class="bill-list-item">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="list-total">
+                                        <div class="plate-and-actions d-flex justify-content-between">
+                                            <h3 class="title title--margin-2">
+                                                <i>
+                                                    <img width="16" ng-src="{{main.coffeeBlackSVG}}" alt="">
+                                                </i>
+                                                Alimentación
+                                            </h3>
+                                        </div>
+                                        <ul class="list-total__list">
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Desayuno:</span><span class="list-total__list__element__number">{{main.expenseRepository.expenseRequest.request.totalCosts.totalBreakFast  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Almuerzo:</span><span class="list-total__list__element__number">{{main.expenseRepository.expenseRequest.request.totalCosts.totalLunch  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Merienda:</span><span class="list-total__list__element__number">{{main.expenseRepository.expenseRequest.request.totalCosts.totalSnack  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Cena:</span><span class="list-total__list__element__number">{{main.expenseRepository.expenseRequest.request.totalCosts.totalDinner  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Otros:</span><span class="list-total__list__element__number">{{main.expenseRepository.expenseRequest.request.totalCosts.totalOtherFoods  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type list-total__list__element__type--black">Total</span><span class="list-total__list__element__number
+                                                        list-total__list__element__number--total">{{main.expenseRepository.expenseRequest.request.totalCosts.totalFood  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="list-total">
+                                        <div class="plate-and-actions d-flex justify-content-between">
+                                            <h3 class="title title--margin-2">
+                                                <span><i class="feather icon-map"></i> </span>
+                                                Transporte
+                                            </h3>
+                                        </div>
+                                        <ul class="list-total__list">
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Renta Vehículo:</span><span class="list-total__list__element__number">
+                                                    {{main.expenseRepository.expenseRequest.request.totalCosts.totalVehicleRentCost | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}
+                                                </span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Transporte Público:</span><span class="list-total__list__element__number">
+                                                    {{main.expenseRepository.expenseRequest.request.totalCosts.totalPublicTransport  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}
+                                                </span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Transporte Privado:</span><span class="list-total__list__element__number">
+                                                    {{main.expenseRepository.expenseRequest.request.totalCosts.totalPrivateTransport  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}
+                                                </span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Retorno Veh. Propio:</span><span class="list-total__list__element__number">
+                                                    {{main.expenseRepository.expenseRequest.request.totalCosts.totalCostPerKm  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}
+                                                </span>
+                                            </li>
+
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type"></span><span class="list-total__list__element__number"></span>
+                                            </li>
+
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type list-total__list__element__type--black">Total</span><span class="list-total__list__element__number
+                                                        list-total__list__element__number--total">{{main.expenseRepository.expenseRequest.request.totalCosts.totalTransport  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="list-total">
+                                        <div class="plate-and-actions d-flex justify-content-between">
+                                            <h3 class="title title--margin-2">
+                                                <span><i class="feather icon-map-pin"></i> </span>
+                                                Otros
+                                            </h3>
+                                        </div>
+                                        <ul class="list-total__list">
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Hospedaje:</span><span class="list-total__list__element__number">{{main.expenseRepository.expenseRequest.request.totalCosts.totalLodgement  | currency: main.expenseRepository.expenseRequest.request.currency + '$' }}</span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Servicios:</span><span class="list-total__list__element__number">{{main.expenseRepository.expenseRequest.request.totalCosts.totalServices  | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type">Otros Viáticos:</span><span class="list-total__list__element__number"> {{main.expenseRepository.expenseRequest.request.totalCosts.totalOtherViatics   | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type"></span><span class="list-total__list__element__number"></span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type"></span><span class="list-total__list__element__number"></span>
+                                            </li>
+                                            <li class="list-total__list__element">
+                                                <span class="list-total__list__element__type list-total__list__element__type--black">Total</span><span class="list-total__list__element__number
+                                                        list-total__list__element__number--total">{{main.expenseRepository.expenseRequest.request.totalCosts.totalOtherViaticsTotal   | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-3 offset-md-9">
+                                <div class="plate-and-actions" style="float: right;">
+                                    <h3 class="title title--margin-2">
+                                        Total: {{main.expenseRepository.expenseRequest.request.totalCosts.total | currency: main.expenseRepository.expenseRequest.request.currency + '$'}}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--END TOTALS-->
+
+        <div class="row" ng-show="main.context.isEditable">
+            <div class="col-md-12">
+                <div class="actions-expenses">
+                    <button class="actions-expenses__button actions-expenses__button--cancelar">Cancelar</button>
+                    <button type="button" class="actions-expenses__button actions-expenses__button--expenses"
+                            ng-click="main.saveRequest()">
+                        Someter a
+                        Aprobación
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- main ends here -->
+<!-- Footer starts here -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="disclaimer-block">
+                    Consorcio de Tarjetas Dominicanas, S A © {{main.context.currentDayAsYear}}. Todos los derechos
+                    reservados.<p><small>Version {{main.config.version}}</small></p>
+                </h3>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="modal fade modal-upload" id="approbation-modal" tabindex="-1" role="dialog" aria-labelledby="approbation-modalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="col-md-12">
+                    <div class="modal-upload-header modal-upload-header--center">
+                        <h3 class="modal-upload-header__title">Justificar</h3>
+                        <p class="modal-upload-header__text">
+                            Indique el motivo que justifica la acción sobre esta
+                            solicitud.
+                        </p>
+
+                        <small class="modal-upload-header__text"
+                               style="font-size: 12px !important;">
+                            En caso de <b>Rechazar</b> o pedir <b>Modificación</b> de la solicitud, debe de agregar un comentario.
+                        </small>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div action="" class="form-body form-body--nopadding">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="form-body__label" for="">Justificación</label>
+
+                                    <textarea class="form-body__textarea form-body__textarea--over-white-bg"
+                                              name="comment"
+                                              ng-class="{'--invalid': main.context.commentError}"
+                                              ng-model="main.context.Comment"
+                                              cols="30" rows="10"></textarea>
+
+                                    <div class="--invalid-text"
+                                         ng-if="main.context.commentError">
+                                        <p> Este campo es requerido. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="actions-expenses actions-expenses--no-margin">
+                        <button class="actions-expenses__button actions-expenses__button--cancelar"
+                                type="button"
+                                ng-click="main.closeApproveModal()">
+                            Cancelar
+                        </button>
+                        <button class="actions-request-submit"
+                                type="button" ng-click="main.saveApprove()">
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

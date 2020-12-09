@@ -1,0 +1,205 @@
+﻿<div class="modal modal-expenses fade" id="private-vehicle-modal" tabindex="-1" role="dialog"
+     aria-labelledby="private-vehicle-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button"
+                        ng-click="vehicle.closePrivateVehicleModal();"
+                        class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="col-md-12">
+                    <div class="modal-upload-header modal-upload-header--center modal-upload-header--form-margin">
+                        <h3 class="modal-upload-header__title">Vehículo Privado</h3>
+                        <p class="modal-upload-header__text">
+                            Indique los datos correspondientes al vehículo privado utilizado.
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div action="" class="form-body form-container" ng-form="vehicle.privateVehicleForm">
+                                    <div class="form-row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="vehicle.privateVehicleForm.property.$error.required && vehicle.privateVehicleForm.property.$dirty"></span>
+                                                <label class="form-body__label" for="">Propiedad</label>
+                                                <select class="form-body__select form-control"
+                                                        ng-model="vehicle.context.privateVehicleItem.property"
+                                                        ng-change="vehicle.resetVariables();"
+                                                        ng-class="{'--invalid':vehicle.privateVehicleForm.property.$error.required && vehicle.privateVehicleForm.property.$dirty}"
+                                                        name="property" required
+                                                        ng-options="property for property in vehicle.propertyTypes"></select>
+
+                                                <div class="--invalid-text"
+                                                     ng-if="vehicle.privateVehicleForm.property.$error.required && vehicle.privateVehicleForm.property.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="vehicle.privateVehicleForm.vehicleType.$error.required && vehicle.privateVehicleForm.vehicleType.$dirty"></span>
+                                                <label class="form-body__label" for="">Tipo Vehículo</label>
+                                                <select class="form-body__select form-control"
+                                                        ng-model="vehicle.context.privateVehicleItem.vehicleType"
+                                                        name="vehicleType" required
+                                                        ng-class="{'--invalid':vehicle.privateVehicleForm.vehicleType.$error.required && vehicle.privateVehicleForm.vehicleType.$dirty}"
+                                                        ng-options="vehType for vehType in vehicle.vehicleTypes"></select>
+                                                <div class="--invalid-text"
+                                                     ng-if="vehicle.privateVehicleForm.vehicleType.$error.required && vehicle.privateVehicleForm.vehicleType.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4" ng-show="vehicle.context.privateVehicleItem.property !== 'Taxi'">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="vehicle.privateVehicleForm.vehiclePlate.$error.required && vehicle.privateVehicleForm.vehiclePlate.$dirty"></span>
+                                                <label class="form-body__label" for="">Placa</label>
+                                                <input type="text" class="form-body__text form-control"
+                                                       ng-model="vehicle.context.privateVehicleItem.vehiclePlate"
+                                                       ng-class="{'--invalid':vehicle.privateVehicleForm.vehiclePlate.$error.required && vehicle.privateVehicleForm.vehiclePlate.$dirty}"
+                                                       name="vehiclePlate" ng-required="vehicle.context.privateVehicleItem.property !== 'Taxi'"
+                                                       ng-maxlength="10"
+                                                       ng-minlength="5"
+                                                       placeholder="OF 00105">
+                                                <div class="--invalid-text">
+                                                    <p ng-if="vehicle.privateVehicleForm.vehiclePlate.$error.required && vehicle.privateVehicleForm.vehiclePlate.$dirty"> Este campo es requerido. </p>
+                                                    <p ng-if="vehicle.privateVehicleForm.vehiclePlate.$dirty && vehicle.privateVehicleForm.vehiclePlate.$touched && !vehicle.privateVehicleForm.vehiclePlate.$valid"> Una placa dominicana contiene entre 6 y 8 caracteres. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4" ng-show="vehicle.context.privateVehicleItem.property === 'Taxi'">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="vehicle.privateVehicleForm.company.$error.required && vehicle.privateVehicleForm.company.$dirty"></span>
+                                                <label class="form-body__label" for="">Compañía</label>
+                                                <input type="text" class="form-body__text form-control"
+                                                       ng-model="vehicle.context.privateVehicleItem.company"
+                                                       ng-class="{'--invalid':vehicle.privateVehicleForm.company.$error.required && vehicle.privateVehicleForm.company.$dirty}"
+                                                       name="company" ng-required="vehicle.context.privateVehicleItem.property === 'Taxi'"
+                                                       placeholder="">
+                                                <div class="--invalid-text"
+                                                     ng-if="vehicle.privateVehicleForm.company.$error.required && vehicle.privateVehicleForm.company.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--RENT-->
+
+
+                                        <div class="col-md-4" ng-show="vehicle.context.privateVehicleItem.property === 'Rentado'">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="vehicle.privateVehicleForm.vehicleCost.$error.required && vehicle.privateVehicleForm.vehicleCost.$dirty"></span>
+                                                <label class="form-body__label" for="">Costo de la Renta</label>
+                                                <input type="text" class="form-body__text form-control"
+                                                       ng-model="vehicle.context.privateVehicleItem.vehicleCost"
+                                                       ng-class="{'--invalid':vehicle.privateVehicleForm.vehicleCost.$error.required && vehicle.privateVehicleForm.vehicleCost.$dirty}"
+                                                       name="vehicleCost" ng-required="vehicle.context.privateVehicleItem.property === 'Rentado'"
+                                                       ng-currency="" currency-symbol="{{vehicle.expenseRepository.expenseRequest.request.currency + '$ '}} " ng-minlength="1">
+                                                <div class="--invalid-text">
+                                                    <p ng-if="vehicle.privateVehicleForm.vehicleCost.$error.required && vehicle.privateVehicleForm.vehicleCost.$dirty"> Este campo es requerido. </p>
+                                                    <p ng-if="vehicle.privateVehicleForm.vehicleCost.$dirty && vehicle.privateVehicleForm.vehicleCost.$touched && !vehicle.privateVehicleForm.vehicleCost.$valid"> Digite un monto valido. </p> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" ng-if="vehicle.context.privateVehicleItem.property === 'Rentado'">
+                                            <div class="form-group">
+
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="vehicle.privateVehicleForm.rnc.$error.required && vehicle.privateVehicleForm.rnc.$dirty"></span>
+                                                <label class="form-body__label" for="vehicle-modal-rnc">RNC:</label>
+
+                                                <input type="text" class="form-body__text form-control"
+                                                       ng-model="vehicle.context.privateVehicleItem.invoice.rnc"
+                                                       ng-blur="vehicle.validateNCF()"
+                                                       ng-class="{'--invalid':vehicle.privateVehicleForm.rnc.$error.required && vehicle.privateVehicleForm.rnc.$dirty}"
+                                                       name="rnc" ng-required="vehicle.context.privateVehicleItem.property === 'Rentado'"
+                                                       id="vehicle-modal-rnc">
+
+                                                <div class="--invalid-text"
+                                                     ng-if="vehicle.privateVehicleForm.rnc.$error.required && vehicle.privateVehicleForm.rnc.$dirty">
+                                                    <p> Este campo es requerido. </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4" ng-if="vehicle.context.privateVehicleItem.property === 'Rentado'">
+                                            <div class="form-group">
+                                                <span class="feather icon-alert-circle"
+                                                      ng-if="vehicle.privateVehicleForm.ncf.$error.required && vehicle.privateVehicleForm.ncf.$dirty"></span>
+                                                <label class="form-body__label" for="vehicle-modal-ncf">NCF:</label>
+
+                                                <input type="text" class="form-body__text form-control"
+                                                       ng-model="vehicle.context.privateVehicleItem.invoice.ncf"
+                                                       ng-blur="vehicle.validateNCF()"
+                                                       ng-class="{'--invalid':vehicle.privateVehicleForm.ncf.$error.required && vehicle.privateVehicleForm.ncf.$dirty}"
+                                                       name="ncf" ng-required="vehicle.context.privateVehicleItem.property === 'Rentado'"
+                                                       id="vehicle-modal-ncf">
+
+                                                <div class="--invalid-text">
+                                                    <p ng-if="vehicle.privateVehicleForm.ncf.$error.required && vehicle.privateVehicleForm.ncf.$dirty"> Este campo es requerido. </p>
+                                                    <p ng-if="  vehicle.context.invalidNCF"> NCF o RNC invalido. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12" ng-if="vehicle.context.privateVehicleItem.property === 'Rentado'">
+                                            <div class="form-group">
+                                                <label class="form-body__label" for="vehicle-modal-supplier">Suplidor:</label>
+                                                <input type="text" class="form-body__text form-control --disabled"
+                                                       value="{{vehicle.context.privateVehicleItem.invoice.supplier}}"
+                                                       disabled="disabled"
+                                                       name="supplier"
+                                                       ng-required="vehicle.context.privateVehicleItem.property === 'Rentado'"
+                                                       id="vehicle-modal-supplier">
+
+                                                <div class="--invalid-text">
+                                                    <p ng-if="vehicle.context.invalidNCF"> Suplidor no encontrado. </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                     
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="actions-expenses">
+                            <button type="button" class="actions-expenses__button actions-expenses__button--cancelar"
+                                    ng-click="vehicle.closePrivateVehicleModal()">
+                                Cancelar
+                            </button>
+                            <button type="button" class="actions-expenses__button actions-expenses__button--expenses"
+                                    ng-disabled="vehicle.context.firstClick && !vehicle.privateVehicleForm.$valid"
+                                    ng-class="{'--disabled': vehicle.context.firstClick && !vehicle.privateVehicleForm.$valid} "
+                                    ng-click="vehicle.addPrivateVehicle()">
+                                Reportar Vehículo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
