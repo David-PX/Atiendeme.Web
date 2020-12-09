@@ -25,7 +25,7 @@ namespace Atiendeme.Web.Configuration
             //Add admin user if is not created
             if (testUser == null)
             {
-                ApplicationUser administrator = new ApplicationUser() { Email = email, UserName = email, EmailConfirmed = true, LastName = "Administrador", Name = "Administrador" };
+                ApplicationUser administrator = new ApplicationUser() { Email = email, UserName = email, EmailConfirmed = true, Genre = "Masculino", LastName = "Administrador", Name = "Administrador" };
 
                 IdentityResult newUser = userManager.CreateAsync(administrator, "Atiendeme123").Result;
 

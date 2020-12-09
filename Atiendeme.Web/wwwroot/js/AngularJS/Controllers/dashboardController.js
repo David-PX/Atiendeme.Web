@@ -2,13 +2,13 @@
     var appName = "atiendeme";
     angular.module(appName).controller("dashboardController", dashboardController);
 
-    function dashboardController($timeout, $window) {
+    function dashboardController($timeout, $window, userService) {
         var self = this;
 
         initialize();
 
         function initialize() {
-            console.log("IM THE DASHBOARD");
+            self.userService = userService; 
         }
     }
 })();

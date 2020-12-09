@@ -3,7 +3,8 @@
         return {
             restrict: 'E',
             templateUrl: "../js/AngularJS/Partials/dashboardTemplate.html",
-            controller: "dashboardController"
+            controller: "dashboardController",
+            controllerAs: "dashboard"
         };
     });
 }());

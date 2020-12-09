@@ -3,8 +3,8 @@
     //Nota: no se extraen los $http para facilitar las tareas de debug.
     function userRepository($http) {
         function getCurrentUser() {
-            debugger;
-            var url = "/api/Doctor";
+         
+            var url = "/api/User";
             var req = requestBuilder(url);
 
             return $http(req).then(

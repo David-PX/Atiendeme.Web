@@ -19,6 +19,7 @@ namespace Atiendeme.Repositorio
             SpecialtiesRepository = new SpecialtiesRepository(_applicationDbContext);
             OfficeRepository = new OfficeRepository(_applicationDbContext);
             ReservationRepository = new ReservationRepository(_applicationDbContext);
+            UserRepository = new UserRepository(_applicationDbContext, userManager);
         }
 
         public IDoctorRepository DoctorRepository { get; }
@@ -28,6 +29,8 @@ namespace Atiendeme.Repositorio
         public IOfficeRepository OfficeRepository { get; }
 
         public IReservationRepository ReservationRepository { get; }
+
+        public IUserRepository UserRepository { get; }
 
         public void Complete()
         {
