@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Atiendeme.Web.Controllers.API
@@ -31,10 +32,10 @@ namespace Atiendeme.Web.Controllers.API
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ApplicationUserDto>>> Get()
+        public async Task<ActionResult<List<DoctorDto>>> Doctor()
         {
             var result = await _atiendemeUnitOfWork.DoctorRepository.GetDoctorsAsync();
-            return Ok(result);
+            return StatusCode((int)HttpStatusCode.Created, result);
         }
 
         /// <summary>
@@ -44,15 +45,42 @@ namespace Atiendeme.Web.Controllers.API
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrador")]
-        public async Task<ActionResult<ApplicationUserDto>> Post(ApplicationUserDto medico)
+        public async Task<ActionResult<DoctorDto>> Doctor(DoctorDto medico)
         {
             var _medicoMapper = _mapper.Map<ApplicationUser>(medico);
 
-            var result = await _atiendemeUnitOfWork.DoctorRepository.CrearMedicoAsync(_medicoMapper, medico.Password);
+            //Crea al medico
+            var doctor = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorAsync(_medicoMapper, medico.Password);
 
-            ApplicationUserDto mapperResult = _mapper.Map<ApplicationUserDto>(result);
+            var _doctorLaborDays = _mapper.Map<List<DoctorLaborDays>>(medico.DoctorLaborDays);
 
-            return Ok(mapperResult);
+            var resultSaveDoctorDays = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(_doctorLaborDays);
+
+            //Agrega los horarios del medico
+            DoctorDto mapperResult = _mapper.Map<DoctorDto>(doctor);
+            mapperResult.DoctorLaborDays = _mapper.Map<List<DoctorLaborDaysDto>>(resultSaveDoctorDays);
+
+            return StatusCode((int)HttpStatusCode.Created, doctor);
+        }
+
+        [HttpPost("[action]")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<ActionResult<DoctorLaborDaysDto>> DoctorLaborDay(List<DoctorLaborDaysDto> doctorLaborDays)
+        {
+            foreach (var item in doctorLaborDays)
+            {
+                var doctor = await _atiendemeUnitOfWork.DoctorRepository.GetDoctorAsync(item.DoctorId);
+
+                if (doctor == null)
+                    return BadRequest(("Doctor with Id {0} not found", item.DoctorId));
+            }
+
+            var _doctorLaborDays = _mapper.Map<List<DoctorLaborDays>>(doctorLaborDays);
+            var resultSaveDoctorDays = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(_doctorLaborDays);
+
+            var resultDto = _mapper.Map<List<DoctorLaborDaysDto>>(resultSaveDoctorDays);
+
+            return StatusCode((int)HttpStatusCode.Created, resultDto);
         }
     }
 }

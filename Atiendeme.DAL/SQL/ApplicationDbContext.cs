@@ -24,6 +24,14 @@ namespace Atiendeme.DAL.SQL
 
         public DbSet<SpecialtiesDoctor> SpecialtiesDoctors { get; set; }
 
+        public DbSet<Offices> Offices { get; set; }
+
+        public DbSet<OfficesDoctors> OfficesDoctors { get; set; }
+
+        public DbSet<DoctorLaborDays> DoctorLaborDays { get; set; }
+
+        public DbSet<Reservations> Reservations { get; set; }
+
         Task<int> IApplicationDbContext.SaveChangesAsync()
         {
             return SaveChangesAsync();

@@ -13,9 +13,17 @@ namespace Atiendeme.Contratos.DAL.SQL
 
         DbSet<IdentityUserRole<string>> AspNetUserRoles { get; set; }
 
-        public DbSet<Specialties> Specialties { get; set; }
+        DbSet<Specialties> Specialties { get; set; }
 
-        public DbSet<SpecialtiesDoctor> SpecialtiesDoctors { get; set; }
+        DbSet<SpecialtiesDoctor> SpecialtiesDoctors { get; set; }
+
+        DbSet<Offices> Offices { get; set; }
+
+        DbSet<OfficesDoctors> OfficesDoctors { get; set; }
+
+        DbSet<DoctorLaborDays> DoctorLaborDays { get; set; }
+
+        DbSet<Reservations> Reservations { get; set; }
 
         Task<int> SaveChangesAsync();
 

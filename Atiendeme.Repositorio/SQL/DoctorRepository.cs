@@ -45,7 +45,30 @@ namespace Atiendeme.Repositorio.SQL
             return users;
         }
 
-        public async Task<ApplicationUser> CrearMedicoAsync(ApplicationUser medico, string pswd)
+        public async Task<ApplicationUserDto> GetDoctorAsync(string Id)
+        {
+            var user = await (from u in _applicationDbContext.AspNetUsers
+                              join ur in _applicationDbContext.AspNetUserRoles on u.Id equals ur.UserId
+                              join r in _applicationDbContext.AspNetRoles on ur.RoleId equals r.Id
+                              where r.Name == DefaultRoles.Doctor
+                              where u.Id == Id
+                              select new ApplicationUserDto
+                              {
+                                  Email = u.Email,
+                                  PhoneNumber = u.PhoneNumber,
+                                  Id = u.Id,
+                                  Genre = u.Genre,
+                                  Name = u.Name,
+                                  LastName = u.LastName,
+                                  UserName = u.UserName,
+                                  Birthday = u.Birthday,
+                                  Role = r.Name
+                              }).FirstOrDefaultAsync();
+
+            return user;
+        }
+
+        public async Task<ApplicationUser> SaveDoctorAsync(ApplicationUser medico, string pswd)
         {
             //Sacar esto a la capa de servicio
 
@@ -77,6 +100,18 @@ namespace Atiendeme.Repositorio.SQL
                 return null;
             }
             return null;
+        }
+
+        public async Task<List<DoctorLaborDays>> SaveDoctorLaborDays(List<DoctorLaborDays> doctorLaborDays)
+        {
+            //Sacar esto a la capa de servicio
+            foreach (var item in doctorLaborDays)
+            {
+                _ = await _applicationDbContext.DoctorLaborDays.AddAsync(item);
+            }
+
+            await _applicationDbContext.SaveChangesAsync();
+            return doctorLaborDays;
         }
     }
 }

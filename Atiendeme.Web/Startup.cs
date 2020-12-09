@@ -2,6 +2,7 @@ using Atiendeme.Contratos.DAL.SQL;
 using Atiendeme.Contratos.Repository;
 using Atiendeme.Contratos.Repository.SQL;
 using Atiendeme.DAL.SQL;
+using Atiendeme.Entidades.Constante;
 using Atiendeme.Entidades.Entidades.Sengrid;
 using Atiendeme.Entidades.Entidades.SQL;
 using Atiendeme.Repositorio;
@@ -51,7 +52,12 @@ namespace Atiendeme.Web
                        .AddRoles<IdentityRole>()
                        .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //services.AddAuthorization(options => options.AddPolicy("Administrador", authBuilder => { authBuilder.RequireRole("Administrador"); }));
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SecretarioPolicy", authBuilder => { authBuilder.RequireRole(DefaultRoles.Administrador, DefaultRoles.Secretario); });
+
+                options.AddPolicy("PacientePolicy", authBuilder => { authBuilder.RequireRole(DefaultRoles.Administrador, DefaultRoles.Paciente); });
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();

@@ -7,5 +7,9 @@ namespace Atiendeme.Contratos.Repository
         IDoctorRepository DoctorRepository { get; }
 
         ISpecialtiesRepository SpecialtiesRepository { get; }
+
+        IOfficeRepository OfficeRepository { get; }
+
+        IReservationRepository ReservationRepository { get; }
     }
 }

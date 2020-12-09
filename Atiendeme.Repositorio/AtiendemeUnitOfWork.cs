@@ -17,11 +17,17 @@ namespace Atiendeme.Repositorio
 
             DoctorRepository = new DoctorRepository(_applicationDbContext, userManager);
             SpecialtiesRepository = new SpecialtiesRepository(_applicationDbContext);
+            OfficeRepository = new OfficeRepository(_applicationDbContext);
+            ReservationRepository = new ReservationRepository(_applicationDbContext);
         }
 
         public IDoctorRepository DoctorRepository { get; }
 
         public ISpecialtiesRepository SpecialtiesRepository { get; }
+
+        public IOfficeRepository OfficeRepository { get; }
+
+        public IReservationRepository ReservationRepository { get; }
 
         public void Complete()
         {
