@@ -12,9 +12,7 @@
         initialize(); 
         //})
          
-        function initialize() {
-
-            
+        function initialize() {  
             self.userService = userService; 
         }
     }
