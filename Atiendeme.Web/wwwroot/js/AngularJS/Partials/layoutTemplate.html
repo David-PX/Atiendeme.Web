@@ -7,7 +7,7 @@
     <!-- Sidebar -->
     <div id="sidebar-container" class="bg-primary">
         <div class="logo">
-            <h4 class="text-light font-weight-bold mb-0"> {{layout.userService.context.currentUser.role}}</h4>
+            <h4 class="text-light font-weight-bold mb-0"> {{layout.userService.currentUser.role}}</h4>
         </div>
         <div class="menu">
             <a href="#" class="d-block text-light p-3 border-0 active-menu-option">Inicio</a>
@@ -35,7 +35,7 @@
                             <a class="nav-link text-dark dropdown-toggle" 
                                ng-click="layout.showNavBar = !layout.showNavBar"
                                href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="../../../assets/images/usuario.jpg" class="img-fluid rounded-circle avatar mr-2" alt="https://generated.photos/" /> {{layout.userService.context.currentUser.name}} {{layout.userService.context.currentUser.lastName}}
+                                <img src="../../../assets/images/usuario.jpg" class="img-fluid rounded-circle avatar mr-2" alt="https://generated.photos/" /> {{layout.userService.currentUser.name}} {{layout.userService.currentUser.lastName}}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': layout.showNavBar}" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">Mi perfil</a>

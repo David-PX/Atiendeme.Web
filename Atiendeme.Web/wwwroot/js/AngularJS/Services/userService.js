@@ -6,9 +6,7 @@
 
         var self = this;
 
-        self.context = {
-            currentUser: {}
-        }
+        self.currentUser = [];
 
         initializeService();
 
@@ -29,7 +27,7 @@
 
         function getCurrentUser() {
             return userRepository.getCurrentUser().then(function (response) {
-                self.context.currentUser = response;
+                self.currentUser = response;
                 return response;
             }, function (error) {
                 console.error(error);;
@@ -59,8 +57,6 @@
         //        };
         //}
          
-        return {
-            context: self.context
-        };
+        return self;
     }
 }());
