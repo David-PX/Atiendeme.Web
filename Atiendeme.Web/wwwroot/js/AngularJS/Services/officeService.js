@@ -35,12 +35,24 @@
         }
 
         function saveOffice(form) {
-            return officeRepository.saveOffice(form).then(function (response) {
-                return getOffices();
-            }, function (error) {
-                console.error(error);;
-                throw error;
-            })
+
+            if (!form.id) {
+                return officeRepository.saveOffice(form).then(function (response) {
+                    return getOffices();
+                }, function (error) {
+                    console.error(error);;
+                    throw error;
+                })
+            } else {
+                return officeRepository.updateOffice(form).then(function (response) {
+                    return getOffices();
+                }, function (error) {
+                    console.error(error);;
+                    throw error;
+                })
+
+            }
+
         }
 
         function deleteOffice(id) {

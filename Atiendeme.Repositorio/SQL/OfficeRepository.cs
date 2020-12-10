@@ -3,6 +3,7 @@ using Atiendeme.Contratos.Repository.SQL;
 using Atiendeme.Entidades.Entidades.SQL;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Atiendeme.Repositorio.SQL
@@ -23,6 +24,14 @@ namespace Atiendeme.Repositorio.SQL
                                         .ThenInclude(x => x.Doctor)
                                     .ToListAsync();
 
+            return offices;
+        }
+
+        public async Task<List<OfficesDoctors>> GetOfficesDoctorsByOfficeId(int Id)
+        {
+            var offices = await _applicationDbContext.OfficesDoctors
+                                    .Where(x => x.OfficeId == Id)
+                                    .ToListAsync();
             return offices;
         }
 
@@ -57,6 +66,21 @@ namespace Atiendeme.Repositorio.SQL
             await _applicationDbContext.OfficesDoctors.AddRangeAsync(officesDoctors);
             await _applicationDbContext.SaveChangesAsync();
             return officesDoctors;
+        }
+
+        public async Task<OfficesDoctors[]> DeleteOfficeDoctors(OfficesDoctors[] officesDoctors)
+        {
+            _applicationDbContext.OfficesDoctors.RemoveRange(officesDoctors);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return officesDoctors;
+        }
+
+        public async Task<Offices> UpdateOffice(Offices office)
+        {
+            var result = _applicationDbContext.Offices.Update(office);
+            await _applicationDbContext.SaveChangesAsync();
+            return result.Entity;
         }
     }
 }

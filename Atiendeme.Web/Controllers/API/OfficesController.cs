@@ -61,15 +61,41 @@ namespace Atiendeme.Web.Controllers.API
             return Ok(result);
         }
 
-        //[HttpPatch]
-        //public async Task<ActionResult<Offices>> UpdateOffice(OfficeDto officeDto)
-        //{
-        //    //var result = await _atiendemeUnitOfWork.OfficeRepository.GetOffice(Id);
-        //    if (result == null)
-        //        return BadRequest();
+        [HttpPatch]
+        public async Task<ActionResult<Offices>> UpdateOffice(OfficeDto officeDto)
+        {
+            var officesDoctors = await _atiendemeUnitOfWork.OfficeRepository.GetOfficesDoctorsByOfficeId(officeDto.Id);
 
-        //    return Ok(result);
-        //}
+            if (officeDto.Doctors != null)
+            {
+                if (officesDoctors == null)
+                    await _atiendemeUnitOfWork.OfficeRepository.DeleteOfficeDoctors(officesDoctors.ToArray());
+                else
+                {
+                    var doctorsNotFound = officesDoctors.Where(x => !officeDto.Doctors.Any(u => u.Id == x.DoctorId)).ToArray();
+
+                    if (doctorsNotFound.Length > 0)
+                        await _atiendemeUnitOfWork.OfficeRepository.DeleteOfficeDoctors(doctorsNotFound);
+                }
+            }
+            else
+            {
+                if (officesDoctors != null)
+                    await _atiendemeUnitOfWork.OfficeRepository.DeleteOfficeDoctors(officesDoctors.ToArray());
+            }
+
+            var office = _mapper.Map<Offices>(officeDto);
+
+            office = await _atiendemeUnitOfWork.OfficeRepository.UpdateOffice(office);
+
+            if (office == null)
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+
+            //officeDto = _mapper.Map<OfficeDto>(office);
+
+            //officeDto.Doctors = office.OfficesDoctors.Select(x => _mapper.Map<ApplicationUserDto>(x.Doctor)).ToList();
+            return Ok(officeDto);
+        }
 
         [HttpPost]
         public async Task<ActionResult<Offices>> Office(OfficeDto officeDto)

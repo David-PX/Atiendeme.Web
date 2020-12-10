@@ -10,6 +10,8 @@ namespace Atiendeme.Contratos.Repository.SQL
 
         Task<Offices> GetOffice(int Id);
 
+        Task<List<OfficesDoctors>> GetOfficesDoctorsByOfficeId(int Id);
+
         Task<Offices> SaveOffice(Offices office);
 
         Task<Offices> DeleteOffice(Offices offices);
@@ -17,5 +19,9 @@ namespace Atiendeme.Contratos.Repository.SQL
         Task<OfficesDoctors[]> SaveOfficesDoctor(OfficesDoctors[] officesDoctors);
 
         Task<OfficesDoctors> SaveOfficeDoctor(OfficesDoctors officesDoctors);
+
+        Task<OfficesDoctors[]> DeleteOfficeDoctors(OfficesDoctors[] officesDoctors);
+
+        Task<Offices> UpdateOffice(Offices office);
     }
 }

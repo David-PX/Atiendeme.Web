@@ -65,7 +65,7 @@
             if (self.officeForm.$valid) {
                 officeService.saveOffice(self.form).then(function (response) {
                     $('#officeModal').modal('hide');
-                    notificationService.showToast("Oficina creada o modificada con exito", "Error", "success");
+                    notificationService.showToast("Oficina creada o modificada con exito", "Èxito", "success");
                 }, function (error) {
                     console.error(error);
                     notificationService.showToast("Ha ocurrido un error", "Error", "error");

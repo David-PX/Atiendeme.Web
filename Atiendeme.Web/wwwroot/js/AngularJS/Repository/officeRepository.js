@@ -32,6 +32,20 @@
                 });
         }
 
+        function updateOffice(form) {
+            var url = "/api/Offices";
+            var req = requestBuilder(url, 'PATCH', form);
+
+            return $http(req).then(
+                function (response) {
+                    if (response.status < 205)
+                        return response.data;
+                    else
+                        throw response;
+                }, function (error) {
+                    throw error;
+                });
+        }
         function deleteOffice(id) {
             var url = "/api/Offices/" + id;
             var req = requestBuilder(url, 'DELETE');
@@ -66,6 +80,7 @@
         return {
             getOffices: getOffices,
             saveOffice: saveOffice,
+            updateOffice: updateOffice,
             deleteOffice: deleteOffice
         };
     }
