@@ -59,7 +59,9 @@ namespace Atiendeme.Web
                 options.AddPolicy("PacientePolicy", authBuilder => { authBuilder.RequireRole(DefaultRoles.Administrador, DefaultRoles.Paciente); });
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddRazorPages();
 
             //

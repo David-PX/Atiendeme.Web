@@ -5,11 +5,12 @@
         when('/dashboard', {
             template: '<dashboard-template></dashboard-template>'
         })
-        .    
-        when('/dashboard', {
+        .when('/dashboard', {
             template: '<dashboard-template></dashboard-template>'
-        }) 
-
+        })
+        .when('/admin/offices', {
+            template: '<offices-template></offices-template>'
+        })
         .otherwise({ redirectTo: '/dashboard' });;
 
     //The below will be loaded when url is changed to pageURL/AngularJS

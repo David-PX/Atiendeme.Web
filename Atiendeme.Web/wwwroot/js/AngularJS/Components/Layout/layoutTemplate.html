@@ -1,6 +1,8 @@
 ﻿<link rel="stylesheet" href="../../../css/Portal/dashboard-style.css">
+
 <link href="https://fonts.googleapis.com/css?family=Muli:300,700&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <div class="d-flex" id="content-wrapper">
 
@@ -11,7 +13,7 @@
         </div>
         <div class="menu">
             <a href="#" class="d-block text-light p-3 border-0 active-menu-option">Inicio</a>
-            <a href="#" class="d-block text-light p-3 border-0">Doctores</a>
+            <a href="#/admin/offices" class="d-block text-light p-3 border-0">Doctores</a>
             <a href="#" class="d-block text-light p-3 border-0">Secretarias</a>
             <a href="#" class="d-block text-light p-3 border-0">Consultorios</a>
             <a href="#" class="d-block text-light p-3 border-0">Servicios</a>
@@ -32,7 +34,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" 
+                            <a class="nav-link text-dark dropdown-toggle"
                                ng-click="layout.showNavBar = !layout.showNavBar"
                                href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="../../../assets/images/usuario.jpg" class="img-fluid rounded-circle avatar mr-2" alt="https://generated.photos/" /> {{layout.userService.currentUser.name}} {{layout.userService.currentUser.lastName}}

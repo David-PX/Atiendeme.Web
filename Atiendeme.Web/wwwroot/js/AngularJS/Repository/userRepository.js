@@ -14,7 +14,7 @@
                     else
                         throw response;
                 }, function (error) {
-                    return error;
+                    throw error;
                 });
         }
 

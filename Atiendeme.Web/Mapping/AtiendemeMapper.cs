@@ -20,6 +20,10 @@ namespace Atiendeme.Web.Mapping
             CreateMap<DoctorLaborDays, DoctorLaborDaysDto>().ReverseMap();
 
             CreateMap<OfficesDoctors, OfficesDoctorsDto>();
+            CreateMap<Offices, OfficeDto>().ReverseMap();
+
+            CreateMap<Offices, ApplicationUserDto>().ReverseMap();
+
             CreateMap<OfficesDoctorsDto, OfficesDoctors>()
                    .ForMember(dest => dest.Doctor, opt => opt.AddTransform(s => null))
                    .ForMember(dest => dest.Office, opt => opt.AddTransform(s => null));

@@ -4,6 +4,8 @@ using Atiendeme.Entidades.Entidades.SQL;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -25,11 +27,28 @@ namespace Atiendeme.Web.Controllers.API
         }
 
         [HttpGet]
-        public async Task<ActionResult<Offices>> Offices()
+        public async Task<ActionResult<List<OfficeDto>>> Offices()
         {
             var result = await _atiendemeUnitOfWork.OfficeRepository.GetOffices();
 
-            return Ok(result);
+            List<OfficeDto> officeDtos = new List<OfficeDto>();
+
+            result.ForEach(x =>
+            {
+                var doctorsDto = _mapper.Map<List<ApplicationUserDto>>(x.OfficesDoctors.Select(x => x.Doctor));
+                officeDtos.Add(
+                    new OfficeDto
+                    {
+                        Address = x.Address,
+                        Email = x.Email,
+                        Id = x.Id,
+                        Name = x.Name,
+                        Telephone = x.Telephone,
+                        Doctors = doctorsDto
+                    });
+            });
+
+            return Ok(officeDtos);
         }
 
         [HttpGet("{Id}")]
@@ -42,10 +61,42 @@ namespace Atiendeme.Web.Controllers.API
             return Ok(result);
         }
 
+        //[HttpPatch]
+        //public async Task<ActionResult<Offices>> UpdateOffice(OfficeDto officeDto)
+        //{
+        //    //var result = await _atiendemeUnitOfWork.OfficeRepository.GetOffice(Id);
+        //    if (result == null)
+        //        return BadRequest();
+
+        //    return Ok(result);
+        //}
+
         [HttpPost]
-        public async Task<ActionResult<Offices>> Office(Offices Office)
+        public async Task<ActionResult<Offices>> Office(OfficeDto officeDto)
         {
-            var result = await _atiendemeUnitOfWork.OfficeRepository.SaveOffice(Office);
+            var office = _mapper.Map<Offices>(officeDto);
+            var result = await _atiendemeUnitOfWork.OfficeRepository.SaveOffice(office);
+
+            if (result == null)
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+
+            if (officeDto.DoctorsId != null && officeDto.DoctorsId.Length > 0)
+            {
+                var officesDoctor = new List<OfficesDoctors>();
+
+                for (var i = 0; i < officeDto.DoctorsId.Length; i++)
+                {
+                    officesDoctor.Add(new OfficesDoctors
+                    {
+                        DoctorId = officeDto.DoctorsId[i],
+                        OfficeId = result.Id
+                    });
+                }
+
+                await _atiendemeUnitOfWork.OfficeRepository.SaveOfficesDoctor(officesDoctor.ToArray());
+
+                result.OfficesDoctors = officesDoctor;
+            }
 
             return StatusCode((int)HttpStatusCode.Created, result);
         }
@@ -58,6 +109,22 @@ namespace Atiendeme.Web.Controllers.API
             officesDoctorsDto = _mapper.Map<OfficesDoctorsDto>(result);
 
             return StatusCode((int)HttpStatusCode.Created, officesDoctorsDto);
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult<Offices>> DeleteOffice(int Id)
+        {
+            var office = await _atiendemeUnitOfWork.OfficeRepository.GetOffice(Id);
+
+            if (office == null)
+                return NotFound();
+
+            var result = await _atiendemeUnitOfWork.OfficeRepository.DeleteOffice(office);
+
+            if (result == null)
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+
+            return Ok(result);
         }
     }
 }

@@ -11,6 +11,14 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/angular-moment-picker/angular-moment-picker.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.4/dist/sweetalert2.min.css" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.4/dist/sweetalert2.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.2/angular-route.min.js"></script>
@@ -31,9 +39,12 @@
 
     @*Repositories *@
     <script src="~/js/AngularJS/Repository/userRepository.js"></script>
+    <script src="~/js/AngularJS/Repository/officeRepository.js"></script>
 
     @*SERVICES*@
     <script src="~/js/AngularJS/Services/userService.js"></script>
+    <script src="~/js/AngularJS/Services/officeService.js"></script>
+    <script src="~/js/AngularJS/Services/notificationService.js"></script>
 
     @*Layout*@
     <script src="~/js/AngularJS/Components/Layout/layoutTemplate.js"></script>
@@ -44,5 +55,14 @@
     <script src="~/js/AngularJS/Components/Dashboard/dashboardTemplate.js"></script>
     <script src="~/js/AngularJS/Components/Dashboard/dashboardController.js"></script>
     @*end dashboard*@
+
+    @*#Admin section*@
+
+    @*offices*@
+    <script src="~/js/AngularJS/Components/Admin/Offices/officesTemplate.js"></script>
+    <script src="~/js/AngularJS/Components/Admin/Offices/officesController.js"></script>
+    @*end offices*@
+
+    @*End Admin section*@
 </body>
 </html>

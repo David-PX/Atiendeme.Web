@@ -18,12 +18,24 @@ namespace Atiendeme.Repositorio.SQL
 
         public async Task<List<Offices>> GetOffices()
         {
-            return await _applicationDbContext.Offices.ToListAsync();
+            var offices = await _applicationDbContext.Offices
+                                    .Include(x => x.OfficesDoctors)
+                                        .ThenInclude(x => x.Doctor)
+                                    .ToListAsync();
+
+            return offices;
         }
 
         public async Task<Offices> GetOffice(int Id)
         {
             return await _applicationDbContext.Offices.FindAsync(Id);
+        }
+
+        public async Task<Offices> DeleteOffice(Offices offices)
+        {
+            var deleteResult = _applicationDbContext.Offices.Remove(offices);
+            await _applicationDbContext.SaveChangesAsync();
+            return deleteResult.Entity;
         }
 
         public async Task<Offices> SaveOffice(Offices office)
@@ -38,6 +50,13 @@ namespace Atiendeme.Repositorio.SQL
             var SaveResult = await _applicationDbContext.OfficesDoctors.AddAsync(officesDoctors);
             await _applicationDbContext.SaveChangesAsync();
             return SaveResult.Entity;
+        }
+
+        public async Task<OfficesDoctors[]> SaveOfficesDoctor(OfficesDoctors[] officesDoctors)
+        {
+            await _applicationDbContext.OfficesDoctors.AddRangeAsync(officesDoctors);
+            await _applicationDbContext.SaveChangesAsync();
+            return officesDoctors;
         }
     }
 }

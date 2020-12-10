@@ -1,4 +1,7 @@
-﻿namespace Atiendeme.Entidades.Entidades.SQL
+﻿using Atiendeme.Entidades.Entidades.Dtos;
+using System.Collections.Generic;
+
+namespace Atiendeme.Entidades.Entidades.SQL
 {
     public class Offices
     {
@@ -11,5 +14,7 @@
         public string Email { get; set; }
 
         public string Address { get; set; }
+
+        public List<OfficesDoctors> OfficesDoctors { get; set; }
     }
 }
