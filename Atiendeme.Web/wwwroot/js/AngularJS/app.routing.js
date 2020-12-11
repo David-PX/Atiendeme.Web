@@ -11,6 +11,9 @@
         .when('/admin/offices', {
             template: '<offices-template></offices-template>'
         })
+        .when('/admin/doctors', {
+            template: '<doctors-template></doctors-template>'
+        })
         .otherwise({ redirectTo: '/dashboard' });;
 
     //The below will be loaded when url is changed to pageURL/AngularJS

@@ -1,5 +1,4 @@
-﻿//SERVICIO DE MENSAJES
-(function () {
+﻿(function () {
     angular.module('atiendeme').service("officeService", officeService);
 
     function officeService(officeRepository, $rootScope, $q) {
@@ -35,7 +34,6 @@
         }
 
         function saveOffice(form) {
-
             if (!form.id) {
                 return officeRepository.saveOffice(form).then(function (response) {
                     return getOffices();
@@ -50,9 +48,7 @@
                     console.error(error);;
                     throw error;
                 })
-
             }
-
         }
 
         function deleteOffice(id) {
