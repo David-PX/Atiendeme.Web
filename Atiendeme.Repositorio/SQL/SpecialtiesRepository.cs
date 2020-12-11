@@ -26,9 +26,9 @@ namespace Atiendeme.Repositorio.SQL
             return await _applicationDbContext.Specialties.FirstOrDefaultAsync(specialty => specialty.Id == id);
         }
 
-        public async Task<Specialties> SaveSpecialty(Specialties specialy)
+        public async Task<Specialties> SaveSpecialty(Specialties specialty)
         {
-            var saveResult = await _applicationDbContext.Specialties.AddAsync(specialy);
+            var saveResult = await _applicationDbContext.Specialties.AddAsync(specialty);
             await _applicationDbContext.SaveChangesAsync();
             return saveResult.Entity;
         }
@@ -42,6 +42,14 @@ namespace Atiendeme.Repositorio.SQL
 
             await _applicationDbContext.SaveChangesAsync();
             return specialtiesDoctors;
+        }
+
+        public async Task<Specialties> UpdateSpecialty(Specialties specialty)
+        {
+            var updateResult = _applicationDbContext.Specialties.Update(specialty);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return updateResult.Entity;
         }
     }
 }

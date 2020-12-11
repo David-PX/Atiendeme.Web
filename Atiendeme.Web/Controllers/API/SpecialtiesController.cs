@@ -58,6 +58,16 @@ namespace Atiendeme.Web.Controllers.API
             return StatusCode((int)HttpStatusCode.Created, result);
         }
 
+        [HttpPatch]
+        public async Task<ActionResult<Specialties>> UpdateSpecialty(Specialties specialty)
+        {
+            if (specialty.Id == 0)
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+
+            var result = await _atiendemeUnitOfWork.SpecialtiesRepository.UpdateSpecialty(specialty);
+            return StatusCode((int)HttpStatusCode.Created, result);
+        }
+
         [HttpPost("[action]")]
         public async Task<ActionResult<SpecialtiesDoctorDto>> SpecialtiesDoctor(List<SpecialtiesDoctorDto> specialtiesDoctor)
         {

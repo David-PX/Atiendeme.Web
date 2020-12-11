@@ -13,5 +13,7 @@ namespace Atiendeme.Contratos.Repository.SQL
         Task<Specialties> SaveSpecialty(Specialties specialy);
 
         Task<List<SpecialtiesDoctor>> SaveSpecialtiesFromDoctor(List<SpecialtiesDoctor> specialtiesDoctors);
+
+        Task<Specialties> UpdateSpecialty(Specialties specialty);
     }
 }
