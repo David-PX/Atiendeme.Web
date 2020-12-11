@@ -5,9 +5,13 @@ using Atiendeme.Entidades.Entidades.Dtos;
 using Atiendeme.Entidades.Entidades.SQL;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Atiendeme.Repositorio.SQL
@@ -20,8 +24,12 @@ namespace Atiendeme.Repositorio.SQL
 
         private readonly IMapper _mapper;
 
-        public DoctorRepository(IApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager, IMapper mapper)
+        private readonly IEmailSender _emailSender;
+
+        public DoctorRepository(IApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager,
+            IMapper mapper, IEmailSender emailSender)
         {
+            _emailSender = emailSender;
             _applicationDbContext = applicationDbContext;
             _userManager = userManager;
             _mapper = mapper;
@@ -101,17 +109,14 @@ namespace Atiendeme.Repositorio.SQL
                 {
                     var _medico = await _applicationDbContext.AspNetUsers.FirstOrDefaultAsync(medico => medico.Email == medico.Email);
 
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(medico);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(medico);
 
-                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    //var callbackUrl = Url.Page(
-                    //    "/Account/ConfirmEmail",
-                    //    pageHandler: null,
-                    //    values: new { area = "Identity", userId = medico.Id, code = code, returnUrl = "/" },
-                    //    protocol: "http");
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    //await _emailSender.SendEmailAsync(medico.Email, "Atiendeme - Confirma tu correoConfirm ",
-                    //    $"Favor confirmar su correo dando <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
+                    var callbackUrl = $"https://localhost:44300/Account/ConfirmEmail?userId={medico.Id}&code=${code}&returnUrl=%2F";
+
+                    await _emailSender.SendEmailAsync(medico.Email, "Atiendeme - Confirma tu correo",
+                        $"Favor confirmar su correo dando <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
 
                     return _medico;
                 }

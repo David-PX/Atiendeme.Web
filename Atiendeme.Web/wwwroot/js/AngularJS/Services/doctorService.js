@@ -7,6 +7,8 @@
         self.doctors = [];
 
         self.getDoctors = getDoctors;
+        self.saveDoctor = saveDoctor;
+        self.deleteDoctor = deleteDoctor;
 
         initializeService();
 
@@ -23,6 +25,34 @@
                 throw error;
             });
         }
+
+        function saveDoctor(form) {
+            if (!form.id) {
+                return doctorRepository.saveDoctor(form).then(function (response) {
+                    return getOffices();
+                }, function (error) {
+                    console.error(error);;
+                    throw error;
+                })
+            } else {
+                return doctorRepository.updateDoctor(form).then(function (response) {
+                    return getOffices();
+                }, function (error) {
+                    console.error(error);;
+                    throw error;
+                })
+            }
+        }
+
+        function deleteDoctor(id) {
+            return doctorRepository.deleteDoctor(id).then(function (response) {
+                return getOffices();
+            }, function (error) {
+                console.error(error);;
+                throw error;
+            })
+        }
+
         return self;
     }
 }());

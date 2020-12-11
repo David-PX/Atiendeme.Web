@@ -5,6 +5,7 @@ using Atiendeme.Entidades.Entidades.SQL;
 using Atiendeme.Repositorio.SQL;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Atiendeme.Repositorio
 {
@@ -12,11 +13,11 @@ namespace Atiendeme.Repositorio
     {
         private readonly ApplicationDbContext _applicationDbContext;
 
-        public AtiendemeUnitOfWork(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public AtiendemeUnitOfWork(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager, IMapper mapper, IEmailSender emailSender)
         {
             _applicationDbContext = applicationDbContext;
 
-            DoctorRepository = new DoctorRepository(_applicationDbContext, userManager, mapper);
+            DoctorRepository = new DoctorRepository(_applicationDbContext, userManager, mapper, emailSender);
             SpecialtiesRepository = new SpecialtiesRepository(_applicationDbContext);
             OfficeRepository = new OfficeRepository(_applicationDbContext);
             ReservationRepository = new ReservationRepository(_applicationDbContext);

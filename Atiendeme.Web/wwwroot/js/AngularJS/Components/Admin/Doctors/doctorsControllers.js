@@ -2,7 +2,7 @@
     var appName = "atiendeme";
     angular.module(appName).controller("doctorsControllers", doctorsControllers);
 
-    function doctorsControllers($timeout, $scope, userService, doctorService, officeService,notificationService) {
+    function doctorsControllers($timeout, $scope, userService, doctorService, specialtiesService, officeService, notificationService) {
         var self = this;
 
         self.form = {
@@ -10,8 +10,16 @@
             email: "",
             phoneNumber: "",
             specialties: [],
-            offices: []
+            offices: [],
+            doctorLaborDays: []
         };
+
+        self.laborDayForm = {
+            office: {},
+            day: "",
+            startTime: "",
+            endTime: ""
+        }
 
         //#region public members
         self.addDoctor = addDoctor;
@@ -24,11 +32,10 @@
         initialize();
 
         function initialize() {
-
             self.userService = userService;
             self.doctorService = doctorService;
             self.officeService = officeService;
-
+            self.specialtiesService = specialtiesService;
             //
             self.doctorService.getDoctors();
 
@@ -46,10 +53,12 @@
         //Table logic
         function addDoctor() {
             resetForm();
+
             $('#doctorModal').modal('show');
         }
 
         function editDoctor(office) {
+            resetForm();
             self.form = angular.copy(office);
 
             $('#doctorModal').modal('show');
@@ -79,16 +88,21 @@
 
         function saveDoctor() {
             if (self.doctorForm.$valid) {
-                doctorService.saveDoctor(self.form).then(function (response) {
-                    $('#doctorModal').modal('hide');
-                    notificationService.showToast("Doctor creada o modificada con exito", "Èxito", "success");
-                }, function (error) {
-                    console.error(error);
-                    notificationService.showToast("Ha ocurrido un error", "Error", "error");
-                })
+
+                if (self.form.password === self.form.confirmPassword) {
+                    doctorService.saveDoctor(self.form).then(function (response) {
+                        $('#doctorModal').modal('hide');
+                        notificationService.showToast("Doctor creada o modificada con exito", "Èxito", "success");
+                    }, function (error) {
+                        console.error(error);
+                        notificationService.showToast("Ha ocurrido un error", "Error", "error");
+                    })
+                } else {
+                    notificationService.showToast("La contraseña no coincide", "Error", "error");
+                }
             } else {
                 notificationService.showToast("Tiene que llenar todos los campos requeridos", "Campos faltantes", "error");
-                applyAndSetDirtyForm(false)
+                applyAndSetDirtyForm(self.doctorForm, false)
             }
         }
 
@@ -98,17 +112,54 @@
                 email: "",
                 phoneNumber: "",
                 specialties: [],
-                offices: []
+                offices: [],
+                doctorLaborDays: []
             };
+
+            self.officeService.offices.forEach(function (_office) {
+                _office.ticket = self.form.offices.find(function (office) {
+                    return _office.id == office.id
+                }) ? true : false;
+            });
+
+            self.specialtiesService.specialties.forEach(function (specialties) {
+                specialties.ticket = self.form.specialties.find(function (_specialties) {
+                    return _specialties.id == specialties.id
+                }) ? true : false;
+            });
         }
 
-        function applyAndSetDirtyForm(waitFormDiggest) {
+        /////////
+        self.addLaborDay = function () {
+            if (self.laborForm.$valid) {
+                var laborDay = angular.copy(self.laborDayForm);
+                laborDay.officeId = laborDay.office.id;
+                laborDay.doctorId = self.form.doctorId;
+                self.form.doctorLaborDays.push(laborDay);
+
+                self.laborDayForm = {
+                    office: {},
+                    day: "",
+                    startTime: "",
+                    endTime: ""
+                }
+            } else {
+                notificationService.showToast("Tiene que llenar los campos del horario", "Campos faltantes", "error");
+                applyAndSetDirtyForm(self.laborForm, false)
+            }
+        }
+
+        self.deleteLaborDay = function (index) {
+            this.form.doctorLaborDays.splice(index, 1);
+        }
+
+        function applyAndSetDirtyForm(form, waitFormDiggest) {
             //This method wait a little for ng-required to be $$phase in the scope
             $timeout(() => {
                 if (waitFormDiggest)
-                    applyAndSetDirtyForm();
+                    applyAndSetDirtyForm(form);
                 else
-                    setFormInputDirty(self.doctorForm);
+                    setFormInputDirty(form);
             }, 100);
         }
 
