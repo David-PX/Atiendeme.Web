@@ -1,0 +1,90 @@
+﻿<link rel="stylesheet" href="../../../../../css/Portal/table.css">
+
+<!--CHECK TO FIX THAT SHIT-->
+
+<section class="bg-mix py-3">
+    <div class="container">
+        <div class="card rounded-0">
+            <div class="card-body">
+
+                <div class="container-xl">
+                    <div class="table-responsive table-stripped">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h2>Manejar <b>Especialidades</b></h2>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a class="btn btn-success" ng-click="specialties.addSpecialties()  "><i class="material-icons">&#xE147;</i> <span>Agregar nueva Especialidad</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="20">Nombre</th>
+                                        <th width="20">Descripcion</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="specialties in specialties.specialtiesService.specialties">
+                                        <td>{{specialties.name}}</td>
+                                        <td>{{specialties.description}} </td>
+                                    
+                                        <td>
+                                            <a class="edit" ng-click="specialties.addSpecialties()  "><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a class="delete" ng-click="specialties.deleteSpecialties()  "><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Edit Modal HTML -->
+<div id="specialtiesModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Consultorio</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" ng-form="specialties.especialtiesForm">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" ng-model="specialties.form.name"
+                                       ng-class="{'is-invalid':specialties.specialtiesForm.name.$error.required && specialties.specialtiesForm.name.$dirty}"
+                                       name="name"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Descripcion</label>
+                                <textarea class="form-control" ng-model="specialties.form.description"
+                                          ng-class="{'is-invalid':specialties.specialtiesForm.name.$error.required && specialties.specialtiesForm.name.$dirty}"
+                                          name="address"
+                                          required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="submit" class="btn btn-success" ng-click="specialties.saveSpecialties();" value="Guardar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
