@@ -81,7 +81,7 @@
         }
 
         function saveSpecialties() {
-            if (self.specialitesForm.$valid) {
+            if (self.specialtiesForm.$valid) {
                 specialtiesService.saveSpecialties(self.form).then(function (response) {
                     $('#specialtiesModal').modal('hide');
                     notificationService.showToast("Especialidad creada o modificada con exito", "Èxito", "success");
