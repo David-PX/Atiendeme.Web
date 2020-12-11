@@ -37,12 +37,27 @@
                                         <td>{{doctor.phoneNumber}} | {{doctor.email}}</td>
                                         <td>
                                             <ul>
-                                                <li ng-repeat="doctor in doctor.doctors">
-                                                    {{doctor.name}} {{doctor.lastName}}
+                                                <li ng-repeat="specialty in doctor.specialties">
+                                                    {{specialty.name}}
                                                 </li>
                                             </ul>
                                         </td>
-                                        <td>{{doctor.address}}</td>
+
+                                        <td>
+                                            <ul>
+                                                <li ng-repeat="laborDay in doctor.doctorLaborDays">
+                                                    ({{laborDay.office.name}}) - {{laborDay.day}} de {{laborDay.startTime}} a {{laborDay.endTime}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li ng-repeat="office in doctor.offices">
+                                                    {{office.name}}
+                                                </li>
+                                            </ul>
+                                        </td> 
+                                         
                                         <td>
                                             <a class="edit" ng-click="doctors.editDoctor(office)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                             <a class="delete" ng-click="doctors.deleteDoctor(office)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -98,8 +113,7 @@
                                        class="form-control" required>
                             </div>
                         </div>
-
-                        <!--<div class="col-md-12">
+                         <!--<div class="col-md-12">
                             <div class="form-group">
                                 <label>Especialidades</label>
                                 <div isteven-multi-select
@@ -112,14 +126,13 @@
                                      tick-property="ticket">
                                 </div>
                             </div>
-                        </div>
-
+                        </div>--> 
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Centros</label>
                                 <div isteven-multi-select
                                      style="width: 100%"
-                                     input-model="doctors.doctorService.offices"
+                                     input-model="doctors.officeService.offices"
                                      output-model="doctors.form.offices"
                                      button-label="name"
                                      translation="doctors.localLanguage"
@@ -127,17 +140,8 @@
                                      tick-property="ticket">
                                 </div>
                             </div>
-                        </div>-->
-
-                        <!--<div class="col-md-12">
-                            <div class="form-group">
-                                <label>Dirección</label>
-                                <textarea class="form-control" ng-model="doctors.form.address"
-                                          ng-class="{'is-invalid':doctors.doctorForm.address.$error.required && doctors.doctorForm.address.$dirty}"
-                                          name="address"
-                                          required></textarea>
-                            </div>
-                        </div>-->
+                        </div>
+                         
                     </div>
                 </div>
                 <div class="modal-footer">

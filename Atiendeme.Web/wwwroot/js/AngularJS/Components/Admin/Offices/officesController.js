@@ -31,7 +31,7 @@
                 selectNone: "Ninguno",
                 reset: "Deshacer",
                  search: "Escriba para buscar...",
-                nothingSelected: "Nada seleccionado"         //default-label is deprecated and replaced with this.
+                nothingSelected: "Sin Seleccionar"         //default-label is deprecated and replaced with this.
             }
 
             console.log("Im here consultorioController");

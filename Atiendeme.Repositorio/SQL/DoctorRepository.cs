@@ -3,6 +3,7 @@ using Atiendeme.Contratos.Repository.SQL;
 using Atiendeme.Entidades.Constante;
 using Atiendeme.Entidades.Entidades.Dtos;
 using Atiendeme.Entidades.Entidades.SQL;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -17,19 +18,22 @@ namespace Atiendeme.Repositorio.SQL
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public DoctorRepository(IApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
+        private readonly IMapper _mapper;
+
+        public DoctorRepository(IApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _applicationDbContext = applicationDbContext;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
-        public async Task<List<ApplicationUserDto>> GetDoctorsAsync()
+        public async Task<List<DoctorDto>> GetDoctorsAsync()
         {
             var users = await (from u in _applicationDbContext.AspNetUsers
                                join ur in _applicationDbContext.AspNetUserRoles on u.Id equals ur.UserId
                                join r in _applicationDbContext.AspNetRoles on ur.RoleId equals r.Id
                                where (r.Name == DefaultRoles.Doctor)
-                               select new ApplicationUserDto
+                               select new DoctorDto
                                {
                                    Email = u.Email,
                                    PhoneNumber = u.PhoneNumber,
@@ -41,6 +45,20 @@ namespace Atiendeme.Repositorio.SQL
                                    Birthday = u.Birthday,
                                    Role = r.Name
                                }).ToListAsync();
+
+            for (int i = 0; i < users.Count; i++)
+            {
+                //Get Offices
+                var offices = await _applicationDbContext.Offices.Where(x => x.OfficesDoctors.Any(x => x.DoctorId == users[i].Id)).ToListAsync();
+                users[i].Offices = _mapper.Map<List<OfficeDto>>(offices);
+
+                //Specialties
+                users[i].Specialties = await _applicationDbContext.Specialties.Where(x => x.SpecialtiesDoctor.Any(x => x.DoctorId == users[i].Id)).ToListAsync();
+
+                //Horarios
+                var doctorDays = await _applicationDbContext.DoctorLaborDays.Where(x => x.DoctorId == users[i].Id).ToListAsync();
+                users[i].DoctorLaborDays = _mapper.Map<List<DoctorLaborDaysDto>>(doctorDays);
+            }
 
             return users;
         }

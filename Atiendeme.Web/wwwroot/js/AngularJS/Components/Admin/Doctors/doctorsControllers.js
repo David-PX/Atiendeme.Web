@@ -2,7 +2,7 @@
     var appName = "atiendeme";
     angular.module(appName).controller("doctorsControllers", doctorsControllers);
 
-    function doctorsControllers($timeout, $scope, userService, doctorService, notificationService) {
+    function doctorsControllers($timeout, $scope, userService, doctorService, officeService,notificationService) {
         var self = this;
 
         self.form = {
@@ -27,9 +27,19 @@
 
             self.userService = userService;
             self.doctorService = doctorService;
+            self.officeService = officeService;
 
+            //
             self.doctorService.getDoctors();
-             
+
+            self.localLanguage = {
+                selectAll: "Todos all",
+                selectNone: "Ninguno",
+                reset: "Deshacer",
+                search: "Escriba para buscar...",
+                nothingSelected: "Sin Seleccionar"         //default-label is deprecated and replaced with this.
+            }
+
             console.log("Im here doctorController");
         }
 

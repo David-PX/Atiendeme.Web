@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Atiendeme.Entidades.Entidades.SQL
@@ -13,9 +14,10 @@ namespace Atiendeme.Entidades.Entidades.SQL
         public string LastName { get; set; }
 
         [Required]
-        public DateTime Birthday { get; set; }
+        public string Genre { get; set; }
 
         [Required]
-        public string Genre { get; set; }
+        public DateTime Birthday { get; set; }
+         
     }
 }
