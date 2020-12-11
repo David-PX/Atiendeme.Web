@@ -3,26 +3,27 @@
     angular.module('atiendeme').service("userService", userService);
 
     function userService(userRepository, $rootScope, $q) {
-
         var self = this;
 
         self.currentUser = [];
+        self.doctors = [];
+
+        self.getDoctors = getDoctors;
 
         initializeService();
 
-       function initializeService() {
-            
-           var promises = [];
+        function initializeService() {
+            var promises = [];
 
-           promises.push(getCurrentUser());
+            promises.push(getCurrentUser());
+            promises.push(getDoctors());
 
-            $q.all(promises).then(function(response) {
-                $rootScope.$broadcast('userServiceLoaded', self.context); 
-             },
-            function(error)  {
-                console.error(error);
-            });
-                   
+            $q.all(promises).then(function (response) {
+                $rootScope.$broadcast('userServiceLoaded', self.context);
+            },
+                function (error) {
+                    console.error(error);
+                });
         }
 
         function getCurrentUser() {
@@ -35,9 +36,18 @@
             });
         }
 
+        function getDoctors() {
+            return userRepository.getDoctors().then(function (response) {
+                self.doctors = response;
+                return response;
+            }, function (error) {
+                console.error(error);;
+                throw error;
+            });
+        }
+
         //move to util
         //function defaultQueueResolve(responses, objectToReturnOnSuccess) {
-
         //    let isGood = true;
         //    let errors = [];
 
@@ -56,7 +66,7 @@
         //            status: 500
         //        };
         //}
-         
+
         return self;
     }
 }());

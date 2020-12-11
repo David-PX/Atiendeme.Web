@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Atiendeme.Entidades.Entidades.Dtos
 {
@@ -14,9 +13,6 @@ namespace Atiendeme.Entidades.Entidades.Dtos
         public string Email { get; set; }
 
         public string Address { get; set; }
-
-        [NotMapped]
-        public string[] DoctorsId { get; set; }
 
         public List<ApplicationUserDto> Doctors { get; set; }
     }

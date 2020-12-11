@@ -106,15 +106,15 @@ namespace Atiendeme.Web.Controllers.API
             if (result == null)
                 return StatusCode((int)HttpStatusCode.InternalServerError);
 
-            if (officeDto.DoctorsId != null && officeDto.DoctorsId.Length > 0)
+            if (officeDto.Doctors != null && officeDto.Doctors.Count > 0)
             {
                 var officesDoctor = new List<OfficesDoctors>();
 
-                for (var i = 0; i < officeDto.DoctorsId.Length; i++)
+                for (var i = 0; i < officeDto.Doctors.Count; i++)
                 {
                     officesDoctor.Add(new OfficesDoctors
                     {
-                        DoctorId = officeDto.DoctorsId[i],
+                        DoctorId = officeDto.Doctors[i].Id,
                         OfficeId = result.Id
                     });
                 }

@@ -34,12 +34,12 @@
                                     <tr ng-repeat="office in offices.officeService.offices">
                                         <td>{{office.name}}</td>
                                         <td>{{office.telephone}} | {{office.email}}</td>
-                                        <td> 
-                                        <ul>
-                                            <li ng-repeat="doctor in office.doctors">
-                                                {{doctor.name}} {{doctor.lastName}}
-                                            </li>
-                                        </ul>
+                                        <td>
+                                            <ul>
+                                                <li ng-repeat="doctor in office.doctors">
+                                                    {{doctor.name}} {{doctor.lastName}}
+                                                </li>
+                                            </ul>
                                         </td>
                                         <td>{{office.address}}</td>
                                         <td>
@@ -52,15 +52,13 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </section>
 
-
 <!-- Edit Modal HTML -->
-<div id="officeModal" class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true">
+<div id="officeModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form>
@@ -72,7 +70,7 @@
                     <div class="row" ng-form="offices.officeForm">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Nombre</label> 
+                                <label>Nombre</label>
                                 <input type="text" ng-model="offices.form.name"
                                        ng-class="{'is-invalid':offices.officeForm.name.$error.required && offices.officeForm.name.$dirty}"
                                        name="name"
@@ -83,9 +81,9 @@
 
                             <div class="form-group">
                                 <label>Correo</label>
-                                <input type="email" ng-model="offices.form.email" 
+                                <input type="email" ng-model="offices.form.email"
                                        ng-class="{'is-invalid':offices.officeForm.email.$error.required && offices.officeForm.email.$dirty}"
-                                        name="email"
+                                       name="email"
                                        class="form-control" required>
                             </div>
                         </div>
@@ -93,24 +91,27 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Teléfono</label>
-                                <input type="text"  ng-model="offices.form.telephone" 
-                                        ng-class="{'is-invalid':offices.officeForm.telephone.$error.required && offices.officeForm.telephone.$dirty}"
-                                        name="telephone"
-                                        class="form-control" required>
+                                <input type="text" ng-model="offices.form.telephone"
+                                       ng-class="{'is-invalid':offices.officeForm.telephone.$error.required && offices.officeForm.telephone.$dirty}"
+                                       name="telephone"
+                                       class="form-control" required>
                             </div>
                         </div>
 
-                        <!--Doctores-->
-                        <!--<div class="col-md-12">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Doctores</label>
-                                <select class="form-control" id="doctores-modal-select" required name="states[]" multiple="multiple">
-                                    <option value="Laura Gonzales">Laura Gonzales</option>
-                                    ...
-                                    <option value="Leidy Genao">Leidy Genao</option>
-                                </select>
+                                <div isteven-multi-select
+                                     style="width: 100%"
+                                     input-model="offices.doctorsForCrud"
+                                     output-model="offices.form.doctors"
+                                     button-label="name"
+                                    translation="offices.localLanguage"
+                                     item-label="name"
+                                     tick-property="ticket">
+                                </div>
                             </div>
-                        </div>-->
+                        </div> 
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Dirección</label>
@@ -120,9 +121,7 @@
                                           required></textarea>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
@@ -132,3 +131,4 @@
         </div>
     </div>
 </div>
+ 

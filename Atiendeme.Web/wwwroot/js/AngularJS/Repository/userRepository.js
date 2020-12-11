@@ -3,8 +3,22 @@
     //Nota: no se extraen los $http para facilitar las tareas de debug.
     function userRepository($http) {
         function getCurrentUser() {
-         
             var url = "/api/User";
+            var req = requestBuilder(url);
+
+            return $http(req).then(
+                function (response) {
+                    if (response.status < 205)
+                        return response.data;
+                    else
+                        throw response;
+                }, function (error) {
+                    throw error;
+                });
+        }
+
+        function getDoctors() {
+            var url = "/api/Doctor";
             var req = requestBuilder(url);
 
             return $http(req).then(
@@ -30,7 +44,8 @@
         }
 
         return {
-            getCurrentUser: getCurrentUser
+            getCurrentUser: getCurrentUser,
+            getDoctors: getDoctors
         };
     }
 }());

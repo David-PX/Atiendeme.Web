@@ -25,6 +25,15 @@
         function initialize() {
             self.userService = userService;
             self.officeService = officeService;
+
+            self.localLanguage = {
+                selectAll: "Todos all",
+                selectNone: "Ninguno",
+                reset: "Deshacer",
+                 search: "Escriba para buscar...",
+                nothingSelected: "Nada seleccionado"         //default-label is deprecated and replaced with this.
+            }
+
             console.log("Im here consultorioController");
         }
 
@@ -35,7 +44,19 @@
         }
 
         function editOffice(office) {
+            self.doctorsForCrud = angular.copy(userService.doctors);
+
             self.form = angular.copy(office);
+
+            self.doctorsForCrud.forEach(function (_doctor) {
+
+                _doctor.ticket = self.form.doctors.find(function (doctor) {
+
+                    return _doctor.id == doctor.id
+                }) ? true : false;
+
+                
+            });
             $('#officeModal').modal('show');
         }
 
@@ -83,6 +104,7 @@
                 telephone: "",
                 address: ""
             };
+            self.doctorsForCrud = angular.copy(userService.doctors);
         }
 
         function applyAndSetDirtyForm(waitFormDiggest) {
