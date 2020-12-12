@@ -3,10 +3,15 @@ using Atiendeme.Contratos.Repository.SQL;
 using Atiendeme.Entidades.Constante;
 using Atiendeme.Entidades.Entidades.Dtos;
 using Atiendeme.Entidades.Entidades.SQL;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Atiendeme.Repositorio.SQL
@@ -17,19 +22,26 @@ namespace Atiendeme.Repositorio.SQL
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public DoctorRepository(IApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
+        private readonly IMapper _mapper;
+
+        private readonly IEmailSender _emailSender;
+
+        public DoctorRepository(IApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager,
+            IMapper mapper, IEmailSender emailSender)
         {
+            _emailSender = emailSender;
             _applicationDbContext = applicationDbContext;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
-        public async Task<List<ApplicationUserDto>> GetDoctorsAsync()
+        public async Task<List<DoctorDto>> GetDoctorsAsync()
         {
             var users = await (from u in _applicationDbContext.AspNetUsers
                                join ur in _applicationDbContext.AspNetUserRoles on u.Id equals ur.UserId
                                join r in _applicationDbContext.AspNetRoles on ur.RoleId equals r.Id
                                where (r.Name == DefaultRoles.Doctor)
-                               select new ApplicationUserDto
+                               select new DoctorDto
                                {
                                    Email = u.Email,
                                    PhoneNumber = u.PhoneNumber,
@@ -41,6 +53,20 @@ namespace Atiendeme.Repositorio.SQL
                                    Birthday = u.Birthday,
                                    Role = r.Name
                                }).ToListAsync();
+
+            for (int i = 0; i < users.Count; i++)
+            {
+                //Get Offices
+                var offices = await _applicationDbContext.Offices.Where(x => x.OfficesDoctors.Any(x => x.DoctorId == users[i].Id)).ToListAsync();
+                users[i].Offices = _mapper.Map<List<OfficeDto>>(offices);
+
+                //Specialties
+                users[i].Specialties = await _applicationDbContext.Specialties.Where(x => x.SpecialtiesDoctor.Any(x => x.DoctorId == users[i].Id)).ToListAsync();
+
+                //Horarios
+                var doctorDays = await _applicationDbContext.DoctorLaborDays.Where(x => x.DoctorId == users[i].Id).ToListAsync();
+                users[i].DoctorLaborDays = _mapper.Map<List<DoctorLaborDaysDto>>(doctorDays);
+            }
 
             return users;
         }
@@ -83,17 +109,14 @@ namespace Atiendeme.Repositorio.SQL
                 {
                     var _medico = await _applicationDbContext.AspNetUsers.FirstOrDefaultAsync(medico => medico.Email == medico.Email);
 
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(medico);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(medico);
 
-                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    //var callbackUrl = Url.Page(
-                    //    "/Account/ConfirmEmail",
-                    //    pageHandler: null,
-                    //    values: new { area = "Identity", userId = medico.Id, code = code, returnUrl = "/" },
-                    //    protocol: "http");
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    //await _emailSender.SendEmailAsync(medico.Email, "Atiendeme - Confirma tu correoConfirm ",
-                    //    $"Favor confirmar su correo dando <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
+                    var callbackUrl = $"https://localhost:44300/Account/ConfirmEmail?userId={medico.Id}&code=${code}&returnUrl=%2F";
+
+                    await _emailSender.SendEmailAsync(medico.Email, "Atiendeme - Confirma tu correo",
+                        $"Favor confirmar su correo dando <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
 
                     return _medico;
                 }

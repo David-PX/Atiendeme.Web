@@ -11,6 +11,9 @@
         .when('/admin/offices', {
             template: '<offices-template></offices-template>'
         })
+        .when('/admin/doctors', {
+            template: '<doctors-template></doctors-template>'
+        })
         .when('/admin/specialties', {
             template: '<specialties-template></specialties-template>'
         })

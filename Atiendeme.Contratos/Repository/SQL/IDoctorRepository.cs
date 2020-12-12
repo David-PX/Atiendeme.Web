@@ -7,7 +7,7 @@ namespace Atiendeme.Contratos.Repository.SQL
 {
     public interface IDoctorRepository
     {
-        Task<List<ApplicationUserDto>> GetDoctorsAsync();
+        Task<List<DoctorDto>> GetDoctorsAsync();
 
         Task<ApplicationUserDto> GetDoctorAsync(string Id);
 

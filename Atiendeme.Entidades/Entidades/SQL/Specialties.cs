@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Atiendeme.Entidades.Entidades.SQL
 {
@@ -10,5 +11,7 @@ namespace Atiendeme.Entidades.Entidades.SQL
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public List<SpecialtiesDoctor> SpecialtiesDoctor { get; set; }
     }
 }

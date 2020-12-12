@@ -13,5 +13,7 @@ namespace Atiendeme.Contratos.Repository
         IReservationRepository ReservationRepository { get; }
 
         IUserRepository UserRepository { get; }
+
+        IPatientRepository PatientRepository { get; }
     }
 }

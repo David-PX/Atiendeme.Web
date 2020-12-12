@@ -1,0 +1,290 @@
+﻿<link rel="stylesheet" href="../../../../../css/Portal/table.css">
+
+<!--CHECK TO FIX THAT SHIT-->
+
+<section class="bg-mix py-3">
+    <div class="container">
+        <div class="card rounded-0">
+            <div class="card-body">
+
+                <div class="container-xl">
+                    <div class="table-responsive table-stripped">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h2>Manejar <b>Doctores</b></h2>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a class="btn btn-success" ng-click="doctors.addDoctor()"><i class="material-icons">&#xE147;</i> <span>Agregar nuevo Doctor</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="20">Nombre</th>
+                                        <th width="20">Contacto</th>
+                                        <th width="20">Especialidades</th>
+                                        <th width="30">Horarios</th>
+                                        <th width="10">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="doctor in doctors.doctorService.doctors">
+                                        <td>{{doctor.name}}</td>
+                                        <td>{{doctor.phoneNumber}} | {{doctor.email}}</td>
+                                        <td>
+                                            <ul>
+                                                <li ng-repeat="specialty in doctor.specialties">
+                                                    {{specialty.name}}
+                                                </li>
+                                            </ul>
+                                        </td>
+
+                                        <td>
+                                            <ul>
+                                                <li ng-repeat="laborDay in doctor.doctorLaborDays">
+                                                    ({{laborDay.office.name}}) - {{laborDay.day}} de {{laborDay.startTime}} a {{laborDay.endTime}}
+                                                </li>
+                                            </ul>
+                                        </td>
+
+                                        <td>
+                                            <a class="edit" ng-click="doctors.editDoctor(office)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a class="delete" ng-click="doctors.deleteDoctor(office)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Edit Modal HTML -->
+<div id="doctorModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Consultorio</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" ng-form="doctors.doctorForm">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombres</label>
+                                <input type="text" ng-model="doctors.form.name"
+                                       ng-class="{'is-invalid':doctors.doctorForm.name.$error.required && doctors.doctorForm.name.$dirty}"
+                                       name="name"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Apellidos</label>
+                                <input type="text" ng-model="doctors.form.lastname"
+                                       ng-class="{'is-invalid':doctors.doctorForm.lastname.$error.required && doctors.doctorForm.lastname.$dirty}"
+                                       name="lastname"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Genero</label>
+                                <select class="form-control"
+                                        ng-model="doctors.form.genre"
+                                        name="genre"
+                                        ng-class="{'is-invalid':doctors.doctorForm.genre.$error.required && doctors.doctorForm.genre.$dirty}"
+                                        id="genre" required>
+                                    <option value="Lunes">Masculino</option>
+                                    <option value="Martes">Femenino</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label>Correo</label>
+                                <input type="email" ng-model="doctors.form.email"
+                                       ng-class="{'is-invalid':doctors.doctorForm.email.$error.required && doctors.doctorForm.email.$dirty}"
+                                       name="email"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="text" ng-model="doctors.form.phoneNumber"
+                                       ng-class="{'is-invalid':doctors.doctorForm.telephone.$error.required && doctors.doctorForm.telephone.$dirty}"
+                                       name="telephone"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Contraseña</label>
+                                <input type="text" ng-model="doctors.form.password"
+                                       ng-class="{'is-invalid':doctors.doctorForm.password.$error.required && doctors.doctorForm.password.$dirty}"
+                                       name="password"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Confirmar Contraseña</label>
+                                <input type="text" ng-model="doctors.form.confirmPassword"
+                                       ng-class="{'is-invalid':doctors.doctorForm.confirmPassword.$error.required && doctors.doctorForm.confirmPassword.$dirty}"
+                                       name="confirmPassword"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Especialidades</label>
+                                <div isteven-multi-select
+                                     style="width: 100%"
+                                     input-model="doctors.specialtiesService.specialties"
+                                     output-model="doctors.form.specialties"
+                                     button-label="name"
+                                     translation="doctors.localLanguage"
+                                     item-label="name"
+                                     tick-property="ticket">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-form="doctors.laborForm">
+
+                        <div class="col-md-12 mb-2">
+                            <h4>Horarios</h4>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Sucursal</label>
+                                <select id="office" class="form-control"
+                                        ng-model="doctors.laborDayForm.office"
+                                        name="office" required
+                                        ng-options="office as office.name for office in doctors.officeService.offices"></select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Dia</label>
+                                <select class="form-control"
+                                        ng-model="doctors.laborDayForm.day"
+                                        name="day"
+                                        id="day" required>
+                                    <option value="Lunes">Lunes</option>
+                                    <option value="Martes">Martes</option>
+                                    <option value="Miercoles">Miercoles</option>
+                                    <option value="Jueves">Jueves</option>
+                                    <option value="Viernes">Viernes</option>
+                                    <option value="Sabado">Sabado</option>
+                                    <option value="Domingo">Domingo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Hora Inicio</label>
+                                <div moment-picker="doctors.laborDayForm.startTime"
+                                     min-view="day"
+                                     format="hh:mm"
+                                     start-view="day"
+                                     ng-model="doctors.laborFormMoments.momentStartTime"
+                                     class="datePicker">
+                                    <span class="feather icon-calendar"></span>
+
+                                    <input type="text"
+                                           ng-model="doctors.laborDayForm.startTime"
+                                           id="startTime"
+                                           name="fromDate" required
+                                           class="form-control"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Hora Fin</label>
+                                <div moment-picker="doctors.laborDayForm.endTime"
+                                     min-view="day"
+                                     min-date="doctors.laborFormMoments.momentStartTime"
+                                     format="hh:mm"
+                                     start-view="day"
+                                     ng-model="doctors.laborFormMoments.momentEndTime"
+                                     class="datePicker">
+                                    <span class="feather icon-calendar"></span>
+
+                                    <input type="text"
+                                           ng-model="doctors.laborDayForm.endTime"
+                                           id="endDate"
+                                           name="fromDate" required
+                                           class="form-control"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-1">
+                            <a href="" class="btn btn-success mt-4" style="min-width: inherit"
+                               ng-click="doctors.addLaborDay();"><i class="material-icons">&#xE147;</i> <span></span></a>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr class="table-title">
+                                            <th width="25">Sucursal</th>
+                                            <th width="25">Dia</th>
+                                            <th width="30">Fecha Inicio</th>
+                                            <th width="30">Fecha Fin</th>
+                                            <th width="15" style="text-align: center">Accion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="laborDays in doctors.form.doctorLaborDays">
+                                            <td>{{laborDays.office.name}}</td>
+                                            <td>{{laborDays.day}}</td>
+                                            <td>{{laborDays.startTime}}</td>
+
+                                            <td>{{laborDays.endTime}}</td>
+                                            <td>
+                                                <a href="" class="delete d-block "
+                                                   style="text-align: center" ng-click="doctors.deleteLaborDay($index)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="button" class="btn btn-success" ng-click="doctors.saveDoctor();" value="Guardar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

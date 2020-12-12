@@ -39,6 +39,10 @@
         .multiSelect > button {
             width: 100%
         }
+
+        ul {
+            padding-left: 16%;
+        }
     </style>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -70,10 +74,13 @@
     <script src="~/js/AngularJS/Repository/userRepository.js"></script>
     <script src="~/js/AngularJS/Repository/officeRepository.js"></script>
     <script src="~/js/AngularJS/Repository/specialtiesRepository.js"></script>
+    <script src="~/js/AngularJS/Repository/doctorRepository.js"></script>
 
     @*SERVICES*@
     <script src="~/js/AngularJS/Services/userService.js"></script>
     <script src="~/js/AngularJS/Services/officeService.js"></script>
+    <script src="~/js/AngularJS/Services/doctorService.js"></script>
+
     <script src="~/js/AngularJS/Services/specialtiesService.js"></script>
     <script src="~/js/AngularJS/Services/notificationService.js"></script>
     <script src="~/js/AngularJS/Services/Commons/httpLoadingInterceptor.js"></script>
@@ -99,7 +106,11 @@
     <script src="~/js/AngularJS/Components/Admin/Specialties/specialtiesController.js"></script>
     @*end offices*@
 
+    @*doctors*@
+    <script src="~/js/AngularJS/Components/Admin/Doctors/doctorsTemplate.js"></script>
+    <script src="~/js/AngularJS/Components/Admin/Doctors/doctorsControllers.js"></script>
 
+    @*end doctors*@
     @*End Admin section*@
 </body>
 </html>

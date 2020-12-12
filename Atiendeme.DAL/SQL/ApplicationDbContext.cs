@@ -32,6 +32,8 @@ namespace Atiendeme.DAL.SQL
 
         public DbSet<Reservations> Reservations { get; set; }
 
+        public DbSet<Dependents> Dependents { get; set; }
+
         Task<int> IApplicationDbContext.SaveChangesAsync()
         {
             return SaveChangesAsync();

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -47,18 +48,51 @@ namespace Atiendeme.Web.Controllers.API
         [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<DoctorDto>> Doctor(DoctorDto medico)
         {
-            var _medicoMapper = _mapper.Map<ApplicationUser>(medico);
-
+            //var _medicoMapper = _mapper.Map<ApplicationUser>(medico);
+            //_medicoMapper.UserName = medico.Email;
             //Crea al medico
-            var doctor = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorAsync(_medicoMapper, medico.Password);
+
+            var user = new ApplicationUser
+            {
+                UserName = medico.Email,
+                Email = medico.Email,
+                LastName = medico.LastName,
+                Name = medico.Name,
+                Birthday = medico.Birthday,
+                Genre = medico.Genre,
+                PhoneNumber = medico.PhoneNumber,
+            };
+
+            var doctor = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorAsync(user, medico.Password);
+
+            if (doctor == null)
+                return StatusCode((int)HttpStatusCode.InternalServerError);
 
             var _doctorLaborDays = _mapper.Map<List<DoctorLaborDays>>(medico.DoctorLaborDays);
 
+            List<OfficesDoctors> officesDoctors = new List<OfficesDoctors>();
+
+            _doctorLaborDays.ForEach(_doctorLaborDay =>
+            {
+                _doctorLaborDay.DoctorId = doctor.Id;
+
+                if (!officesDoctors.Any(x => x.OfficeId == _doctorLaborDay.OfficeId))
+                    officesDoctors.Add(new OfficesDoctors()
+                    {
+                        DoctorId = doctor.Id,
+                        OfficeId = _doctorLaborDay.OfficeId
+                    });
+            });
+
             var resultSaveDoctorDays = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(_doctorLaborDays);
+
+            var resultSaveDoctorOffices = await _atiendemeUnitOfWork.OfficeRepository.SaveOfficesDoctor(officesDoctors.ToArray());
 
             //Agrega los horarios del medico
             DoctorDto mapperResult = _mapper.Map<DoctorDto>(doctor);
             mapperResult.DoctorLaborDays = _mapper.Map<List<DoctorLaborDaysDto>>(resultSaveDoctorDays);
+
+            mapperResult.Offices = _mapper.Map<List<OfficeDto>>(resultSaveDoctorOffices);
 
             return StatusCode((int)HttpStatusCode.Created, doctor);
         }

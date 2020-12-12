@@ -22,6 +22,8 @@ namespace Atiendeme.Web.Mapping
             CreateMap<OfficesDoctors, OfficesDoctorsDto>();
             CreateMap<Offices, OfficeDto>().ReverseMap();
 
+            CreateMap<Dependents, DependentsDto>().ReverseMap();
+
             CreateMap<Offices, ApplicationUserDto>().ReverseMap();
 
             CreateMap<OfficesDoctorsDto, OfficesDoctors>()

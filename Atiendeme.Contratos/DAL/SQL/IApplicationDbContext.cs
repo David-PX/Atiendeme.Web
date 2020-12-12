@@ -25,6 +25,8 @@ namespace Atiendeme.Contratos.DAL.SQL
 
         DbSet<Reservations> Reservations { get; set; }
 
+        DbSet<Dependents> Dependents { get; set; }
+
         Task<int> SaveChangesAsync();
 
         int SaveChanges();
