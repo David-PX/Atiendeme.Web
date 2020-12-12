@@ -36,7 +36,7 @@ namespace Atiendeme.Web.Controllers.API
         {
             var search = await _atiendemeUnitOfWork.PatientRepository.GetDependent(dependentsDto.Id);
 
-            var result = await _atiendemeUnitOfWork.PatientRepository.UpdateDependent(search);
+            var result = _atiendemeUnitOfWork.PatientRepository.UpdateDependent(search);
 
             if (result == null)
                 return StatusCode((int)HttpStatusCode.InternalServerError);
@@ -75,7 +75,7 @@ namespace Atiendeme.Web.Controllers.API
             if (search == null)
                 return NotFound();
 
-            var result = await _atiendemeUnitOfWork.PatientRepository.RemoveDependent(search);
+            var result = _atiendemeUnitOfWork.PatientRepository.RemoveDependent(search);
 
             if (result == null)
                 return StatusCode((int)HttpStatusCode.InternalServerError);

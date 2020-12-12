@@ -90,7 +90,7 @@ namespace Atiendeme.Web.Controllers.API
             if (reservation == null)
                 return BadRequest("Reservacion no encontrada");
 
-            var deleted = await _atiendemeUnitOfWork.ReservationRepository.DeleteReservation(reservation);
+            var deleted = _atiendemeUnitOfWork.ReservationRepository.DeleteReservation(reservation);
 
             if (deleted)
                 return NoContent();

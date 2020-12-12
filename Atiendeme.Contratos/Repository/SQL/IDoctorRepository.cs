@@ -9,10 +9,18 @@ namespace Atiendeme.Contratos.Repository.SQL
     {
         Task<List<DoctorDto>> GetDoctorsAsync();
 
+        List<DoctorLaborDays> RemoveLaborDays(List<DoctorLaborDays> doctorLaborDays);
+
+        Task<List<DoctorLaborDays>> GetDoctorLaborDays(string doctorId);
+
         Task<ApplicationUserDto> GetDoctorAsync(string Id);
 
         Task<ApplicationUser> SaveDoctorAsync(ApplicationUser medico, string pswd);
 
         Task<List<DoctorLaborDays>> SaveDoctorLaborDays(List<DoctorLaborDays> doctorLaborDays);
+
+        DoctorDto UpdateDoctor(ApplicationUser doctor);
+
+        DoctorDto RemoveDoctor(ApplicationUser doctor);
     }
 }

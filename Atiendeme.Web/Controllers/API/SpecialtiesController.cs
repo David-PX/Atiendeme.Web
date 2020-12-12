@@ -59,12 +59,27 @@ namespace Atiendeme.Web.Controllers.API
         }
 
         [HttpPatch]
-        public async Task<ActionResult<Specialties>> UpdateSpecialty(Specialties specialty)
+        public ActionResult<Specialties> UpdateSpecialty(Specialties specialty)
         {
             if (specialty.Id == 0)
                 return StatusCode((int)HttpStatusCode.InternalServerError);
 
-            var result = await _atiendemeUnitOfWork.SpecialtiesRepository.UpdateSpecialty(specialty);
+            var result = _atiendemeUnitOfWork.SpecialtiesRepository.UpdateSpecialty(specialty);
+            return StatusCode((int)HttpStatusCode.Created, result);
+        }
+
+        [HttpDelete("{specialtyId}")]
+        public async Task<ActionResult<Specialties>> DeleteSpecialty(int specialtyId)
+        {
+            if (specialtyId == 0)
+                return BadRequest();
+
+            var search = await _atiendemeUnitOfWork.SpecialtiesRepository.GetSpecialty(specialtyId);
+
+            if (search == null)
+                return BadRequest();
+
+            var result = _atiendemeUnitOfWork.SpecialtiesRepository.DeleteSpecialty(search);
             return StatusCode((int)HttpStatusCode.Created, result);
         }
 

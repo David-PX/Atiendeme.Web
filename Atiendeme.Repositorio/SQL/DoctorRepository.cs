@@ -113,7 +113,7 @@ namespace Atiendeme.Repositorio.SQL
 
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    var callbackUrl = $"https://localhost:44300/Account/ConfirmEmail?userId={medico.Id}&code=${code}&returnUrl=%2F";
+                    var callbackUrl = $"https://localhost:44300/Identity/Account/ConfirmEmail?userId={medico.Id}&code=${code}&returnUrl=%2F";
 
                     await _emailSender.SendEmailAsync(medico.Email, "Atiendeme - Confirma tu correo",
                         $"Favor confirmar su correo dando <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
@@ -135,6 +135,39 @@ namespace Atiendeme.Repositorio.SQL
 
             await _applicationDbContext.SaveChangesAsync();
             return doctorLaborDays;
+        }
+
+        public async Task<List<DoctorLaborDays>> GetDoctorLaborDays(string doctorId)
+        {
+            return await _applicationDbContext.DoctorLaborDays.Where(x => x.DoctorId == doctorId).ToListAsync();
+        }
+
+        public List<DoctorLaborDays> RemoveLaborDays(List<DoctorLaborDays> doctorLaborDays)
+        {
+            _applicationDbContext.DoctorLaborDays.RemoveRange(doctorLaborDays.ToArray());
+            _applicationDbContext.SaveChangesAsync();
+
+            return doctorLaborDays;
+        }
+
+        public DoctorDto RemoveDoctor(ApplicationUser search)
+        {
+            var result = _applicationDbContext.AspNetUsers.Remove(search);
+            _applicationDbContext.SaveChanges();
+
+            var mapperResult = _mapper.Map<DoctorDto>(result.Entity);
+
+            return mapperResult;
+        }
+
+        public DoctorDto UpdateDoctor(ApplicationUser search)
+        {
+            var result = _applicationDbContext.AspNetUsers.Update(search);
+            _applicationDbContext.SaveChanges();
+
+            var mapperResult = _mapper.Map<DoctorDto>(result.Entity);
+
+            return mapperResult;
         }
     }
 }

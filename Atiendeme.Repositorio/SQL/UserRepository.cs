@@ -43,5 +43,12 @@ namespace Atiendeme.Repositorio.SQL
 
             return users;
         }
+
+        public async Task<ApplicationUser> GetUserEntity(string Id)
+        {
+            var users = await _applicationDbContext.AspNetUsers.FindAsync(Id);
+
+            return users;
+        }
     }
 }

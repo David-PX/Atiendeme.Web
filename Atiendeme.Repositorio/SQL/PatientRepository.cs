@@ -84,17 +84,17 @@ namespace Atiendeme.Repositorio.SQL
             return _dependent.Entity;
         }
 
-        public async Task<Dependents> UpdateDependent(Dependents dependent)
+        public Dependents UpdateDependent(Dependents dependent)
         {
             var _dependents = _applicationDbContext.Dependents.Update(dependent);
-            await _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
             return _dependents.Entity;
         }
 
-        public async Task<Dependents> RemoveDependent(Dependents dependent)
+        public Dependents RemoveDependent(Dependents dependent)
         {
             var _dependents = _applicationDbContext.Dependents.Remove(dependent);
-            await _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
             return _dependents.Entity;
         }
     }
