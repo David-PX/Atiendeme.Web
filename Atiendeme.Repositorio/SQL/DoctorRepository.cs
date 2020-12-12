@@ -136,5 +136,15 @@ namespace Atiendeme.Repositorio.SQL
             await _applicationDbContext.SaveChangesAsync();
             return doctorLaborDays;
         }
+
+        public async Task<DoctorDto> RemoveDoctor(ApplicationUser search)
+        {
+            var result = _applicationDbContext.AspNetUsers.Remove(search);
+            await _applicationDbContext.SaveChangesAsync();
+
+            var mapperResult = _mapper.Map<DoctorDto>(result.Entity);
+
+            return mapperResult;
+        }
     }
 }

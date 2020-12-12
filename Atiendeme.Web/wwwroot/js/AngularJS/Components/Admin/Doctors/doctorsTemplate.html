@@ -51,8 +51,8 @@
                                         </td>
 
                                         <td>
-                                            <a class="edit" ng-click="doctors.editDoctor(office)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                            <a class="delete" ng-click="doctors.deleteDoctor(office)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                            <a class="edit" ng-click="doctors.editDoctor(doctor)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a class="delete" ng-click="doctors.deleteDoctor(doctor)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -207,6 +207,7 @@
                                 <div moment-picker="doctors.laborDayForm.startTime"
                                      min-view="day"
                                      format="hh:mm"
+                                     max-date="doctors.laborFormMoments.momentEndTime"
                                      start-view="day"
                                      ng-model="doctors.laborFormMoments.momentStartTime"
                                      class="datePicker">

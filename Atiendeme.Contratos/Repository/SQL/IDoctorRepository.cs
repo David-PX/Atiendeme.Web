@@ -14,5 +14,7 @@ namespace Atiendeme.Contratos.Repository.SQL
         Task<ApplicationUser> SaveDoctorAsync(ApplicationUser medico, string pswd);
 
         Task<List<DoctorLaborDays>> SaveDoctorLaborDays(List<DoctorLaborDays> doctorLaborDays);
+
+        Task<DoctorDto> RemoveDoctor(ApplicationUser search);
     }
 }

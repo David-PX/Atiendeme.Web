@@ -29,14 +29,14 @@
         function saveDoctor(form) {
             if (!form.id) {
                 return doctorRepository.saveDoctor(form).then(function (response) {
-                    return getOffices();
+                    return getDoctors();
                 }, function (error) {
                     console.error(error);;
                     throw error;
                 })
             } else {
                 return doctorRepository.updateDoctor(form).then(function (response) {
-                    return getOffices();
+                    return getDoctors();
                 }, function (error) {
                     console.error(error);;
                     throw error;
@@ -46,7 +46,7 @@
 
         function deleteDoctor(id) {
             return doctorRepository.deleteDoctor(id).then(function (response) {
-                return getOffices();
+                return getDoctors();
             }, function (error) {
                 console.error(error);;
                 throw error;

@@ -64,9 +64,9 @@
             $('#doctorModal').modal('show');
         }
 
-        function deleteDoctor(office) {
+        function deleteDoctor(doctor) {
             notificationService.showConfirmationSwal(
-                '¿Está seguro de querer eliminar este consultorio?',
+                '¿Está seguro de querer eliminar este medico?',
                 "Esta información no podra ser recuperada.",
                 'warning',
                 true,
@@ -74,7 +74,7 @@
                 "Eliminar")
                 .then((result) => {
                     if (result) {
-                        doctorService.deleteDoctor(office.id).then(function (response) {
+                        doctorService.deleteDoctor(doctor.id).then(function (response) {
                             notificationService.showToast("Doctor eliminado.", "Registro borrado", "success");
                         }, function (error) {
                             console.error(error);
@@ -131,17 +131,40 @@
         /////////
         self.addLaborDay = function () {
             if (self.laborForm.$valid) {
-                var laborDay = angular.copy(self.laborDayForm);
-                laborDay.officeId = laborDay.office.id;
-                laborDay.doctorId = self.form.doctorId;
-                self.form.doctorLaborDays.push(laborDay);
 
-                self.laborDayForm = {
-                    office: {},
-                    day: "",
-                    startTime: "",
-                    endTime: ""
-                }
+                debugger;
+                var timeIsAlredyAdded = false;
+                self.form.doctorLaborDays.forEach(_arr => {
+                    if (!timeIsAlredyAdded) {
+                        timeIsAlredyAdded = isInRange(
+                            _arr.day,
+                            _arr.startTime,
+                            _arr.endTime,
+                            self.laborDayForm.startTime,
+                            self.laborDayForm.endTime, 
+                            self.laborDayForm.day
+                        );
+                    }
+                });
+
+                if (!timeIsAlredyAdded) {
+
+                    var laborDay = angular.copy(self.laborDayForm);
+                    laborDay.officeId = laborDay.office.id;
+                    laborDay.doctorId = self.form.doctorId;
+
+                    self.form.doctorLaborDays.push(laborDay);
+
+                    self.laborDayForm = {
+                        office: {},
+                        day: "",
+                        startTime: "",
+                        endTime: ""
+                    }
+                } else {
+                    notificationService.showToast("Choque entre horarios", "Campos faltantes", "error");
+                } 
+             
             } else {
                 notificationService.showToast("Tiene que llenar los campos del horario", "Campos faltantes", "error");
                 applyAndSetDirtyForm(self.laborForm, false)

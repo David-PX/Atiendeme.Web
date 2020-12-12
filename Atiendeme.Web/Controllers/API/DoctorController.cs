@@ -15,7 +15,7 @@ namespace Atiendeme.Web.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class DoctorController : ControllerBase
     {
         private readonly ILogger<DoctorController> _logger;
@@ -45,7 +45,6 @@ namespace Atiendeme.Web.Controllers.API
         /// <param name="medico"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<DoctorDto>> Doctor(DoctorDto medico)
         {
             //var _medicoMapper = _mapper.Map<ApplicationUser>(medico);
@@ -65,6 +64,7 @@ namespace Atiendeme.Web.Controllers.API
 
             var doctor = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorAsync(user, medico.Password);
 
+            //Add validation
             if (doctor == null)
                 return StatusCode((int)HttpStatusCode.InternalServerError);
 
@@ -75,6 +75,7 @@ namespace Atiendeme.Web.Controllers.API
             _doctorLaborDays.ForEach(_doctorLaborDay =>
             {
                 _doctorLaborDay.DoctorId = doctor.Id;
+                _doctorLaborDay.Office = null;
 
                 if (!officesDoctors.Any(x => x.OfficeId == _doctorLaborDay.OfficeId))
                     officesDoctors.Add(new OfficesDoctors()
@@ -92,9 +93,25 @@ namespace Atiendeme.Web.Controllers.API
             DoctorDto mapperResult = _mapper.Map<DoctorDto>(doctor);
             mapperResult.DoctorLaborDays = _mapper.Map<List<DoctorLaborDaysDto>>(resultSaveDoctorDays);
 
-            mapperResult.Offices = _mapper.Map<List<OfficeDto>>(resultSaveDoctorOffices);
+            mapperResult.Offices = _mapper.Map<List<OfficeDto>>(resultSaveDoctorOffices.ToList());
 
             return StatusCode((int)HttpStatusCode.Created, doctor);
+        }
+
+        [HttpDelete("{doctorId}")]
+        public async Task<ActionResult<DoctorLaborDaysDto>> Doctor(string doctorId)
+        {
+            var search = await _atiendemeUnitOfWork.UserRepository.GetUserEntity(doctorId);
+
+            if (search == null)
+                return NotFound();
+
+            var result = await _atiendemeUnitOfWork.DoctorRepository.RemoveDoctor(search);
+
+            if (result == null)
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+
+            return Ok(result);
         }
 
         [HttpPost("[action]")]
