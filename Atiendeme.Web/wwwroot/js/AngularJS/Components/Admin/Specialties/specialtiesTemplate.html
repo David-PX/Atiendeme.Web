@@ -18,24 +18,25 @@
                                     <div class="col-sm-6">
                                         <a class="btn btn-success" ng-click="specialties.addSpecialties()  "><i class="material-icons">&#xE147;</i> <span>Agregar nueva Servicios</span></a>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
                             <table class="table table-striped table-hover">
-                                <thead>
+                                <thead class="m-5">
                                     <tr>
-                                        <th width="20">Nombre</th>
-                                        <th width="20">Descripcion</th>
+                                        <th width="100">Nombre</th>
+                                        <th width="200">Descripcion</th>
+                                        <th width="30">Acciones</th>
                                         
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr ng-repeat="specialties in specialties.specialtiesService.specialties">
-                                        <td>{{specialties.name}}</td>
-                                        <td>{{specialties.description}} </td>
+                                <tbody class="">
+                                    <tr ng-repeat="specialty in specialties.specialtiesService.specialties">
+                                        <td>{{specialty.name}}</td>
+                                        <td>{{specialty.description}} </td>
                                     
                                         <td>
-                                            <a class="edit" ng-click="specialties.addSpecialties()  "><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                            <a class="delete" ng-click="specialties.deleteSpecialties()  "><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                            <a class="edit" ng-click="specialties.editSpecialties(specialty)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a class="delete" ng-click="specialties.deleteSpecialties(specialty)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -54,11 +55,12 @@
         <div class="modal-content">
             <form>
                 <div class="modal-header">
-                    <h4 class="modal-title">Consultorio</h4>
+                    <h4 class="modal-title">Especialidad</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
+                 
                 <div class="modal-body">
-                    <div class="row" ng-form="specialties.especialtiesForm">
+                    <div class="row" ng-form="specialties.specialtiesForm">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nombre</label>
@@ -68,13 +70,13 @@
                                        class="form-control" required>
                             </div>
                         </div>
-                       
+
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Descripcion</label>
                                 <textarea class="form-control" ng-model="specialties.form.description"
-                                          ng-class="{'is-invalid':specialties.specialtiesForm.name.$error.required && specialties.specialtiesForm.name.$dirty}"
-                                          name="address"
+                                          ng-class="{'is-invalid':specialties.specialtiesForm.description.$error.required && specialties.specialtiesForm.description.$dirty}"
+                                          name="description"
                                           required></textarea>
                             </div>
                         </div>
@@ -82,7 +84,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-success" ng-click="specialties.saveSpecialties();" value="Guardar">
+                    <input type="button" class="btn btn-success" ng-click="specialties.saveSpecialties();" value="Guardar">
                 </div>
             </form>
         </div>
