@@ -17,7 +17,7 @@
                     throw error;
                 });
         }
-        
+
 
         function saveDependent(form) {
             var url = "/api/Patient/Dependent";
@@ -80,10 +80,10 @@
         }
 
         return {
-           getDependent: getDependet,
+            getDependent: getDependent,
             saveDependent: saveDependent,
             updateDependent: updateDependent,
             deleteDependent: deleteDependent
         };
     }
-}(
+})();

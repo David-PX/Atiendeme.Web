@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.4/dist/sweetalert2.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-multi-select/4.0.0/isteven-multi-select.min.css" integrity="sha512-EBuWVrkZxt0p05Jmr52plk9OtJITEgGU/xnQRcIxGNCIF0A50wfqEY+t1/Cpxfc614SbSur8+F23RGJh4gaolw==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" />
     <style>
         .no-js #loader {
             display: none;
@@ -55,6 +56,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.2/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-multi-select/4.0.0/isteven-multi-select.min.js" integrity="sha512-ePpT0cD6eXIN+wLmRQM337Dbpqomqfx4EnTb/QR5wJFgbWgm3VGYF85mOrzSppEBY5x6dZbcNcUWDN4XPPp7aQ==" crossorigin="anonymous"></script>
     <script src="/lib/moment/moment.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+
     <script src="/lib/moment/es-do.js"></script>
     <script src="/lib/angular-moment-picker/angular-moment-picker.min.js"></script>
 </head>
@@ -75,11 +79,15 @@
     <script src="~/js/AngularJS/Repository/officeRepository.js"></script>
     <script src="~/js/AngularJS/Repository/specialtiesRepository.js"></script>
     <script src="~/js/AngularJS/Repository/doctorRepository.js"></script>
+    <script src="~/js/AngularJS/Repository/reserveRepository.js"></script>
+    <script src="~/js/AngularJS/Repository/dependentRepository.js"></script>
 
     @*SERVICES*@
     <script src="~/js/AngularJS/Services/userService.js"></script>
     <script src="~/js/AngularJS/Services/officeService.js"></script>
     <script src="~/js/AngularJS/Services/doctorService.js"></script>
+    <script src="~/js/AngularJS/Services/dependentService.js"></script>
+    <script src="~/js/AngularJS/Services/reserveService.js"></script>
 
     <script src="~/js/AngularJS/Services/specialtiesService.js"></script>
     <script src="~/js/AngularJS/Services/notificationService.js"></script>

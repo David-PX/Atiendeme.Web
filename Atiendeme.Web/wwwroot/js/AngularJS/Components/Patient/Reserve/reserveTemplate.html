@@ -1,245 +1,248 @@
-﻿<link rel="stylesheet" href="../../../../../css/Portal/table.css">
-
+﻿<link rel="stylesheet" href="../../../../../css/Portal/shared.css">
+<link rel="stylesheet" href="../../../../../css/Portal/calendar.css">
+<!--<link rel="stylesheet" href="../../../../../css/Portal/reserve.css">-->
 <!--CHECK TO FIX THAT SHIT-->
 
-<section class="bg-mix py-3">
+<section class="bg-gra-01 py-3">
 
     <section class="signup-step-container">
         <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-10">
-                    <div class="wizard">
-                        <div class="wizard-inner">
-                            <div class="connecting-line"></div>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active">
-                                    <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" aria-expanded="true">
-                                        <span class="round-tab">
-                                            <i class="fa fa-hospital-o" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li role="presentation" class="disabled">
-                                    <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" aria-expanded="false">
-                                        <span class="round-tab">
-                                            <i class="fa fa-user-md" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li role="presentation" class="disabled">
-                                    <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab">
-                                        <span class="round-tab">
-                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li role="presentation" class="disabled">
-                                    <a href="#step4" data-toggle="tab" aria-controls="step4" role="tab">
-                                        <span class="round-tab">
-                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                </li>
+
+            <div class="bs-stepper">
+                <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                            <span class="bs-stepper-circle">1</span>
+                            <span class="bs-stepper-label">Informacion</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    <div class="step" data-target="#information-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
+                            <span class="bs-stepper-circle">2</span>
+                            <span class="bs-stepper-label">Cita</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    <div class="step" data-target="#detail-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="detail-part" id="detail-part-trigger">
+                            <span class="bs-stepper-circle">3</span>
+                            <span class="bs-stepper-label">Detalle</span>
+                        </button>
+                    </div>
+
+                    <div class="line"></div>
+                    <div class="step" data-target="#final-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="final-part" id="final-part-trigger">
+                            <span class="bs-stepper-circle">4</span>
+                            <span class="bs-stepper-label">Completada</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="bs-stepper-content">
+
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+
+                        <div class="tab-pane active" role="tabpanel" id="step1">
+                            <h3 class="text-center mt-3 mb-5">Proceso de Reserva</h3>
+                            <div class="row">
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Consultorio</label>
+                                        <select id="office" class="form-control"
+                                                ng-model="reserve.reserveForm.office"
+                                                name="office" required
+                                                ng-options="office as office.name for office in reserve.officeService.offices"></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Especialidad</label>
+                                        <select id="office" class="form-control"
+                                                ng-model="reserve.reserveForm.specialty"
+                                                name="specialty" required
+                                                ng-options="specialty as specialty.name for specialty in reserve.specialtiesService.specialties"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="mr-3 mt-3">¿Es para un dependiente?</label>
+
+                                        <label>
+                                            <input type="radio" ng-model="doctors.reserveForm.forDependent" value="true">
+                                            SI
+                                        </label>
+                                        <label>
+                                            <input type="radio" ng-model="doctors.reserveForm.forDependent" ng-click="reserve.dependentService.dependent = null" ng-value="false">
+                                            NO
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" ng-show="doctors.reserveForm.forDependent">
+                                    <div class="form-group">
+                                        <label class="form-label">Dependiente:</label>
+                                        <select id="office" class="form-control"
+                                                ng-model="reserve.reserveForm.dependent"
+                                                name="dependent" required
+                                                ng-options="specialty as specialty.name for specialty in reserve.dependentService.dependent"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-inline pull-right">
+                                <li><button type="button" class="default-btn next-step" ng-click="reserve.next();">Siguiente</button></li>
                             </ul>
                         </div>
+                    </div>
+                    <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
 
-                        <form role="form" action="index.html" class="login-box">
-                            <div class="tab-content" id="main_form">
-                                <div class="tab-pane active" role="tabpanel" id="step1">
-                                    <h3 class="text-center mt-3 mb-5">Proceso de Reserva</h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Consultorios:</label>
-                                                <input list="dentistList" value="" class="custom-select custom-select-md">
-                                                <datalist id="dentistList">
-                                                    <option value="MD" selected="selected">META DENTAL RD</option>
-                                                    <option value="ID">InnovaDent</option>
-                                                    <option value="OD">Odontine</option>
-                                                </datalist>
-                                            </div>
-                                        </div>
+                        <div class="tab-pane" role="tabpanel" id="step2">
+                            <h3 class="text-center mt-3 mb-5">Fecha y doctores disponibles</h3>
+                            <div class="row">
+                                {{reserve.dateRange}}
+                                <div class="col-md-4">
 
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Servicios:</label>
-                                                <input list="treatmentList" value="" class="custom-select custom-select-md">
-                                                <datalist id="treatmentList">
-                                                    <option value="Empaste Dental" selected="selected">Empaste Dental</option>
-                                                    <option value="Cariología">Cariología</option>
-                                                    <option value="Coronas">Coronas</option>
-                                                </datalist>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label"> ¿Está reserva es para un dependiente?</label>
-                                                <input list="opcion" value="" class="custom-select custom-select-md">
-                                                <datalist id="opcion">
-                                                    <option value="SI" selected="selected">SI</option>
-                                                    <option value="NO">NO </option>
-                                                </datalist>
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="example-datetime-local-input" class="form-label">Fecha</label>
 
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Dependiente:</label>
-                                                <input list="dependientesList" value="" class="custom-select custom-select-md">
-                                                <datalist id="dependientesList">
-                                                    <option value="MD" selected="selected">Leidy Laura</option>
-                                                    <option value="ID">Miguel Evangelista </option>
-                                                    <option value="OD">Jose Pérez</option>
-                                                </datalist>
-                                            </div>
+                                        <div moment-picker="reserve.reserveForm.date"
+                                             max-view="month"
+                                             format="DD/MM/YYYY"
+                                             start-view="month"
+                                             ng-change="reserve.doctorLaborDays()"
+                                             ng-model="reserve.dateRangeMoment"
+                                             class="datePicker">
+                                            <span class="feather icon-calendar"></span>
+                                            <input type="text"
+                                                   ng-model="reserve.reserveForm.date"
+                                                   id="startTime"
+                                                   name="fromDate" required
+                                                   class="form-control"
+                                                   autocomplete="off">
                                         </div>
                                     </div>
-                                    <ul class="list-inline pull-right">
-                                        <li><button type="button" class="default-btn next-step">Siguiente</button></li>
-                                    </ul>
                                 </div>
-                                <div class="tab-pane" role="tabpanel" id="step2">
-                                    <h3 class="text-center mt-3 mb-5">Fecha y doctores disponibles</h3>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="example-datetime-local-input" class="form-label">Fecha</label>
-                                                <input type="text" class="form-control" name="datefilter" value="" />
-                                                <span class="fa fa-calendar input-icon-general"></span>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-8">
-                                            <div class="form-group">
-                                                <label class="form-label">Doctores:</label>
-                                                <input list="doctosList" value="" class="custom-select custom-select-md">
-                                                <span class="fa fa-user-md input-icon-general" style="margin-right: 50px"></span>
-
-                                                <datalist id="doctosList">
-                                                    <option value="Dr. Delgado" selected="selected">Dr. Delgado</option>
-                                                    <option value="Dr. Rafael">Dr. Rafael</option>
-                                                    <option value="Dr. Federico">Dr. Federico</option>
-                                                </datalist>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="card booking-schedule schedule-widget">
-                                                <div class="schedule-header">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="day-slot">
-                                                                <ul>
-                                                                    <li class="left-arrow"><a href=""><i class="fa fa-chevron-left"></i></a></li>
-                                                                    <li><span>Mon</span><span class="slot-date">11 Nov <small class="slot-year">2019</small></span></li>
-                                                                    <li><span>Tue</span><span class="slot-date">12 Nov <small class="slot-year">2019</small></span></li>
-                                                                    <li><span>Wed</span><span class="slot-date">13 Nov <small class="slot-year">2019</small></span></li>
-                                                                    <li><span>Thu</span><span class="slot-date">14 Nov <small class="slot-year">2019</small></span></li>
-                                                                    <li><span>Fri</span><span class="slot-date">15 Nov <small class="slot-year">2019</small></span></li>
-                                                                    <li><span>Sat</span><span class="slot-date">16 Nov <small class="slot-year">2019</small></span></li>
-                                                                    <li><span>Sun</span><span class="slot-date">17 Nov <small class="slot-year">2019</small></span></li>
-                                                                    <li class="right-arrow"><a href=""><i class="fa fa-chevron-right"></i></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="schedule-cont">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="time-slot">
-                                                                <ul class="clearfix">
-                                                                    <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                                    <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                                    <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                                    <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                                    <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing selected" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                                    <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                                    <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="form-label">Doctores:</label>
+                                        <select id="doctor" class="form-control"
+                                                ng-model="reserve.reserveForm.doctor"
+                                                name="dependent" required
+                                                ng-change="reserve.doctorLaborDays()"
+                                                ng-options="doctor as doctor.name + ' ' + doctor.lastName + ' - ' + doctor.email for doctor in reserve.userService.doctors"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card booking-schedule schedule-widget">
+                                        <div class="schedule-cont">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="time-slot">
+                                                        <ul class="clearfix">
+                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
+                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
+                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
+                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
+                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing selected" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
+                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
+                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <ul class="list-inline pull-right">
-                                        <li><button type="button" class="default-btn prev-step">Atras</button></li>
-                                        <li><button type="button" class="default-btn next-step">Continue</button></li>
-                                    </ul>
                                 </div>
-                                <div class="tab-pane" role="tabpanel" id="step3">
-                                    <h3 class="text-center mt-3 mb-5">Detalles</h3>
-                                    <div class="all-info-container">
-                                        <div class="list-content">
-                                            <a href="#listone" data-toggle="collapse" aria-expanded="false" aria-controls="listone">Consultorio y Servicio<i class="fa fa-chevron-down"></i></a>
-                                            <div class="collapse" id="listone">
-                                                <div class="list-box">
-                                                    <div class="row">
-                                                        <div class="col-md-4 offset-md-2">
-                                                            <p><strong>Consultorio:</strong> Dentis Care </p>
-                                                        </div>
-
-                                                        <div class="col-md-4 offset-md-2">
-                                                            <p><strong>Servicio:</strong> Cariología </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="list-content">
-                                            <a href="#listtwo" data-toggle="collapse" aria-expanded="false" aria-controls="listtwo">Medico y Horario <i class="fa fa-chevron-down"></i></a>
-                                            <div class="collapse" id="listtwo">
-                                                <div class="list-box">
-                                                    <div class="row">
-                                                        <div class="col-md-4 offset-md-2">
-                                                            <p><strong>Fecha:</strong> 12/12/2012 </p>
-                                                        </div>
-
-                                                        <div class="col-md-4 offset-md-2">
-                                                            <p><strong>Horario:</strong> 9 AM</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row mt-3">
-                                                        <div class="col-md-4 offset-md-2">
-                                                            <p><strong>Doctor:</strong> Dr. Delgado</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <ul class="list-inline pull-right">
-                                        <li><button type="button" class="default-btn prev-step">Atras</button></li>
-                                        <li><button type="button" class="default-btn next-step">Finalizar</button></li>
-                                    </ul>
-                                </div>
-                                <div class="tab-pane" role="tabpanel" id="step4">
-
-                                    <div class="card success-card">
-                                        <div class="card-body">
-                                            <div class="success-cont">
-                                                <i class="fa fa-check"></i>
-                                                <h3>¡Cita reservada con exito!</h3>
-                                                <p>
-                                                    Cita con el
-                                                    <strong>Dr. Delgado</strong>
-                                                    <br> para el
-                                                    <strong>12 Nov 2019 5:00PM A 6:00PM</strong>
-                                                </p>
-
-                                                <a class="btn btn-primary view-inv-btn" style="background: none" href="#">
-                                                    Ir al menu
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
                             </div>
-                        </form>
+
+                            <ul class="list-inline pull-right">
+                                <li><button type="button" class="default-btn prev-step" ng-click="reserve.back();">Atras</button></li>
+                                <li><button type="button" class="default-btn next-step" ng-click="reserve.next();">Continue</button></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="detail-part" class="content" role="tabpanel" aria-labelledby="detail-part-trigger">
+                        <div class="tab-pane" role="tabpanel" id="step3">
+                            <h3 class="text-center mt-3 mb-5">Detalles</h3>
+                            <div class="all-info-container">
+                                <div class="list-content">
+                                    <a href="#listone" data-toggle="collapse" aria-expanded="false" aria-controls="listone">Consultorio y Servicio<i class="fa fa-chevron-down"></i></a>
+                                    <div class="collapse" id="listone">
+                                        <div class="list-box">
+                                            <div class="row">
+                                                <div class="col-md-4 offset-md-2">
+                                                    <p><strong>Consultorio:</strong> {{reserve.reserveForm.office.name}} </p>
+                                                </div>
+
+                                                <div class="col-md-4 offset-md-2">
+                                                    <p><strong>Servicio:</strong> {{reserve.reserveForm.specialty.name}} </p>
+                                                </div>
+
+                                                <div class="col-md-4 offset-md-2" ng-show="reserve.reserveForm.forDependent">
+                                                    <p><strong>Dependiente:</strong> {{reserve.reserveForm.dependent.name}} </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-content">
+                                    <a href="#listtwo" data-toggle="collapse" aria-expanded="false" aria-controls="listtwo">Medico y Horario <i class="fa fa-chevron-down"></i></a>
+                                    <div class="collapse" id="listtwo">
+                                        <div class="list-box">
+                                            <div class="row">
+                                                <div class="col-md-4 offset-md-2">
+                                                    <p><strong>Fecha:</strong> 12/12/2012 </p>
+                                                </div>
+
+                                                <div class="col-md-4 offset-md-2">
+                                                    <p><strong>Horario:</strong> 9 AM</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-md-4 offset-md-2">
+                                                    <p><strong>Doctor:</strong> {{reserve.reserveForm.doctor.name}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul class="list-inline pull-right">
+                                <li><button type="button" class="default-btn prev-step" ng-click="reserve.back();">Atras</button></li>
+                                <li><button type="button" class="default-btn next-step" ng-click="reserve.saveReserve();">Continue</button></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="final-part" class="content" role="tabpanel" aria-labelledby="final-part-trigger">
+                        <div class="tab-pane" role="tabpanel" id="step4">
+
+                            <div class="card success-card">
+                                <div class="card-body">
+                                    <div class="success-cont">
+                                        <i class="fa fa-check"></i>
+                                        <h3>¡Cita reservada con exito!</h3>
+                                        <p>
+                                            Cita con el
+                                            <strong>{{reserve.reserveForm.doctor.genre == 'Masculino' ? 'Dr.' : 'Dra.'}} {{reserve.reserveForm.doctor.name}}</strong>
+                                            <br> para el
+                                            <strong>12 Nov 2019 5:00PM A 6:00PM</strong>
+                                        </p>
+
+                                        <a class="btn btn-primary view-inv-btn" style="background: none" href="/">
+                                            Ir al menu
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

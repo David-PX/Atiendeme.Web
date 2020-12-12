@@ -13,6 +13,8 @@ namespace Atiendeme.Contratos.Repository.SQL
 
         Task<List<DoctorLaborDays>> GetDoctorLaborDays(string doctorId);
 
+        Task<List<DoctorLaborDays>> GetDoctorLaborDays(string doctorId, int officeId);
+
         Task<ApplicationUserDto> GetDoctorAsync(string Id);
 
         Task<ApplicationUser> SaveDoctorAsync(ApplicationUser medico, string pswd);

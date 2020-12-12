@@ -142,6 +142,11 @@ namespace Atiendeme.Repositorio.SQL
             return await _applicationDbContext.DoctorLaborDays.Where(x => x.DoctorId == doctorId).ToListAsync();
         }
 
+        public async Task<List<DoctorLaborDays>> GetDoctorLaborDays(string doctorId, int officeId)
+        {
+            return await _applicationDbContext.DoctorLaborDays.Where(x => x.DoctorId == doctorId && x.OfficeId == officeId).ToListAsync();
+        }
+
         public List<DoctorLaborDays> RemoveLaborDays(List<DoctorLaborDays> doctorLaborDays)
         {
             _applicationDbContext.DoctorLaborDays.RemoveRange(doctorLaborDays.ToArray());

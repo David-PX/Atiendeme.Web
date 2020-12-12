@@ -2,7 +2,7 @@
     var appName = "atiendeme";
     angular.module(appName).controller("reserveController", reserveController);
 
-    function reserveController($timeout, $scope, userService, officeService, notificationService) {
+    function reserveController($timeout, $scope, doctorService, specialtiesService, userService, dependentService, officeService, notificationService) {
         var self = this;
 
         self.form = {
@@ -13,112 +13,56 @@
         };
 
         //#region public members
-        self.addOffice = addOffice;
-        self.editOffice = editOffice;
-        self.deleteOffice = deleteOffice;
-        self.saveOffice = saveOffice;
 
         //#endregion public members
-
         initialize();
 
         function initialize() {
+            self.stepper = new Stepper($('.bs-stepper')[0])
+
             self.userService = userService;
             self.officeService = officeService;
-
-            self.localLanguage = {
-                selectAll: "Todos all",
-                selectNone: "Ninguno",
-                reset: "Deshacer",
-                search: "Escriba para buscar...",
-                nothingSelected: "Sin Seleccionar"         //default-label is deprecated and replaced with this.
-            }
-
-            console.log("Im here consultorioController");
+            self.specialtiesService = specialtiesService;
+            self.dependentService = dependentService;
         }
 
-        //Table logic
-        function addOffice() {
-            resetForm();
-            $('#officeModal').modal('show');
+        self.next = function () {
+            self.stepper.next();
         }
 
-        function editOffice(office) {
-            self.doctorsForCrud = angular.copy(userService.doctors);
-
-            self.form = angular.copy(office);
-
-            self.doctorsForCrud.forEach(function (_doctor) {
-                _doctor.ticket = self.form.doctors.find(function (doctor) {
-                    return _doctor.id == doctor.id
-                }) ? true : false;
-            });
-            $('#officeModal').modal('show');
+        self.back = function () {
+            self.stepper.previous();
         }
 
-        function deleteOffice(office) {
-            notificationService.showConfirmationSwal(
-                '¿Está seguro de querer eliminar este consultorio?',
-                "Esta información no podra ser recuperada.",
-                'warning',
-                true,
-                "Cancelar",
-                "Eliminar")
-                .then((result) => {
-                    if (result) {
-                        officeService.deleteOffice(office.id).then(function (response) {
-                            notificationService.showToast("Oficina eliminada.", "Registro borrado", "success");
-                        }, function (error) {
-                            console.error(error);
-                            notificationService.showToast("Ha ocurrido un error", "Error", "error");
-                        });
+        self.doctorLaborDays = doctorLaborDays;
+        function doctorLaborDays() {
+            if (self.reserveForm.doctor != null && self.reserveForm.office != null) {
 
-                        $scope.$apply();
-                    }
-                });
-        }
+            //    doctorService.doctorLaborDays(self.reserveForm.doctor.id, self.reserveForm.office.id).then(function (response) {
+            //        console.log(response);
+            //})
 
-        function saveOffice() {
-            if (self.officeForm.$valid) {
-                officeService.saveOffice(self.form).then(function (response) {
-                    $('#officeModal').modal('hide');
-                    notificationService.showToast("Oficina creada o modificada con exito", "Èxito", "success");
-                }, function (error) {
-                    console.error(error);
-                    notificationService.showToast("Ha ocurrido un error", "Error", "error");
-                })
-            } else {
-                notificationService.showToast("Tiene que llenar todos los campos requeridos", "Campos faltantes", "error");
-                applyAndSetDirtyForm(false)
+               var doctorLaborDays = self.reserveForm.doctorLaborDays.filter(x => x.officeId === self.reserveForm.office.id)
+
             }
         }
 
-        function resetForm() {
-            self.form = {
-                name: "",
-                email: "",
-                telephone: "",
-                address: ""
-            };
-            self.doctorsForCrud = angular.copy(userService.doctors);
-        }
-
-        function applyAndSetDirtyForm(waitFormDiggest) {
-            //This method wait a little for ng-required to be $$phase in the scope
-            $timeout(() => {
-                if (waitFormDiggest)
-                    applyAndSetDirtyForm();
-                else
-                    setFormInputDirty(self.officeForm);
-            }, 100);
-        }
-
-        function setFormInputDirty(form) {
-            angular.forEach(form.$error,
-                controls =>
-                    controls.forEach(control =>
-                        control.$setDirty()
-                    ));
-        }
+    function applyAndSetDirtyForm(waitFormDiggest) {
+        //This method wait a little for ng-required to be $$phase in the scope
+        $timeout(() => {
+            if (waitFormDiggest)
+                applyAndSetDirtyForm();
+            else
+                setFormInputDirty(self.officeForm);
+        }, 100);
     }
-})();
+
+    function setFormInputDirty(form) {
+        angular.forEach(form.$error,
+            controls =>
+                controls.forEach(control =>
+                    control.$setDirty()
+                ));
+    }
+}
+}) ();
