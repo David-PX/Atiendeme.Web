@@ -98,6 +98,77 @@ namespace Atiendeme.Web.Controllers.API
             return StatusCode((int)HttpStatusCode.Created, doctor);
         }
 
+        [HttpPatch]
+        public async Task<ActionResult<DoctorDto>> UpdateDoctor(DoctorDto medico)
+        {
+            if (medico == null)
+                return BadRequest();
+
+            var doctorEntity = await _atiendemeUnitOfWork.UserRepository.GetUserEntity(medico.Id);
+
+            doctorEntity.Id = medico.Id;
+            doctorEntity.UserName = medico.UserName;
+            doctorEntity.Email = medico.Email;
+            doctorEntity.LastName = medico.LastName;
+            doctorEntity.Name = medico.Name;
+            doctorEntity.Birthday = medico.Birthday;
+            doctorEntity.Genre = medico.Genre;
+            doctorEntity.PhoneNumber = medico.PhoneNumber;
+
+            var updatedDoctor = _atiendemeUnitOfWork.DoctorRepository.UpdateDoctor(doctorEntity);
+
+            //Add validation
+            if (updatedDoctor == null)
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+
+            ///
+            var doctorLaborDays = await _atiendemeUnitOfWork.DoctorRepository.GetDoctorLaborDays(medico.Id);
+            if (medico.DoctorLaborDays != null)
+            {
+                if (doctorLaborDays != null)
+                {
+                    var doctorLaborDaysNotFound = doctorLaborDays.Where(x => !medico.DoctorLaborDays.Any(u => u.Id == x.Id)).ToList();
+
+                    if (doctorLaborDaysNotFound.Count > 0)
+                        _atiendemeUnitOfWork.DoctorRepository.RemoveLaborDays(doctorLaborDaysNotFound);
+                }
+            }
+            else
+            {
+                if (doctorLaborDays != null)
+                {
+                    _atiendemeUnitOfWork.DoctorRepository.RemoveLaborDays(doctorLaborDays);
+                }
+            }
+
+            var doctorSpecialties = await _atiendemeUnitOfWork.SpecialtiesRepository.GetDoctorSpecialties(medico.Id);
+            if (medico.Specialties != null)
+            {
+                if (doctorSpecialties != null)
+                {
+                    var doctorSpecialtiesNotFound = doctorSpecialties.Where(x => !medico.Specialties.Any(u => u.Id == x.Id)).ToList();
+
+                    if (doctorSpecialtiesNotFound.Count > 0)
+                        _atiendemeUnitOfWork.SpecialtiesRepository.RemoveDoctorSpecialties(doctorSpecialtiesNotFound);
+                }
+            }
+            else
+            {
+                if (doctorSpecialties != null)
+                {
+                    _atiendemeUnitOfWork.SpecialtiesRepository.RemoveDoctorSpecialties(doctorSpecialties);
+                }
+            }
+
+            var newDoctorSpecialties = doctorSpecialties.Where(x => medico.Specialties.Any(u => u.Id == x.Id)).ToList();
+            var newdoctorLaborDays = doctorLaborDays.Where(x => medico.DoctorLaborDays.Any(u => u.Id == x.Id)).ToList();
+
+            await _atiendemeUnitOfWork.SpecialtiesRepository.SaveSpecialtiesFromDoctor(newDoctorSpecialties);
+            await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(newdoctorLaborDays);
+
+            return StatusCode((int)HttpStatusCode.Created, updatedDoctor);
+        }
+
         [HttpDelete("{doctorId}")]
         public async Task<ActionResult<DoctorLaborDaysDto>> Doctor(string doctorId)
         {
@@ -106,7 +177,7 @@ namespace Atiendeme.Web.Controllers.API
             if (search == null)
                 return NotFound();
 
-            var result = await _atiendemeUnitOfWork.DoctorRepository.RemoveDoctor(search);
+            var result = _atiendemeUnitOfWork.DoctorRepository.RemoveDoctor(search);
 
             if (result == null)
                 return StatusCode((int)HttpStatusCode.InternalServerError);

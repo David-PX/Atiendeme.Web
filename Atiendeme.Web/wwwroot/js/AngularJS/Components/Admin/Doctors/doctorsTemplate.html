@@ -32,7 +32,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="doctor in doctors.doctorService.doctors">
-                                        <td>{{doctor.name}}</td>
+                                        <td>{{doctor.name}} {{doctor.lastName}}</td>
                                         <td>{{doctor.phoneNumber}} | {{doctor.email}}</td>
                                         <td>
                                             <ul>
@@ -87,6 +87,7 @@
                             </div>
                         </div>
 
+                        {{doctors.form.lastname}}
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Apellidos</label>
@@ -105,8 +106,8 @@
                                         name="genre"
                                         ng-class="{'is-invalid':doctors.doctorForm.genre.$error.required && doctors.doctorForm.genre.$dirty}"
                                         id="genre" required>
-                                    <option value="Lunes">Masculino</option>
-                                    <option value="Martes">Femenino</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
                                 </select>
                             </div>
                         </div>
@@ -132,23 +133,24 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6" ng-show="!doctors.form.id">
                             <div class="form-group">
                                 <label>Contraseña</label>
-                                <input type="text" ng-model="doctors.form.password"
+                                <input type="password" ng-model="doctors.form.password"
                                        ng-class="{'is-invalid':doctors.doctorForm.password.$error.required && doctors.doctorForm.password.$dirty}"
                                        name="password"
-                                       class="form-control" required>
+                                       ng-required="!doctors.form.id"
+                                       class="form-control">
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6" ng-show="!doctors.form.id">
                             <div class="form-group">
                                 <label>Confirmar Contraseña</label>
-                                <input type="text" ng-model="doctors.form.confirmPassword"
+                                <input type="password" ng-model="doctors.form.confirmPassword"
                                        ng-class="{'is-invalid':doctors.doctorForm.confirmPassword.$error.required && doctors.doctorForm.confirmPassword.$dirty}"
                                        name="confirmPassword"
-                                       class="form-control" required>
+                                       class="form-control" ng-required="!doctors.form.id">
                             </div>
                         </div>
                         <div class="col-md-12">

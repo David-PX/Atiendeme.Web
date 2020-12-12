@@ -21,6 +21,6 @@ namespace Atiendeme.Contratos.Repository.SQL
 
         Task<Reservations> SaveReservation(Reservations reservation);
 
-        Task<bool> DeleteReservation(Reservations reservation);
+        bool DeleteReservation(Reservations reservation);
     }
 }

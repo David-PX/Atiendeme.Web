@@ -57,11 +57,11 @@ namespace Atiendeme.Repositorio.SQL
             return result.Entity;
         }
 
-        public async Task<bool> DeleteReservation(Reservations reservation)
+        public bool DeleteReservation(Reservations reservation)
         {
             var deleted = _applicationDbContext.Reservations.Remove(reservation);
 
-            await _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
 
             return deleted.State == EntityState.Detached;
         }

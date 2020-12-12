@@ -54,12 +54,36 @@
         function addDoctor() {
             resetForm();
 
+            self.officeService.offices.forEach(function (_office) {
+                _office.ticket = self.form.offices.find(function (office) {
+                    return _office.id == office.id
+                }) ? true : false;
+            });
+
+            self.specialtiesService.specialties.forEach(function (specialties) {
+                specialties.ticket = self.form.specialties.find(function (_specialties) {
+                    return _specialties.id == specialties.id
+                }) ? true : false;
+            });
+
             $('#doctorModal').modal('show');
         }
 
         function editDoctor(office) {
             resetForm();
             self.form = angular.copy(office);
+
+            self.officeService.offices.forEach(function (_office) {
+                _office.ticket = self.form.offices.find(function (office) {
+                    return _office.id == office.id
+                }) ? true : false;
+            });
+
+            self.specialtiesService.specialties.forEach(function (specialties) {
+                specialties.ticket = self.form.specialties.find(function (_specialties) {
+                    return _specialties.id == specialties.id
+                }) ? true : false;
+            });
 
             $('#doctorModal').modal('show');
         }
@@ -88,7 +112,7 @@
 
         function saveDoctor() {
             if (self.doctorForm.$valid) {
-                if (self.form.password === self.form.confirmPassword) {
+                if (self.form.password === self.form.confirmPassword || self.form.id) {
                     doctorService.saveDoctor(self.form).then(function (response) {
                         $('#doctorModal').modal('hide');
                         notificationService.showToast("Doctor creada o modificada con exito", "Èxito", "success");
@@ -114,24 +138,11 @@
                 offices: [],
                 doctorLaborDays: []
             };
-
-            self.officeService.offices.forEach(function (_office) {
-                _office.ticket = self.form.offices.find(function (office) {
-                    return _office.id == office.id
-                }) ? true : false;
-            });
-
-            self.specialtiesService.specialties.forEach(function (specialties) {
-                specialties.ticket = self.form.specialties.find(function (_specialties) {
-                    return _specialties.id == specialties.id
-                }) ? true : false;
-            });
         }
 
         /////////
         self.addLaborDay = function () {
             if (self.laborForm.$valid) {
-
                 debugger;
                 var timeIsAlredyAdded = false;
                 self.form.doctorLaborDays.forEach(_arr => {
@@ -141,14 +152,13 @@
                             _arr.startTime,
                             _arr.endTime,
                             self.laborDayForm.startTime,
-                            self.laborDayForm.endTime, 
+                            self.laborDayForm.endTime,
                             self.laborDayForm.day
                         );
                     }
                 });
 
                 if (!timeIsAlredyAdded) {
-
                     var laborDay = angular.copy(self.laborDayForm);
                     laborDay.officeId = laborDay.office.id;
                     laborDay.doctorId = self.form.doctorId;
@@ -163,8 +173,7 @@
                     }
                 } else {
                     notificationService.showToast("Choque entre horarios", "Campos faltantes", "error");
-                } 
-             
+                }
             } else {
                 notificationService.showToast("Tiene que llenar los campos del horario", "Campos faltantes", "error");
                 applyAndSetDirtyForm(self.laborForm, false)

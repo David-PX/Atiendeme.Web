@@ -15,8 +15,8 @@ namespace Atiendeme.Contratos.Repository.SQL
 
         Task<Dependents> SaveDependent(Dependents dependent);
 
-        Task<Dependents> UpdateDependent(Dependents dependent);
+        Dependents UpdateDependent(Dependents dependent);
 
-        Task<Dependents> RemoveDependent(Dependents dependent);
+        Dependents RemoveDependent(Dependents dependent);
     }
 }

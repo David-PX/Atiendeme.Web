@@ -3,6 +3,7 @@ using Atiendeme.Contratos.Repository.SQL;
 using Atiendeme.Entidades.Entidades.SQL;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Atiendeme.Repositorio.SQL
@@ -19,6 +20,19 @@ namespace Atiendeme.Repositorio.SQL
         public async Task<List<Specialties>> GetSpecialties()
         {
             return await _applicationDbContext.Specialties.ToListAsync();
+        }
+
+        public async Task<List<SpecialtiesDoctor>> GetDoctorSpecialties(string doctorId)
+        {
+            return await _applicationDbContext.SpecialtiesDoctors.Where(x => x.DoctorId == doctorId).ToListAsync();
+        }
+
+        public List<SpecialtiesDoctor> RemoveDoctorSpecialties(List<SpecialtiesDoctor> specialtiesDoctors)
+        {
+            _applicationDbContext.SpecialtiesDoctors.RemoveRange(specialtiesDoctors.ToArray());
+            _applicationDbContext.SaveChanges();
+
+            return specialtiesDoctors;
         }
 
         public async Task<Specialties> GetSpecialty(int id)
@@ -44,10 +58,18 @@ namespace Atiendeme.Repositorio.SQL
             return specialtiesDoctors;
         }
 
-        public async Task<Specialties> UpdateSpecialty(Specialties specialty)
+        public Specialties UpdateSpecialty(Specialties specialty)
         {
             var updateResult = _applicationDbContext.Specialties.Update(specialty);
-            await _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
+
+            return updateResult.Entity;
+        }
+
+        public Specialties DeleteSpecialty(Specialties specialty)
+        {
+            var updateResult = _applicationDbContext.Specialties.Remove(specialty);
+            _applicationDbContext.SaveChanges();
 
             return updateResult.Entity;
         }

@@ -35,22 +35,30 @@ namespace Atiendeme.Repositorio.SQL
             return offices;
         }
 
+        public async Task<List<OfficesDoctors>> GetOfficesDoctorsByDoctorId(string doctorId)
+        {
+            var offices = await _applicationDbContext.OfficesDoctors
+                                    .Where(x => x.DoctorId == doctorId)
+                                    .ToListAsync();
+            return offices;
+        }
+
         public async Task<Offices> GetOffice(int Id)
         {
             return await _applicationDbContext.Offices.FindAsync(Id);
         }
 
-        public async Task<Offices> DeleteOffice(Offices offices)
+        public Offices DeleteOffice(Offices offices)
         {
             var deleteResult = _applicationDbContext.Offices.Remove(offices);
-            await _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
             return deleteResult.Entity;
         }
 
         public async Task<Offices> SaveOffice(Offices office)
         {
             var SaveResult = await _applicationDbContext.Offices.AddAsync(office);
-            await _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
             return SaveResult.Entity;
         }
 
@@ -68,18 +76,18 @@ namespace Atiendeme.Repositorio.SQL
             return officesDoctors;
         }
 
-        public async Task<OfficesDoctors[]> DeleteOfficeDoctors(OfficesDoctors[] officesDoctors)
+        public OfficesDoctors[] DeleteOfficeDoctors(OfficesDoctors[] officesDoctors)
         {
             _applicationDbContext.OfficesDoctors.RemoveRange(officesDoctors);
-            await _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
 
             return officesDoctors;
         }
 
-        public async Task<Offices> UpdateOffice(Offices office)
+        public Offices UpdateOffice(Offices office)
         {
             var result = _applicationDbContext.Offices.Update(office);
-            await _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
             return result.Entity;
         }
     }

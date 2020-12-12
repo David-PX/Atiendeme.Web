@@ -68,25 +68,23 @@ namespace Atiendeme.Web.Controllers.API
 
             if (officeDto.Doctors != null)
             {
-                if (officesDoctors == null)
-                    await _atiendemeUnitOfWork.OfficeRepository.DeleteOfficeDoctors(officesDoctors.ToArray());
-                else
+                if (officesDoctors != null)
                 {
                     var doctorsNotFound = officesDoctors.Where(x => !officeDto.Doctors.Any(u => u.Id == x.DoctorId)).ToArray();
 
                     if (doctorsNotFound.Length > 0)
-                        await _atiendemeUnitOfWork.OfficeRepository.DeleteOfficeDoctors(doctorsNotFound);
+                        _atiendemeUnitOfWork.OfficeRepository.DeleteOfficeDoctors(doctorsNotFound);
                 }
             }
             else
             {
                 if (officesDoctors != null)
-                    await _atiendemeUnitOfWork.OfficeRepository.DeleteOfficeDoctors(officesDoctors.ToArray());
+                    _atiendemeUnitOfWork.OfficeRepository.DeleteOfficeDoctors(officesDoctors.ToArray());
             }
 
             var office = _mapper.Map<Offices>(officeDto);
 
-            office = await _atiendemeUnitOfWork.OfficeRepository.UpdateOffice(office);
+            office = _atiendemeUnitOfWork.OfficeRepository.UpdateOffice(office);
 
             if (office == null)
                 return StatusCode((int)HttpStatusCode.InternalServerError);
@@ -145,7 +143,7 @@ namespace Atiendeme.Web.Controllers.API
             if (office == null)
                 return NotFound();
 
-            var result = await _atiendemeUnitOfWork.OfficeRepository.DeleteOffice(office);
+            var result = _atiendemeUnitOfWork.OfficeRepository.DeleteOffice(office);
 
             if (result == null)
                 return StatusCode((int)HttpStatusCode.InternalServerError);
