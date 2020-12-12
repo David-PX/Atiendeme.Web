@@ -88,7 +88,6 @@
 
         function saveDoctor() {
             if (self.doctorForm.$valid) {
-
                 if (self.form.password === self.form.confirmPassword) {
                     doctorService.saveDoctor(self.form).then(function (response) {
                         $('#doctorModal').modal('hide');
@@ -147,6 +146,14 @@
                 notificationService.showToast("Tiene que llenar los campos del horario", "Campos faltantes", "error");
                 applyAndSetDirtyForm(self.laborForm, false)
             }
+        }
+
+        function isInRange(dayValue, startValue, endValue, startRange, endRange, dayRange) {
+            var inRange =
+                dayValue === dayRange &&
+                ((startValue >= startRange && startValue <= endRange) ||
+                    (endValue >= startRange && endValue <= endRange));
+            return inRange;
         }
 
         self.deleteLaborDay = function (index) {

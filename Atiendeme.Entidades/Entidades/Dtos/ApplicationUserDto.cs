@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Atiendeme.Entidades.Entidades.Dtos
 {
     public class ApplicationUserDto
-    { 
+    {
         public string Id { get; set; }
 
         [Required]

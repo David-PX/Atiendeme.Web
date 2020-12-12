@@ -18,6 +18,7 @@ namespace Atiendeme.Entidades.Entidades.SQL
 
         [Required]
         public DateTime Birthday { get; set; }
-         
+
+        public List<Dependents> Dependents { get; set; }
     }
 }
