@@ -14,8 +14,9 @@
         <div class="menu">
             <a href="#/" class="d-block text-light p-3 border-0 active-menu-option">Inicio</a>
             <a href="#/admin/offices" ng-show="layout.userService.currentUser.role = 'Administrador'" class="d-block text-light p-3 border-0">Consultorios</a>
-            <a href="#/admin/doctors" ng-show="layout.userService.currentUser.role = 'Administrador'"  class="d-block text-light p-3 border-0">Doctores</a>
-            <a href="#" ng-show="layout.userService.currentUser.role = 'Administrador'"  class="d-block text-light p-3 border-0">Servicios</a>
+            <a href="#/admin/doctors" ng-show="layout.userService.currentUser.role = 'Administrador'" class="d-block text-light p-3 border-0">Doctores</a>
+            <a href="#/admin/specialties" ng-show="layout.userService.currentUser.role = 'Administrador'" class="d-block text-light p-3 border-0">Servicios</a>
+            <a href="#/patient/reserve"  class="d-block text-light p-3 border-0">Cita</a>
         </div>
     </div>
     <!-- Fin sidebar -->

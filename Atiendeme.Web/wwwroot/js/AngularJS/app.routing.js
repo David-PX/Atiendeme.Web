@@ -17,21 +17,13 @@
         .when('/admin/specialties', {
             template: '<specialties-template></specialties-template>'
         })
-        .otherwise({ redirectTo: '/dashboard' });;
 
-    //The below will be loaded when url is changed to pageURL/AngularJS
-    //.when('/AngularJS', {
-    //    templateUrl: 'pages/AngularJS.html',
-    //    controller: 'AngularJSController'
-    //});
+        //
+        .when('/patient/reserve', {
+            template: '<reserve-template></reserve-template>'
+        })
 
-    //The below will be loaded when url is changed to pageURL/Code2Succeed
-    //.when('/Code2Succeed', {
-    //    templateUrl: 'pages/Code2Succeed.html',
-    //    controller: 'Code2SucceedController'
-    //});
-
-    //If clicked on any other link from navigation which has not been handled here, will be directed to home page
+        .otherwise({ redirectTo: '/dashboard' });
 });
 
 app.config(['$locationProvider', function ($locationProvider) {
