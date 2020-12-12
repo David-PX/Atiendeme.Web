@@ -1,8 +1,32 @@
 ﻿@page
 @model ConfirmEmailChangeModel
 @{
-    ViewData["Title"] = "Confirm email change";
+    ViewData["Title"] = "Confirmar cambio correo";
 }
+ 
 
-<h1>@ViewData["Title"]</h1>
+<section class="home-banner-area relative" id="home" data-parallax="scroll" data-image-src="/assets/images/odontologia.jpg">
+    <div class="overlay-bg overlay"></div>
+    <h1 class="template-name">ATIENDEME</h1>
+    <div class="container">
+        <div class="row fullscreen">
+            <div class="banner-login-content col-lg-12 ">
+
+                <div class="row p-5 bg-gra-01">
+
+                    <div class="col-md-12">
+
+                        <h2 class="text-white">
+                            ¡Correo modificado! <br />
+                            Ya puede acceder al Portal.
+                        </h2>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <partial name="_StatusMessage" model="Model.StatusMessage" />

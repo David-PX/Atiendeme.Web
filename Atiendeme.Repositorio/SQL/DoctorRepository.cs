@@ -113,7 +113,7 @@ namespace Atiendeme.Repositorio.SQL
 
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    var callbackUrl = $"https://localhost:44300/Identity/Account/ConfirmEmail?userId={medico.Id}&code=${code}&returnUrl=%2F";
+                    var callbackUrl = $"https://localhost:44300/Identity/Account/ConfirmEmail?userId={medico.Id}&code={code}&returnUrl=%2F";
 
                     await _emailSender.SendEmailAsync(medico.Email, "Atiendeme - Confirma tu correo",
                         $"Favor confirmar su correo dando <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");

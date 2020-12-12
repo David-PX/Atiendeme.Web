@@ -69,9 +69,9 @@
             $('#doctorModal').modal('show');
         }
 
-        function editDoctor(office) {
+        function editDoctor(doctor) {
             resetForm();
-            self.form = angular.copy(office);
+            self.form = angular.copy(doctor);
 
             self.officeService.offices.forEach(function (_office) {
                 _office.ticket = self.form.offices.find(function (office) {
@@ -142,8 +142,7 @@
 
         /////////
         self.addLaborDay = function () {
-            if (self.laborForm.$valid) {
-                debugger;
+            if (self.laborForm.$valid) { 
                 var timeIsAlredyAdded = false;
                 self.form.doctorLaborDays.forEach(_arr => {
                     if (!timeIsAlredyAdded) {

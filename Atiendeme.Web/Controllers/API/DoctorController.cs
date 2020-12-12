@@ -93,7 +93,7 @@ namespace Atiendeme.Web.Controllers.API
             DoctorDto mapperResult = _mapper.Map<DoctorDto>(doctor);
             mapperResult.DoctorLaborDays = _mapper.Map<List<DoctorLaborDaysDto>>(resultSaveDoctorDays);
 
-            mapperResult.Offices = _mapper.Map<List<OfficeDto>>(resultSaveDoctorOffices.ToList());
+            //mapperResult.Offices = _mapper.Map<List<OfficeDto>>(resultSaveDoctorOffices.ToList());
 
             return StatusCode((int)HttpStatusCode.Created, doctor);
         }
@@ -160,11 +160,35 @@ namespace Atiendeme.Web.Controllers.API
                 }
             }
 
-            var newDoctorSpecialties = doctorSpecialties.Where(x => medico.Specialties.Any(u => u.Id == x.Id)).ToList();
-            var newdoctorLaborDays = doctorLaborDays.Where(x => medico.DoctorLaborDays.Any(u => u.Id == x.Id)).ToList();
+            var finalSpecialties = new List<SpecialtiesDoctor>();
+            var finalDoctorLaborDays = new List<DoctorLaborDays>();
 
-            await _atiendemeUnitOfWork.SpecialtiesRepository.SaveSpecialtiesFromDoctor(newDoctorSpecialties);
-            await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(newdoctorLaborDays);
+            if (medico.Specialties != null && medico.Specialties.Count > 0)
+            {
+                finalSpecialties = medico.Specialties.Where(x => !doctorSpecialties.Any(u => u.Id == x.Id)).Select(x => new SpecialtiesDoctor()
+                {
+                    DoctorId = medico.Id,
+                    SpecialtyId = x.Id
+                }).ToList();
+
+                if (finalSpecialties.Count > 0)
+                    await _atiendemeUnitOfWork.SpecialtiesRepository.SaveSpecialtiesFromDoctor(finalSpecialties);
+            }
+
+            if (medico.DoctorLaborDays != null && medico.DoctorLaborDays.Count > 0)
+            {
+                finalDoctorLaborDays = medico.DoctorLaborDays.Where(l => l.Id == 0).Select(x => new DoctorLaborDays()
+                {
+                    DoctorId = medico.Id,
+                    Id = 0,
+                    Day = x.Day,
+                    EndTime = x.EndTime,
+                    OfficeId = x.OfficeId,
+                    StartTime = x.StartTime,
+                }).ToList();
+                if (finalDoctorLaborDays.Count > 0)
+                    await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(finalDoctorLaborDays);
+            }
 
             return StatusCode((int)HttpStatusCode.Created, updatedDoctor);
         }

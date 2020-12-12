@@ -86,14 +86,13 @@
                                        class="form-control" required>
                             </div>
                         </div>
-
-                        {{doctors.form.lastname}}
+                         
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Apellidos</label>
-                                <input type="text" ng-model="doctors.form.lastname"
-                                       ng-class="{'is-invalid':doctors.doctorForm.lastname.$error.required && doctors.doctorForm.lastname.$dirty}"
-                                       name="lastname"
+                                <input type="text" ng-model="doctors.form.lastName"
+                                       ng-class="{'is-invalid':doctors.doctorForm.lastName.$error.required && doctors.doctorForm.lastName.$dirty}"
+                                       name="lastName"
                                        class="form-control" required>
                             </div>
                         </div>
@@ -208,7 +207,7 @@
                                 <label>Hora Inicio</label>
                                 <div moment-picker="doctors.laborDayForm.startTime"
                                      min-view="day"
-                                     format="hh:mm"
+                                     format="HH:mm"
                                      max-date="doctors.laborFormMoments.momentEndTime"
                                      start-view="day"
                                      ng-model="doctors.laborFormMoments.momentStartTime"
@@ -231,7 +230,7 @@
                                 <div moment-picker="doctors.laborDayForm.endTime"
                                      min-view="day"
                                      min-date="doctors.laborFormMoments.momentStartTime"
-                                     format="hh:mm"
+                                     format="HH:mm"
                                      start-view="day"
                                      ng-model="doctors.laborFormMoments.momentEndTime"
                                      class="datePicker">
