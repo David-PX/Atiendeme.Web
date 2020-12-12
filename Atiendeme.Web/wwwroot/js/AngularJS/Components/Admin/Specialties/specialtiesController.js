@@ -12,7 +12,7 @@
 
         //#region public members
         self.addSpecialties = addSpecialties;
-        self.editSpecialties= editSpecialties;
+        self.editSpecialties = editSpecialties;
         self.deleteSpecialties = deleteSpecialties;
         self.saveSpecialties = saveSpecialties;
 
@@ -41,20 +41,9 @@
             $('#specialtiesModal').modal('show');
         }
 
-        function editSpecialties(specialties) {
-            self.doctorsForCrud = angular.copy(userService.doctors);
-
+        function editSpecialties(specialties) { 
             self.form = angular.copy(specialties);
-
-            self.doctorsForCrud.forEach(function (_doctor) {
-
-                _doctor.ticket = self.form.doctors.find(function (doctor) {
-
-                    return _doctor.id == doctor.id
-                }) ? true : false;
-
-
-            });
+             
             $('#specialtiesModal').modal('show');
         }
 

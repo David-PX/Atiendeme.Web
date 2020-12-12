@@ -18,7 +18,7 @@
                                     <div class="col-sm-6">
                                         <a class="btn btn-success" ng-click="specialties.addSpecialties()"><i class="material-icons">&#xE147;</i> <span>Agregar nueva Especialidad</span></a>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
                             <table class="table table-striped table-hover">
                                 <thead class="m-5">
@@ -30,13 +30,13 @@
                                     </tr>
                                 </thead>
                                 <tbody class="">
-                                    <tr ng-repeat="specialties in specialties.specialtiesService.specialties">
-                                        <td>{{specialties.name}}</td>
-                                        <td>{{specialties.description}} </td>
+                                    <tr ng-repeat="specialty in specialties.specialtiesService.specialties">
+                                        <td>{{specialty.name}}</td>
+                                        <td>{{specialty.description}} </td>
                                     
                                         <td>
-                                            <a class="edit" ng-click="specialties.editSpecialties(specialties)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                            <a class="delete" ng-click="specialties.deleteSpecialties(specialties)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                            <a class="edit" ng-click="specialties.editSpecialties(specialty)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a class="delete" ng-click="specialties.deleteSpecialties(specialty)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                         </td>
                                     </tr>
                                 </tbody>
