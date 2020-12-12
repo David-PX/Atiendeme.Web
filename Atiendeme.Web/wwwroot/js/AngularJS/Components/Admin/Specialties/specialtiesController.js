@@ -39,6 +39,7 @@
         function addSpecialties() {
             resetForm();
             $('#specialtiesModal').modal('show');
+            
         }
 
         function editSpecialties(specialties) { 
