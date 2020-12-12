@@ -1,18 +1,18 @@
 ﻿@page
 @model EmailModel
 @{
-    ViewData["Title"] = "Manage Email";
+    ViewData["Title"] = "Cambiar Correo";
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<h4>@ViewData["Title"]</h4>
+<h4 class="text-white">Cambia tu Correo</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="row">
     <div class="col-md-6">
         <form id="email-form" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email"></label>
+            <div class="form-group mt-4">
+                <label asp-for="Email">Correo</label>
                 @if (Model.IsEmailConfirmed)
                 {
                     <div class="input-group">
@@ -29,11 +29,11 @@
                 }
             </div>
             <div class="form-group">
-                <label asp-for="Input.NewEmail"></label>
+                <label asp-for="Input.NewEmail">Nuevo correo</label>
                 <input asp-for="Input.NewEmail" class="form-control" />
                 <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
             </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-primary">Change email</button>
+            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-primary float-right">Cambiar Correo</button>
         </form>
     </div>
 </div>

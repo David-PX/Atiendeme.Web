@@ -9,20 +9,35 @@
     }
 }
 
-<h2>Manage your account</h2>
 
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+
+<section class="home-banner-area relative" id="home" data-parallax="scroll" data-image-src="/assets/images/odontologia.jpg">
+    <div class="overlay-bg overlay"></div>
+    <h1 class="template-name">ATIENDEME</h1>
+    <div class="container">
+        <div class="row fullscreen">
+            <div class="banner-login-content col-lg-12 ">
+             
+
+
+                <div class="row">
+              
+                    <div class="col-md-3" style="background: -webkit-linear-gradient(bottom, #0c0c0c3b 0%, #0a1825 100%)">
+                        
+                        <partial name="_ManageNav" />
+                    </div>
+
+
+                    <div class="col-md-9 bg-gra-01 p-4">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+ 
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
