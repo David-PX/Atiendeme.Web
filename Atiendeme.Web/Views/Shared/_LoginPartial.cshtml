@@ -5,6 +5,7 @@
 @*<ul class="navbar-nav">*@
 @if (SignInManager.IsSignedIn(User))
 {
+    <li><a class="text-danger" asp-area="" asp-controller="Portal" asp-action="Index">Portal</a></li>
 
     <li>
         <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola, @User.Identity.Name!</a>
@@ -17,7 +18,7 @@
             </button>
         </form>
 
-       
+
     </li>
 }
 else

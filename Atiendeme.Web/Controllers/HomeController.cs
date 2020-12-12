@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Atiendeme.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Atiendeme.Web.Models;
+using System.Diagnostics;
 
 namespace Atiendeme.Web.Controllers
 {
@@ -23,7 +19,7 @@ namespace Atiendeme.Web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult ContactUs()
         {
             return View();
         }

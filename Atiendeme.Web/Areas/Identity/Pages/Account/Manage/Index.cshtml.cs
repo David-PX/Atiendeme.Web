@@ -23,6 +23,14 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account.Manage
 
         public string Username { get; set; }
 
+        public string FullName { get; private set; }
+
+        public string Genre { get; private set; }
+
+        public string Birthday { get; private set; }
+
+        public string Roles { get; private set; }
+
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -38,11 +46,15 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(ApplicationUser user)
         {
+            var userRol = await _userManager.GetRolesAsync(user);
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-
+            FullName = $"{user.Name} {user.LastName}";
+            Genre = user.Genre;
+            Birthday = user.Birthday.ToShortDateString();
+            Roles = userRol[0];
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber
@@ -81,13 +93,13 @@ namespace Atiendeme.Web.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Un error no esperado intentando cambiar su numero.";
                     return RedirectToPage();
                 }
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Su perfil ha sido actualizado.";
             return RedirectToPage();
         }
     }

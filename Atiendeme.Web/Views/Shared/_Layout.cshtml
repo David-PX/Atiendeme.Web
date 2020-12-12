@@ -28,11 +28,10 @@
                 <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         <li><a class="active" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a href="#about-us">Nosotros</a></li>
-                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="/#about-us">Nosotros</a></li>
+                        <li><a href="/#servicios">Servicios</a></li>
 
-                        <li><a href="">Contactanos</a></li>
-                        <li><a class="text-danger" asp-area="" asp-controller="Portal" asp-action="Index">Portal</a></li>
+                        <li><a  asp-area="" asp-controller="Home" asp-action="ContactUs">Contáctanos</a></li>
                         <partial name="_LoginPartial" />
                     </ul>
                 </div>
