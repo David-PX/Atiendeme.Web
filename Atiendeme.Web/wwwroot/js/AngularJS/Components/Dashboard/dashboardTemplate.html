@@ -1,41 +1,41 @@
-﻿                <section class="bg-light py-3">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-9 col-md-8">
-                                <h1 class="font-weight-bold mb-0">{{dashboard.userService.currentUser.genre === 'Masculino' ? 'Bienvenido' : 'Bienvenida'}}, {{dashboard.userService.currentUser.name}}</h1>
-                                <p class="lead text-muted">¿Que le gustaria hacer?</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+﻿<section class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-8">
+                <h1 class="font-weight-bold mb-0">{{dashboard.userService.currentUser.genre === 'Masculino' ? 'Bienvenido' : 'Bienvenida'}}, {{dashboard.userService.currentUser.name}}</h1>
+                <p class="lead text-muted">¿Que le gustaria hacer?</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <section class="bg-mix py-3">
-                    <div class="container">
-                        <div class="card rounded-0">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
-                                        <div class="mx-auto">
-                                            <a href="#/admin/offices" class="btn btn-outline-info">Manejo de Consultorios</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
-                                        <div class="mx-auto">
-                                            <button type="button" class="btn btn-outline-info">Manejo de secretarias</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
-                                        <div class="mx-auto">
-                                            <button type="button" class="btn btn-outline-info">Manejo de consultorios</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 d-flex my-3">
-                                        <div class="mx-auto">
-                                            <button type="button" class="btn btn-outline-info">Manejo de servicios</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<section class="bg-mix py-3">
+    <div class="container">
+        <div class="card rounded-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Administrador'">
+                        <div class="mx-auto">
+                            <a href="#/admin/offices" class="btn btn-outline-info">Manejo de Consultorios</a>
                         </div>
                     </div>
-                </section>
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Administrador'">
+                        <div class="mx-auto">
+                            <a href="#/admin/doctors" class="btn btn-outline-info">Manejo de Doctores</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Administrador'">
+                        <div class="mx-auto">
+                            <a href="#/admin/offices" class="btn btn-outline-info">Manejo de Servicios</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Paciente'">
+                        <div class="mx-auto">
+                            <a href="#/admin/offices" class="btn btn-outline-info">Elaborar Cita</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
