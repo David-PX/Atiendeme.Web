@@ -32,6 +32,21 @@
                 });
         }
 
+        function doctorAvailability(doctorId, officeId, day) {
+            var url = "api/Doctor/DoctorAvailability/" + doctorId + "/" + officeId + "/" + moment(day, "DD/MM/YYYY").format("YYYY-MM-DD");
+            var req = requestBuilder(url, 'GET');
+
+            return $http(req).then(
+                function (response) {
+                    if (response.status < 205)
+                        return response.data;
+                    else
+                        throw response;
+                }, function (error) {
+                    throw error;
+                });
+        }
+
         function saveDoctor(form) {
             var url = "/api/Doctor";
             var req = requestBuilder(url, 'POST', form);
@@ -96,6 +111,7 @@
             saveDoctor: saveDoctor,
             updateDoctor: updateDoctor,
             deleteDoctor: deleteDoctor,
+            doctorAvailability: doctorAvailability,
             doctorLaborDays: doctorLaborDays
         };
     }

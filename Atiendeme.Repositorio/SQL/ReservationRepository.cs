@@ -48,6 +48,13 @@ namespace Atiendeme.Repositorio.SQL
             return await _applicationDbContext.Reservations.Where(r => r.DoctorId == doctorId).ToListAsync();
         }
 
+        public async Task<List<Reservations>> GetReservationsFromDoctor(string doctorId, int officeId, DateTime day)
+        {
+            return await _applicationDbContext.Reservations.Where(r =>
+                r.DoctorId == doctorId && r.OfficeId == officeId && (r.StartTime <= day && r.EndTime >= day)
+                ).ToListAsync();
+        }
+
         public async Task<Reservations> SaveReservation(Reservations reservation)
         {
             var result = await _applicationDbContext.Reservations.AddAsync(reservation);

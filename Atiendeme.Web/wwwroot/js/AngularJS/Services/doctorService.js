@@ -10,6 +10,7 @@
         self.saveDoctor = saveDoctor;
         self.deleteDoctor = deleteDoctor;
         self.doctorLaborDays = doctorLaborDays;
+        self.doctorAvailability = doctorAvailability;
 
         initializeService();
 
@@ -28,6 +29,16 @@
         }
         function doctorLaborDays(doctorId, officeId) {
             return doctorRepository.doctorLaborDays(doctorId, officeId).then(function (response) {
+                self.doctors = response;
+                return response;
+            }, function (error) {
+                console.error(error);;
+                throw error;
+            });
+        }
+
+        function doctorAvailability(doctorId, officeId, day) {
+            return doctorRepository.doctorAvailability(doctorId, officeId, day).then(function (response) {
                 self.doctors = response;
                 return response;
             }, function (error) {

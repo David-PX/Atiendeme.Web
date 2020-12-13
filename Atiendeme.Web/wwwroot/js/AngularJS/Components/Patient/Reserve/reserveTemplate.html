@@ -112,11 +112,12 @@
                                              max-view="month"
                                              format="DD/MM/YYYY"
                                              start-view="month"
-                                             ng-change="reserve.doctorLaborDays()"
+                                             change="reserve.doctorLaborDays()"
                                              ng-model="reserve.dateRangeMoment"
                                              class="datePicker">
                                             <span class="feather icon-calendar"></span>
                                             <input type="text"
+                                                     
                                                    ng-model="reserve.reserveForm.date"
                                                    id="startTime"
                                                    name="fromDate" required
@@ -143,13 +144,14 @@
                                                 <div class="col-md-12">
                                                     <div class="time-slot">
                                                         <ul class="clearfix">
-                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing selected" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
-                                                            <li><a class="timing" href=""><span>9:00</span> <span>AM</span></a><a class="timing" href=""><span>10:00</span> <span>AM</span></a><a class="timing" href=""><span>11:00</span> <span>AM</span></a></li>
+                                                             
+                                                            <li ng-repeat="reserveTime in reserve.times | orderBy: 'order'">
+                                                                <a class="timing" 
+                                                                   ng-click="reserve.timeClicked(reserveTime);"
+                                                                   ng-class="{'selected' : reserveTime.selected, 'time-disabled': !reserveTime.active, 'time-busy': reserveTime.busy}"  href="">
+                                                                    <span>{{reserveTime.time}}</span> 
+                                                                </a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>

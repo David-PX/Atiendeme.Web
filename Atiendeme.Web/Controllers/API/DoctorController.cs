@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -47,12 +48,12 @@ namespace Atiendeme.Web.Controllers.API
             return Ok(mapperResult);
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<List<DoctorDto>>> DoctorAvailability(DateTime day, string startTime)
-        //{
-        //    var result = await _atiendemeUnitOfWork.DoctorRepository.GetDoctorsAsync();
-        //    return Ok(result);
-        //}
+        [HttpGet("[action]/{doctorId}/{officeId}/{day}")]
+        public async Task<ActionResult<List<Reservation>>> DoctorAvailability(DateTime day, string doctorId, int officeId)
+        {
+            var result = await _atiendemeUnitOfWork.ReservationRepository.GetReservationsFromDoctor(doctorId, officeId, day);
+            return Ok(result);
+        }
 
         /// <summary>
         /// Se debe de agregar lo de los rangos de fecha, especialidades y centros

@@ -98,8 +98,25 @@
 }
 
 .time-slot li .timing:last-child {
-    margin-bottom: 0;
+    margin-bottom: 10px;
 }
+
+.time-disabled {
+    background-color: #b3b3b3 !important;
+    cursor: default !important;
+    pointer-events: none !important;
+    text-decoration: none !important;
+}
+
+
+.time-busy {
+    background-color: #ff0000 !important;
+    cursor: default !important;
+    color: #e9e9e9 !important;
+    pointer-events: none !important;
+    text-decoration: none !important;
+}
+
 
 .time-slot li .timing.selected {
     background-color: #42c0fb;
@@ -107,13 +124,13 @@
     color: #fff;
 }
 
-.time-slot li .timing.selected::before {
-    color: #fff;
-    content: "\f00c";
-    font-family: "Font Awesome 5 Free";
-    font-size: 12px;
-    font-weight: 900;
-    position: absolute;
-    right: 6px;
-    top: 6px;
-}
+    .time-slot li .timing.selected::before {
+        color: #fff;
+        font-family: "Material Icons";
+        content: "\e5ca";
+        font-size: 12px;
+        font-weight: 900;
+        position: absolute;
+        right: 6px;
+        top: 6px;
+    }

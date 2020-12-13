@@ -13,6 +13,8 @@ namespace Atiendeme.Contratos.Repository.SQL
 
         Task<Reservations> GetReservationAsync(int reservationId);
 
+        Task<List<Reservations>> GetReservationsFromDoctor(string doctorId, int officeId, DateTime day);
+
         Task<List<Reservations>> GetReservationFromUserAsync(string userId);
 
         Task<List<Reservations>> GetReservationFromUserAsync(string userId, string state);
