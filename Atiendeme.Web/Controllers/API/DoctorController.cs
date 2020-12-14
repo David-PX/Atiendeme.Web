@@ -78,7 +78,7 @@ namespace Atiendeme.Web.Controllers.API
                 PhoneNumber = medico.PhoneNumber,
             };
 
-            var doctor = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorAsync(user, medico.Password);
+            var doctor = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorAsync(user, medico.Password, Request.Host.ToString());
 
             //Add validation
             if (doctor == null)

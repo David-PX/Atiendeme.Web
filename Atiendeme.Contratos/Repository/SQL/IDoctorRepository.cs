@@ -17,7 +17,7 @@ namespace Atiendeme.Contratos.Repository.SQL
 
         Task<ApplicationUserDto> GetDoctorAsync(string Id);
 
-        Task<ApplicationUser> SaveDoctorAsync(ApplicationUser medico, string pswd);
+        Task<ApplicationUser> SaveDoctorAsync(ApplicationUser medico, string pswd, string baseUrl);
 
         Task<List<DoctorLaborDays>> SaveDoctorLaborDays(List<DoctorLaborDays> doctorLaborDays);
 

@@ -94,7 +94,7 @@ namespace Atiendeme.Repositorio.SQL
             return user;
         }
 
-        public async Task<ApplicationUser> SaveDoctorAsync(ApplicationUser medico, string pswd)
+        public async Task<ApplicationUser> SaveDoctorAsync(ApplicationUser medico, string pswd, string baseUrl)
         {
             //Sacar esto a la capa de servicio
 
@@ -113,7 +113,7 @@ namespace Atiendeme.Repositorio.SQL
 
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    var callbackUrl = $"https://localhost:44300/Identity/Account/ConfirmEmail?userId={medico.Id}&code={code}&returnUrl=%2F";
+                    var callbackUrl = $"{baseUrl}/Identity/Account/ConfirmEmail?userId={medico.Id}&code={code}&returnUrl=%2F";
 
                     await _emailSender.SendEmailAsync(medico.Email, "Atiendeme - Confirma tu correo",
                         $"Favor confirmar su correo dando <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
