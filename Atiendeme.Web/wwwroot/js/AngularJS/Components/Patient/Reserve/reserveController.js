@@ -2,14 +2,17 @@
     var appName = "atiendeme";
     angular.module(appName).controller("reserveController", reserveController);
 
-    function reserveController($timeout, $scope, doctorService, specialtiesService, userService, dependentService, officeService, notificationService) {
+    function reserveController($timeout, $scope, doctorService, specialtiesService, reserveService, userService, dependentService, officeService, notificationService) {
         var self = this;
 
+        self.resetForm = resetForm;
         self.form = {
-            name: "",
-            email: "",
-            telephone: "",
-            address: ""
+            date: "",
+            doctor: "",
+            endTime: "",
+            office: "",
+            specialty: "",
+            startTime: ""
         };
 
         self.times = [
@@ -75,6 +78,7 @@
             self.officeService = officeService;
             self.specialtiesService = specialtiesService;
             self.dependentService = dependentService;
+            self.reserveService = reserveService;
         }
 
         self.next = function () {
@@ -94,34 +98,73 @@
                         var doctorLaborDays = self.reserveForm.doctor.doctorLaborDays.filter(x => x.officeId === self.reserveForm.office.id)
                      
                         self.times.forEach(function (time) {
-
-
+                             
                             time.active = doctorLaborDays.find(function (_doctorDays) {
                               return isInRange(_doctorDays.day, _doctorDays.startTime, _doctorDays.endTime, time.time, moment(self.reserveForm.date, "DD/MM/YYYY").format("dddd"));
 
                             }) ? true : false;
+                             
+                            time.busy = response.find(function (_busyDays) {
+                                var startValue = moment(moment(_busyDays.startTime, "YYYY-MM-DDTHH:mm").format("HH:mm"), "HH:mm");
+                                var endValue = moment(moment(_busyDays.endTime, "YYYY-MM-DDTHH:mm").format("HH:mm"), "HH:mm");
 
-                            time.busy = response.find(function (_busytime) {
-
-                                return isInRange(_busytime.)
-                            })
-                         
+                                return isInRangeWithoutDay(startValue, endValue, time.time)
+                            }) ? true: false;
                         }); 
+
                 }) 
             }
         }
 
-        self.timeClicked = function (time) { 
-            self.times.forEach(_time => {
-                _time.selected = _time.time == time.time
-            }) 
+        self.timeClicked = function (time) {
+            var founded = false;
+            self.times.forEach((_time, index) => {
+
+                if (_time.time == time.time) {
+                    _time.selected = true;
+                    founded = true;
+                    self.reserveForm.startTime = time.time;
+                    self.reserveForm.endTime = self.times[index + 1].time;
+                } else {
+                    _time.selected = false;
+                }
+
+            });
+            self.timeSelected = founded;
         }
 
         function isInRange(dayValue, startValue, endValue, startRange, dayRange) {
             var inRange =
                 dayValue.toLowerCase() === dayRange.toLowerCase() &&
-                moment(startRange, "hh:mm").isBetween(moment(startValue, "hh:mm"), moment(endValue, "hh:mm"), undefined, "[]")
+                moment(startRange, "hh:mm").isBetween(moment(startValue, "hh:mm"), moment(endValue, "hh:mm"), undefined, "[)")
             return inRange;
+        }
+
+        function isInRangeWithoutDay(startValue, endValue, startRange) {
+ 
+            var inRange =
+                moment(startRange, "HH:mm").isBetween(startValue, endValue, undefined, "[)")
+            return inRange;
+        }
+
+        self.saveReserve = function () {
+
+            reserveService.saveReserve(self.reserveForm, self.userService.currentUser.id)
+                .then(function (response) {
+                    self.finalText = moment(self.reserveForm.date, "DD/MM/YYYY").format("DD [de] MMMM [del] YYYY hh:mm a") + ' A ' + moment(self.reserveForm.endTime, "HH:mm").format("hh:mma")  
+                    self.next();
+                });  
+        }
+        function resetForm(){
+            self.form = {
+                date: "",
+                doctor: "",
+                endTime: "",
+                office: "",
+                specialty: "",
+                startTime: ""
+            };
+            self.stepper.reset();
         }
 
         function applyAndSetDirtyForm(waitFormDiggest) {

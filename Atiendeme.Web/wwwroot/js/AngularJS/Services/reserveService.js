@@ -1,48 +1,36 @@
 ﻿(function () {
     angular.module('atiendeme').service("reserveService", reserveService);
 
-    function reserveService(officeRepository, $rootScope, $q) {
+    function reserveService(reserveRepository, $rootScope, $q) {
         var self = this;
 
-        self.offices = [];
-        self.saveOffice = saveOffice;
-        self.getOffices = getOffices;
-        self.deleteOffice = deleteOffice;
+        self.saveReserve = saveReserve;
         initializeService();
 
         function initializeService() {
-            var promises = [];
-
-            promises.push(getOffices());
-
-            $q.all(promises).then(function (response) {
-                $rootScope.$broadcast('officesServiceLoaded', self.context);
-            },
-                function (error) {
-                    console.error(error);
-                });
         }
 
-        function getOffices() {
-            return officeRepository.getOffices().then(function (response) {
-                self.offices = response;
-                return response;
-            }, function (error) {
-                console.error(error);;
-                throw error;
-            });
-        }
+        function saveReserve(form, currentUserId) { 
+            var _form = {
+                id: form.id,
+                doctorId: form.doctor.id,
+                officeId: form.office.id,
+                startTime: moment(form.date + "T" + form.startTime, "DD/MM/YYYY HH:mm").format("YYYY-MM-DDTHH:mm"),
+                endTime: moment(form.date + "T" + form.endTime,"DD/MM/YYYY HH:mm").format("YYYY-MM-DDTHH:mm"),
+                patientId: currentUserId,
+                State: "Pendiente",
+                specialtyId: form.specialty.id
+            }
 
-        function saveOffice(form) {
-            if (!form.id) {
-                return officeRepository.saveOffice(form).then(function (response) {
-                    return getOffices();
+            if (!_form.id) {
+                return reserveRepository.saveReserve(_form).then(function (response) {
+                    return response;
                 }, function (error) {
-                    console.error(error);;
+                    console.error(error);
                     throw error;
                 })
             } else {
-                return officeRepository.updateOffice(form).then(function (response) {
+                return reserveRepository.updateReserve(_form).then(function (response) {
                     return getOffices();
                 }, function (error) {
                     console.error(error);;
@@ -51,14 +39,6 @@
             }
         }
 
-        function deleteOffice(id) {
-            return officeRepository.deleteOffice(id).then(function (response) {
-                return getOffices();
-            }, function (error) {
-                console.error(error);;
-                throw error;
-            })
-        }
         return self;
     }
 }());

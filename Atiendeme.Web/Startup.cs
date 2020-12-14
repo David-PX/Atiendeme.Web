@@ -47,7 +47,16 @@ namespace Atiendeme.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+               options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"],
+               sqlServerOptionsAction: sqlOptions =>
+               {
+                   sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 10,
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
+                         errorNumbersToAdd: null
+                       );
+                   sqlOptions.CommandTimeout(30);
+               }));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                        .AddRoles<IdentityRole>()
                        .AddEntityFrameworkStores<ApplicationDbContext>();

@@ -22,7 +22,8 @@ namespace Atiendeme.Repositorio.SQL
             var offices = await _applicationDbContext.Offices
                                     .Include(x => x.OfficesDoctors)
                                         .ThenInclude(x => x.Doctor)
-                                    .ToListAsync();
+                                        .AsNoTracking()
+                                    .ToListAsync().ConfigureAwait(false);
 
             return offices;
         }

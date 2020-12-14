@@ -2,7 +2,7 @@
     angular.module('atiendeme').factory("reserveRepository", reserveRepository);
     function reserveRepository($http) {
         function saveReserve(form) {
-            var url = "/api/Specialties";
+            var url = "/api/Reservation";
             var req = requestBuilder(url, 'POST', form);
 
             return $http(req).then(

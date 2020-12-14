@@ -11,6 +11,7 @@ namespace Atiendeme.Entidades.Entidades.SQL
         public string DoctorId { get; set; }
 
         public int OfficeId { get; set; }
+        public int SpecialtyId { get; set; }
 
         public DateTime StartTime { get; set; }
 

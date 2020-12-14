@@ -39,7 +39,9 @@ namespace Atiendeme.Repositorio.SQL
                                    UserName = u.UserName,
                                    Birthday = u.Birthday,
                                    Role = r.Name
-                               }).FirstOrDefaultAsync();
+                               }).AsNoTracking()
+                                .FirstOrDefaultAsync()
+                               .ConfigureAwait(false);
 
             return users;
         }

@@ -46,7 +46,7 @@
 
                         <div class="tab-pane active" role="tabpanel" id="step1">
                             <h3 class="text-center mt-3 mb-5">Proceso de Reserva</h3>
-                            <div class="row">
+                            <div class="row" ng-form="reserve.firstStep">
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
@@ -54,16 +54,19 @@
                                         <select id="office" class="form-control"
                                                 ng-model="reserve.reserveForm.office"
                                                 name="office" required
+                                                ng-class="{'is-invalid':reserve.firstStep.office.$error.required && reserve.firstStep.office.$dirty}"
                                                 ng-options="office as office.name for office in reserve.officeService.offices"></select>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Especialidad</label>
+                                        <label>Servicio</label>
                                         <select id="office" class="form-control"
                                                 ng-model="reserve.reserveForm.specialty"
                                                 name="specialty" required
+                                                
+                                                ng-class="{'is-invalid':reserve.firstStep.specialty.$error.required && reserve.firstStep.specialty.$dirty}"
                                                 ng-options="specialty as specialty.name for specialty in reserve.specialtiesService.specialties"></select>
                                     </div>
                                 </div>
@@ -72,7 +75,7 @@
                                         <label class="mr-3 mt-3">¿Es para un dependiente?</label>
 
                                         <label>
-                                            <input type="radio" ng-model="doctors.reserveForm.forDependent" value="true">
+                                            <input type="radio" ng-init="doctors.reserveForm.forDependent = false" ng-model="doctors.reserveForm.forDependent" value="true">
                                             SI
                                         </label>
                                         <label>
@@ -86,14 +89,16 @@
                                     <div class="form-group">
                                         <label class="form-label">Dependiente:</label>
                                         <select id="office" class="form-control"
+                                                
+                                                ng-class="{'is-invalid':reserve.firstStep.dependent.$error.required && reserve.firstStep.dependent.$dirty}"
                                                 ng-model="reserve.reserveForm.dependent"
-                                                name="dependent" required
+                                                name="dependent" ng-required="doctors.reserveForm.forDependent"
                                                 ng-options="specialty as specialty.name for specialty in reserve.dependentService.dependent"></select>
                                     </div>
                                 </div>
                             </div>
                             <ul class="list-inline pull-right">
-                                <li><button type="button" class="default-btn next-step" ng-click="reserve.next();">Siguiente</button></li>
+                                <li><button type="button" class="default-btn next-step" ng-disabled="!reserve.firstStep.$valid"ng-click="reserve.next();">Siguiente</button></li>
                             </ul>
                         </div>
                     </div>
@@ -163,58 +168,47 @@
 
                             <ul class="list-inline pull-right">
                                 <li><button type="button" class="default-btn prev-step" ng-click="reserve.back();">Atras</button></li>
-                                <li><button type="button" class="default-btn next-step" ng-click="reserve.next();">Continue</button></li>
+                                <li><button type="button" class="default-btn next-step" ng-init="reserve.timeSelected = false" ng-disabled="!reserve.timeSelected" ng-click="reserve.next();">Continue</button></li>
                             </ul>
                         </div>
                     </div>
 
-                    <div id="detail-part" class="content" role="tabpanel" aria-labelledby="detail-part-trigger">
+                    <div id="detail-part" class="content p-3" style="background-color: white" role="tabpanel" aria-labelledby="detail-part-trigger">
                         <div class="tab-pane" role="tabpanel" id="step3">
                             <h3 class="text-center mt-3 mb-5">Detalles</h3>
-                            <div class="all-info-container">
-                                <div class="list-content">
-                                    <a href="#listone" data-toggle="collapse" aria-expanded="false" aria-controls="listone">Consultorio y Servicio<i class="fa fa-chevron-down"></i></a>
-                                    <div class="collapse" id="listone">
-                                        <div class="list-box">
-                                            <div class="row">
-                                                <div class="col-md-4 offset-md-2">
-                                                    <p><strong>Consultorio:</strong> {{reserve.reserveForm.office.name}} </p>
-                                                </div>
+                            <div class="all-info-container ">
 
-                                                <div class="col-md-4 offset-md-2">
-                                                    <p><strong>Servicio:</strong> {{reserve.reserveForm.specialty.name}} </p>
-                                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-2">
+                                        <p><strong>Consultorio:</strong> {{reserve.reserveForm.office.name}} </p>
+                                    </div>
 
-                                                <div class="col-md-4 offset-md-2" ng-show="reserve.reserveForm.forDependent">
-                                                    <p><strong>Dependiente:</strong> {{reserve.reserveForm.dependent.name}} </p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-4 offset-md-2">
+                                        <p><strong>Servicio:</strong> {{reserve.reserveForm.specialty.name}} </p>
+                                    </div>
+
+                                    <div class="col-md-4 offset-md-2" ng-show="reserve.reserveForm.forDependent">
+                                        <p><strong>Dependiente:</strong> {{reserve.reserveForm.dependent.name}} </p>
                                     </div>
                                 </div>
-                                <div class="list-content">
-                                    <a href="#listtwo" data-toggle="collapse" aria-expanded="false" aria-controls="listtwo">Medico y Horario <i class="fa fa-chevron-down"></i></a>
-                                    <div class="collapse" id="listtwo">
-                                        <div class="list-box">
-                                            <div class="row">
-                                                <div class="col-md-4 offset-md-2">
-                                                    <p><strong>Fecha:</strong> 12/12/2012 </p>
-                                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-2">
+                                        <p><strong>Fecha:</strong> {{reserve.reserveForm.date}} </p>
+                                    </div>
 
-                                                <div class="col-md-4 offset-md-2">
-                                                    <p><strong>Horario:</strong> 9 AM</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mt-3">
-                                                <div class="col-md-4 offset-md-2">
-                                                    <p><strong>Doctor:</strong> {{reserve.reserveForm.doctor.name}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-4 offset-md-2">
+                                        <p><strong>Horario:</strong> 9 AM</p>
                                     </div>
                                 </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-4 offset-md-2">
+                                        <p><strong>Doctor:</strong> {{reserve.reserveForm.doctor.name}}</p>
+                                    </div>
+                                </div>
+                            
                             </div>
+                            
 
                             <ul class="list-inline pull-right">
                                 <li><button type="button" class="default-btn prev-step" ng-click="reserve.back();">Atras</button></li>
@@ -235,11 +229,11 @@
                                             Cita con el
                                             <strong>{{reserve.reserveForm.doctor.genre == 'Masculino' ? 'Dr.' : 'Dra.'}} {{reserve.reserveForm.doctor.name}}</strong>
                                             <br> para el
-                                            <strong>12 Nov 2019 5:00PM A 6:00PM</strong>
+                                            <strong>{{reserve.finalText}}</strong>
                                         </p>
 
-                                        <a class="btn btn-primary view-inv-btn" style="background: none" href="/">
-                                            Ir al menu
+                                        <a class="btn btn-primary view-inv-btn" ng-click="reserve.resetForm()" style="background: none" href="/">
+                                            Crear una nueva
                                         </a>
                                     </div>
                                 </div>

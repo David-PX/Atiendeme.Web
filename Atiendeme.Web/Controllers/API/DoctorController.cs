@@ -49,7 +49,7 @@ namespace Atiendeme.Web.Controllers.API
         }
 
         [HttpGet("[action]/{doctorId}/{officeId}/{day}")]
-        public async Task<ActionResult<List<Reservation>>> DoctorAvailability(DateTime day, string doctorId, int officeId)
+        public async Task<ActionResult<List<Reservations>>> DoctorAvailability(DateTime day, string doctorId, int officeId)
         {
             var result = await _atiendemeUnitOfWork.ReservationRepository.GetReservationsFromDoctor(doctorId, officeId, day);
             return Ok(result);

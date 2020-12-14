@@ -51,7 +51,7 @@ namespace Atiendeme.Repositorio.SQL
         public async Task<List<Reservations>> GetReservationsFromDoctor(string doctorId, int officeId, DateTime day)
         {
             return await _applicationDbContext.Reservations.Where(r =>
-                r.DoctorId == doctorId && r.OfficeId == officeId && (r.StartTime <= day && r.EndTime >= day)
+                r.DoctorId == doctorId && r.OfficeId == officeId && (r.StartTime.Date <= day.Date && r.EndTime.Date >= day.Date)
                 ).ToListAsync();
         }
 
