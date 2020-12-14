@@ -17,6 +17,22 @@
                 });
         }
 
+        function getDoctorsByParameters(officeId, specialtyId, day) {
+            var url = "/api/Doctor/" + officeId + "/" + specialtyId  + "/" + day;
+            var req = requestBuilder(url, 'GET');
+
+            return $http(req).then(
+                function (response) {
+                    if (response.status < 205)
+                        return response.data;
+                    else
+                        throw response;
+                }, function (error) {
+                    throw error;
+                });
+        }
+
+
         function doctorLaborDays(doctorId, officeId) {
             var url = "/api/DoctorLaborDays/" + doctorId + "/" + officeId;
             var req = requestBuilder(url, 'GET');
@@ -112,7 +128,8 @@
             updateDoctor: updateDoctor,
             deleteDoctor: deleteDoctor,
             doctorAvailability: doctorAvailability,
-            doctorLaborDays: doctorLaborDays
+            doctorLaborDays: doctorLaborDays,
+            getDoctorsByParameters: getDoctorsByParameters
         };
     }
 }());

@@ -89,6 +89,37 @@
             self.stepper.previous();
         }
 
+
+        self.getDoctorsWithParameters = function () {
+             
+            if (self.reserveForm.specialty != null && self.reserveForm.office != null && self.reserveForm.date) {
+
+                self.doctors = self.userService.doctors.filter(function (doctor) {
+
+                    var doctorWorkOnThisDay = doctor.doctorLaborDays.find(x => x.day.toLowerCase() === moment(self.reserveForm.date, "DD/MM/YYYY").format("dddd").toLowerCase()) ? true : false;
+
+                    var doctorWorkInThisOffice = doctor.offices.find(x => x.id == self.reserveForm.office.id) ? true : false;
+
+                    var doctorHaveThisSpecialty = doctor.specialties.find(x => x.id === self.reserveForm.specialty.id) ? true : false;
+                     
+                    return doctorWorkInThisOffice && doctorWorkOnThisDay && doctorHaveThisSpecialty;
+                })
+              
+                resetTimes();
+            }
+        }
+
+        function resetTimes() {
+            self.times.forEach(function (time) {
+                time.active =  false;
+                time.busy = false;
+                time.selected = false;
+            }); 
+            self.reserveForm.startTime = "";
+            self.reserveForm.endTime = "";
+        }
+
+
         self.doctorLaborDays = doctorLaborDays;
         function doctorLaborDays() {
             if (self.reserveForm.doctor != null && self.reserveForm.office != null && self.reserveForm.date) {
@@ -162,9 +193,18 @@
                 endTime: "",
                 office: "",
                 specialty: "",
-                startTime: ""
+                startTime: "",
+                forDependent: false,
+                dependent: ""
             };
             self.stepper.reset();
+        }
+
+        self.resetStepTwo = function () {
+            self.form.endTime = "";
+            self.form.startTime = "";
+            self.form.doctor = "";
+            self.form.date = ""; 
         }
 
         function applyAndSetDirtyForm(waitFormDiggest) {

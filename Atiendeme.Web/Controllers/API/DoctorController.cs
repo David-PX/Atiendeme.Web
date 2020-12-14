@@ -138,6 +138,12 @@ namespace Atiendeme.Web.Controllers.API
                 return StatusCode((int)HttpStatusCode.InternalServerError);
 
             ///
+            List<OfficesDoctors> officesDoctors = new List<OfficesDoctors>();
+            var currentOfficesDoctors = await _atiendemeUnitOfWork.OfficeRepository.GetOfficesDoctorsByDoctorId(medico.Id);
+
+            if (currentOfficesDoctors == null)
+                currentOfficesDoctors = new List<OfficesDoctors>();
+
             var doctorLaborDays = await _atiendemeUnitOfWork.DoctorRepository.GetDoctorLaborDays(medico.Id);
             if (medico.DoctorLaborDays != null)
             {
@@ -146,7 +152,9 @@ namespace Atiendeme.Web.Controllers.API
                     var doctorLaborDaysNotFound = doctorLaborDays.Where(x => !medico.DoctorLaborDays.Any(u => u.Id == x.Id)).ToList();
 
                     if (doctorLaborDaysNotFound.Count > 0)
+                    {
                         _atiendemeUnitOfWork.DoctorRepository.RemoveLaborDays(doctorLaborDaysNotFound);
+                    }
                 }
             }
             else
@@ -203,7 +211,32 @@ namespace Atiendeme.Web.Controllers.API
                     StartTime = x.StartTime,
                 }).ToList();
                 if (finalDoctorLaborDays.Count > 0)
+                {
                     await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(finalDoctorLaborDays);
+
+                    finalDoctorLaborDays.ForEach(_doctorLaborDay =>
+                    {
+                        if (currentOfficesDoctors.Count == 0)
+                        {
+                            officesDoctors.Add(new OfficesDoctors()
+                            {
+                                DoctorId = medico.Id,
+                                OfficeId = _doctorLaborDay.OfficeId
+                            });
+                        }
+                        else
+                        {
+                            if (!officesDoctors.Any(x => x.OfficeId == _doctorLaborDay.OfficeId) && currentOfficesDoctors.Any(x => x.OfficeId == _doctorLaborDay.OfficeId))
+                                officesDoctors.Add(new OfficesDoctors()
+                                {
+                                    DoctorId = medico.Id,
+                                    OfficeId = _doctorLaborDay.OfficeId
+                                });
+                        }
+                    });
+
+                    await _atiendemeUnitOfWork.OfficeRepository.SaveOfficesDoctor(officesDoctors.ToArray());
+                }
             }
 
             return StatusCode((int)HttpStatusCode.Created, updatedDoctor);

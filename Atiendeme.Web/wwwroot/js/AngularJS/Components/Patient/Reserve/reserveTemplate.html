@@ -98,7 +98,7 @@
                                 </div>
                             </div>
                             <ul class="list-inline pull-right">
-                                <li><button type="button" class="default-btn next-step" ng-disabled="!reserve.firstStep.$valid"ng-click="reserve.next();">Siguiente</button></li>
+                                <li><button type="button" class="default-btn next-step" ng-disabled="!reserve.firstStep.$valid"ng-click="reserve.next(); reserve.resetStepTwo();">Siguiente</button></li>
                             </ul>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                                              max-view="month"
                                              format="DD/MM/YYYY"
                                              start-view="month"
-                                             change="reserve.doctorLaborDays()"
+                                             change="reserve.getDoctorsWithParameters()"
                                              ng-model="reserve.dateRangeMoment"
                                              class="datePicker">
                                             <span class="feather icon-calendar"></span>
@@ -139,7 +139,7 @@
                                                 ng-model="reserve.reserveForm.doctor"
                                                 name="dependent" required
                                                 ng-change="reserve.doctorLaborDays()"
-                                                ng-options="doctor as doctor.name + ' ' + doctor.lastName + ' - ' + doctor.email for doctor in reserve.userService.doctors"></select>
+                                                ng-options="doctor as doctor.name + ' ' + doctor.lastName + ' - ' + doctor.email for doctor in reserve.doctors"></select>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
