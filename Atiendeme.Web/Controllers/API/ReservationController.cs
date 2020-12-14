@@ -4,6 +4,7 @@ using Atiendeme.Entidades.Entidades.SQL;
 using Atiendeme.Web.Configuration;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,13 @@ namespace Atiendeme.Web.Controllers.API
 
         public readonly IMapper _mapper;
 
-        public ReservationController(IAtiendemeUnitOfWork atiendemeUnitOfWork, IMapper mapper)
+        private readonly IEmailSender _emailSender;
+
+        public ReservationController(IAtiendemeUnitOfWork atiendemeUnitOfWork, IMapper mapper, IEmailSender emailSender)
         {
             _atiendemeUnitOfWork = atiendemeUnitOfWork;
             _mapper = mapper;
+            _emailSender = emailSender;
         }
 
         [HttpGet("{id}")]
@@ -75,6 +79,10 @@ namespace Atiendeme.Web.Controllers.API
 
             var result = await _atiendemeUnitOfWork.ReservationRepository.SaveReservation(reservation);
 
+            var currentUserEmail = User.GetUserEmail();
+            await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                $"Su cita para el {reservation.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido creada exitosamente.");
+
             return Ok(result);
         }
 
@@ -92,6 +100,10 @@ namespace Atiendeme.Web.Controllers.API
             reserve.State = changeReserveStatus.State;
 
             var result = _atiendemeUnitOfWork.ReservationRepository.ChangeReserveStatus(reserve);
+
+            var currentUserEmail = User.GetUserEmail();
+            await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido cancelada.");
 
             return Ok(result);
         }
