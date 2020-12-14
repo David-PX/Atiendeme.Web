@@ -22,7 +22,9 @@
         .when('/patient/reserve', {
             template: '<reserve-template></reserve-template>'
         })
-
+        .when('/patient/myreserve', {
+            template: '<my-reserve-template></my-reserve-template>'
+        })
         .otherwise({ redirectTo: '/dashboard' });
 });
 

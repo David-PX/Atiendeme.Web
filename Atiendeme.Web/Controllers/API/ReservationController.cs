@@ -1,4 +1,5 @@
 ﻿using Atiendeme.Contratos.Repository;
+using Atiendeme.Entidades.Entidades.Dtos;
 using Atiendeme.Entidades.Entidades.SQL;
 using Atiendeme.Web.Configuration;
 using AutoMapper;
@@ -47,6 +48,15 @@ namespace Atiendeme.Web.Controllers.API
             return Ok(result);
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<Reservations>>> CurrentUserReservation()
+        {
+            var userId = User.GetUserId();
+            var result = await _atiendemeUnitOfWork.ReservationRepository.GetReservationFromUserAsync(userId);
+
+            return Ok(result);
+        }
+
         [HttpGet("[action]/{day}")]
         public async Task<ActionResult<List<Reservations>>> ReservationByDay(DateTime day)
         {
@@ -64,6 +74,24 @@ namespace Atiendeme.Web.Controllers.API
             reservation.CreatedDate = DateTime.Now;
 
             var result = await _atiendemeUnitOfWork.ReservationRepository.SaveReservation(reservation);
+
+            return Ok(result);
+        }
+
+        [HttpPatch("[action]")]
+        public async Task<ActionResult<Reservations>> ChangeReserveStatus(ChangeReserveStatusDto changeReserveStatus)
+        {
+            if (changeReserveStatus.ReserveId == 0 || string.IsNullOrWhiteSpace(changeReserveStatus.State))
+                return BadRequest();
+
+            var reserve = await _atiendemeUnitOfWork.ReservationRepository.GetReservationAsync(changeReserveStatus.ReserveId);
+
+            if (reserve == null)
+                return NotFound();
+
+            reserve.State = changeReserveStatus.State;
+
+            var result = _atiendemeUnitOfWork.ReservationRepository.ChangeReserveStatus(reserve);
 
             return Ok(result);
         }
@@ -89,6 +117,9 @@ namespace Atiendeme.Web.Controllers.API
 
             if (reservation == null)
                 return BadRequest("Reservacion no encontrada");
+
+            if (reservation.State == "Completada")
+                return BadRequest();
 
             var deleted = _atiendemeUnitOfWork.ReservationRepository.DeleteReservation(reservation);
 

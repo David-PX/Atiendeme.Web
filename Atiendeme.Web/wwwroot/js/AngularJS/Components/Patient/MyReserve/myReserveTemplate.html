@@ -1,0 +1,53 @@
+﻿<link rel="stylesheet" href="../../../../../css/Portal/table.css">
+
+<section class="bg-mix py-3">
+    <div class="container">
+        <div class="card rounded-0">
+            <div class="card-body">
+
+                <div class="container-xl">
+                    <div class="table-responsive table-stripped">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h2>Mis <b>Citas</b></h2>
+                                    </div>
+                                </div>
+                            </div> 
+                            <table class="table table-striped table-hover">
+                                <thead class="m-5">
+                                    <tr>
+                                        <th>Estado</th>
+                                        <th>Cita Fecha</th>
+                                        <th>Oficina</th>
+                                        <th>Doctor</th>
+                                        <th>Servicio</th>
+                                        <th>Dependiente</th>
+                                        <th>Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="">
+                                    <tr ng-repeat="reserve in myReserve.userReservations">
+                                        <td ng-class="{'text-success': reserve.state === 'Completada', 'text-warning': reserve.state === 'Pendiente', 'text-danger': reserve.state === 'Rechazada' || reserve.state === 'Cancelada'}">{{reserve.state}}</td>
+                                        <td>{{reserve.startTime}}</td>
+                                        <td>{{reserve.office.name}} </td>
+                                        <td>{{reserve.doctor.name}} {{reserve.doctor.lastName}}</td>
+                                        <td>{{reserve.specialty.name}} </td>
+                                        <td>{{reserve.dependent.name}} </td>
+
+                                        <td >
+                                            <a ng-show="reserve.state !== 'Completada' && reserve.state !== 'Cancelada'"
+                                               class="delete" ng-click="myReserve.deniedRequest(reserve.id)"><i class="material-icons">remove_circle_outline</i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+ 

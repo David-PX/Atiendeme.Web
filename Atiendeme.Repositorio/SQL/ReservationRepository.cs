@@ -35,7 +35,14 @@ namespace Atiendeme.Repositorio.SQL
 
         public async Task<List<Reservations>> GetReservationFromUserAsync(string userId)
         {
-            return await _applicationDbContext.Reservations.Where(r => r.PatientId == userId).ToListAsync();
+            return await _applicationDbContext.Reservations
+                                .Where(r => r.PatientId == userId)
+                                .Include(x => x.Doctor)
+                                .Include(x => x.Patient)
+                                .Include(x => x.Dependent)
+                                .Include(x => x.Office)
+                                .Include(x => x.Specialty)
+                                .ToListAsync();
         }
 
         public async Task<List<Reservations>> GetReservationFromUserAsync(string userId, string state)
@@ -71,6 +78,14 @@ namespace Atiendeme.Repositorio.SQL
             _applicationDbContext.SaveChanges();
 
             return deleted.State == EntityState.Detached;
+        }
+
+        public Reservations ChangeReserveStatus(Reservations changeReserveStatus)
+        {
+            var reserve = _applicationDbContext.Reservations.Update(changeReserveStatus);
+            _applicationDbContext.SaveChanges();
+
+            return reserve.Entity;
         }
     }
 }

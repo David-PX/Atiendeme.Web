@@ -1,9 +1,45 @@
 ﻿(function () {
     angular.module('atiendeme').factory("reserveRepository", reserveRepository);
     function reserveRepository($http) {
+        self.userReservation = [];
         function saveReserve(form) {
             var url = "/api/Reservation";
             var req = requestBuilder(url, 'POST', form);
+
+            return $http(req).then(
+                function (response) {
+                    if (response.status < 205)
+                        return response.data;
+                    else
+                        throw response;
+                }, function (error) {
+                    throw error;
+                });
+        }
+
+        function getCurrentUserReservation() {
+            var url = "/api/Reservation/CurrentUserReservation";
+            var req = requestBuilder(url);
+
+            return $http(req).then(
+                function (response) {
+                    if (response.status < 205) {
+                        self.userReservation = response.data
+                        return response.data;
+                    }
+                    else
+                        throw response;
+                }, function (error) {
+                    throw error;
+                });
+        }
+
+        function changeReserveStatus(reserveId, state) {
+            var url = "/api/Reservation/ChangeReserveStatus";
+            var req = requestBuilder(url, 'PATCH', {
+                state: state,
+                reserveId: reserveId
+            });
 
             return $http(req).then(
                 function (response) {
@@ -33,7 +69,9 @@
         }
 
         return {
-            saveReserve: saveReserve
+            saveReserve: saveReserve,
+            getCurrentUserReservation: getCurrentUserReservation,
+            changeReserveStatus: changeReserveStatus
         };
     }
 }());
