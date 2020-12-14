@@ -25,6 +25,10 @@
         .when('/patient/myreserve', {
             template: '<my-reserve-template></my-reserve-template>'
         })
+
+        .when('/patient/viewdoctors', {
+            template: '<doctor-view-template></doctor-view-template>'
+        })
         .otherwise({ redirectTo: '/dashboard' });
 });
 

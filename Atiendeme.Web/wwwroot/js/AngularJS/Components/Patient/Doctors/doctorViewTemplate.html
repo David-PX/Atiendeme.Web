@@ -1,0 +1,27 @@
+﻿<section class="bg-mix py-3">
+    <div class="container"> 
+
+
+
+        <div class="card rounded-0">
+            <h2 class="p-3">Doctores</h2>
+            <div class="card-body">
+                <div class="row">
+                    <div class="container-md">
+                        <div class="card-columns">
+                            <div class="card" ng-repeat="doctor in doctorView.doctors">
+                                <img class="card-img-top" src="https://dentistryatlifestyles.com/wp-content/uploads/2014/10/Dr-Augimeri-Dentist-300x300.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{doctor.name}} {{doctor.lastName}}</h5>
+                                    <p class="card-text">Consultorios: {{doctor.officesString}}</p>
+                                    <p class="card-text">Servicios: {{doctor.specialtiesString}}</p>
+                                    <p class="card-text text-right"><small class="text-muted">{{doctor.email}}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
