@@ -6,7 +6,7 @@
         var self = this;
 
         self.resetForm = resetForm;
-        self.form = {
+        self.reserveForm = {
             date: "",
             doctor: "",
             endTime: "",
@@ -77,7 +77,10 @@
             self.userService = userService;
             self.officeService = officeService;
             self.specialtiesService = specialtiesService;
+            //
             self.dependentService = dependentService;
+            self.dependentService.getDependentFromCurrentUser();
+            //
             self.reserveService = reserveService;
         }
 
@@ -183,11 +186,11 @@
             reserveService.saveReserve(self.reserveForm, self.userService.currentUser.id)
                 .then(function (response) {
                     self.finalText = moment(self.reserveForm.date, "DD/MM/YYYY").format("DD [de] MMMM [del] YYYY hh:mm a") + ' A ' + moment(self.reserveForm.endTime, "HH:mm").format("hh:mma")  
-                    self.next();
+                    self.next(); 
                 });  
         }
         function resetForm(){
-            self.form = {
+            self.reserveForm = {
                 date: "",
                 doctor: "",
                 endTime: "",
@@ -197,14 +200,20 @@
                 forDependent: false,
                 dependent: ""
             };
+            resetTimes();
             self.stepper.reset();
+
+            this.firstStep.$setUntouched();
+            this.firstStep.$setPristine();
+             
         }
 
         self.resetStepTwo = function () {
-            self.form.endTime = "";
-            self.form.startTime = "";
-            self.form.doctor = "";
-            self.form.date = ""; 
+            self.reserveForm.endTime = "";
+            self.reserveForm.startTime = "";
+            self.reserveForm.doctor = "";
+            self.reserveForm.date = ""; 
+            resetTimes();
         }
 
         function applyAndSetDirtyForm(waitFormDiggest) {

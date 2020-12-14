@@ -19,6 +19,21 @@
         }
 
 
+        function getDependentFromCurrentUser() {
+            var url = "/api/Patient/CurrentUserDependendents";
+            var req = requestBuilder(url);
+
+            return $http(req).then(
+                function (response) {
+                    if (response.status < 205)
+                        return response.data;
+                    else
+                        throw response;
+                }, function (error) {
+                    throw error;
+                });
+        }
+         
         function saveDependent(form) {
             var url = "/api/Patient/Dependent";
             var req = requestBuilder(url, 'POST', form);
@@ -83,7 +98,8 @@
             getDependent: getDependent,
             saveDependent: saveDependent,
             updateDependent: updateDependent,
-            deleteDependent: deleteDependent
+            deleteDependent: deleteDependent,
+            getDependentFromCurrentUser: getDependentFromCurrentUser
         };
     }
 })();

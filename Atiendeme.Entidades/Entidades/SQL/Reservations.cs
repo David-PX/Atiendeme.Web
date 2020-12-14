@@ -28,5 +28,7 @@ namespace Atiendeme.Entidades.Entidades.SQL
         public bool CreatedBySecretary { get; set; }
 
         public string SecretaryId { get; set; }
+        public bool ForDependent { get; set; }
+        public int? DependentId { get; set; }
     }
 }

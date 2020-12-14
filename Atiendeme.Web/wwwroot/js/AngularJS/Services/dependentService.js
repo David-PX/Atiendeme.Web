@@ -6,16 +6,16 @@
         var self = this;
 
         self.dependent = [];
+        self.currentUserDependents = [];
         self.saveDependent = saveDependent;
         self.getDependent = getDependent;
         self.deleteDependent = deleteDependent;
+        self.getDependentFromCurrentUser = getDependentFromCurrentUser;
         initializeService();
 
         function initializeService() {
             var promises = [];
-
-            promises.push(getDependent());
-
+ 
             $q.all(promises).then(function (response) {
                 $rootScope.$broadcast('dependentServiceLoaded', self.context);
             },
@@ -27,6 +27,16 @@
         function getDependent() {
             return dependentRepository.getDependent().then(function (response) {
                 self.dependent = response;
+                return response;
+            }, function (error) {
+                console.error(error);;
+                throw error;
+            });
+        }
+
+        function getDependentFromCurrentUser() {
+            return dependentRepository.getDependentFromCurrentUser().then(function (response) {
+                self.currentUserDependents = response;
                 return response;
             }, function (error) {
                 console.error(error);;

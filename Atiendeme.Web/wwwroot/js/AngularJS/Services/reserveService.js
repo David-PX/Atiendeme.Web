@@ -19,8 +19,14 @@
                 endTime: moment(form.date + "T" + form.endTime,"DD/MM/YYYY HH:mm").format("YYYY-MM-DDTHH:mm"),
                 patientId: currentUserId,
                 State: "Pendiente",
-                specialtyId: form.specialty.id
+                specialtyId: form.specialty.id,
+                forDependent: form.forDependent
             }
+
+            if (_form.forDependent && form.dependent != null) { 
+                _form.DependentId = form.dependent.id;
+            }
+
 
             if (!_form.id) {
                 return reserveRepository.saveReserve(_form).then(function (response) {
