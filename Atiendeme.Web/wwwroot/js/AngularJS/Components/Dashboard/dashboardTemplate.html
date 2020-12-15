@@ -52,24 +52,24 @@
                             <a href="#/patient/viewdoctors" class="btn btn-outline-info">Ver Doctores</a>
                         </div>
                     </div>
-
-                    <div class="row" ng-show="dashboard.userService.currentUser.role === 'Doctor'">
-                        <div class="col-lg-3 col-md-6 d-flex stat my-3">
-                            <div class="mx-auto">
-                                <a href="#/doctor/doctorreserves" class="btn btn-outline-info">Ver Citas</a>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row" ng-show="dashboard.userService.currentUser.role === 'Secretario'">
-                        <div class="col-lg-3 col-md-6 d-flex stat my-3">
-                            <div class="mx-auto">
-                                <a href="#/secretary/viewreserve" class="btn btn-outline-info">Ver Citas</a>
-                            </div>
+                  </div>
+                <div class="row" ng-show="dashboard.userService.currentUser.role === 'Doctor'">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                        <div class="mx-auto">
+                            <a href="#/doctor/doctorreserves" class="btn btn-outline-info">Ver Citas</a>
                         </div>
                     </div>
                 </div>
+
+
+                <div class="row" ng-show="dashboard.userService.currentUser.role === 'Secretario'">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                        <div class="mx-auto">
+                            <a href="#/secretary/viewreserve" class="btn btn-outline-info">Ver Citas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
