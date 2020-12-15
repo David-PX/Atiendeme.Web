@@ -348,12 +348,12 @@
                                         <h3>¡Cita reservada con exito!</h3>
                                         <p>
                                             Cita con el
-                                            <strong>{{reserve.reserveForm.doctor.genre == 'Masculino' ? 'Dr.' : 'Dra.'}} {{reserve.reserveForm.doctor.name}}</strong>
+                                            <strong>{{reserve.reserveForm.doctor.genre == 'Masculino' ? 'Dr.' : 'Dra.'}} {{reserve.reserveForm.doctor.name}} {{reserve.reserveForm.doctor.lastName}}</strong>
                                             <br> para el
                                             <strong>{{reserve.finalText}}</strong>
                                             <br />
                                             <strong ng-show="reserve.reserveForm.forDependent">
-                                                Para su dependiente: {{reserve.reserveForm.dependent.name}} + {{reserve.reserveForm.dependent.lastName}}
+                                                Para su dependiente: {{reserve.reserveForm.dependent.name}} {{reserve.reserveForm.dependent.lastName}}
                                             </strong>
                                         </p>
 

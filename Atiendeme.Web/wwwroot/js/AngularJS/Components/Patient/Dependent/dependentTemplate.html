@@ -19,8 +19,6 @@
                                         <a class="btn btn-success" ng-click="dependent.addDependent()"><i class="material-icons">&#xE147;</i> <span>Agregar nuevo Dependiente</span></a>
                                     </div>
                                 </div>
-
-                                
                             </div>
                             <table class="table table-striped table-hover">
                                 <thead class="m-5">
@@ -32,22 +30,18 @@
                                         <th width="40">Email</th>
                                         <th width="40">Identificación</th>
                                         <th width="20">Acciones </th>
-
-
                                     </tr>
                                 </thead>
-                                
+
                                 <tbody class="">
                                     <tr ng-repeat="_dependent in dependent.dependentService.currentUserDependents">
-                                        
+
                                         <td>{{_dependent.name}}</td>
                                         <td>{{_dependent.lastName}} </td>
                                         <td>{{_dependent.relationship}} </td>
                                         <td>{{_dependent.age}} </td>
                                         <td>{{_dependent.email}} </td>
                                         <td>{{_dependent.idCard}} </td>
-
-
 
                                         <td>
                                             <a class="edit" ng-click="dependent.editDependent(_dependent)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -120,7 +114,7 @@
                                 <input type="text" ng-model="dependent.form.email"
                                        ng-class="{'is-invalid':dependent.dependentForm.email.$error.required && dependent.dependentForm.email.$dirty}"
                                        name="email"
-                                       class="form-control" required />
+                                       class="form-control" />
                             </div>
                             <div class="form-group">
                                 <label>Identificacion</label>
@@ -130,9 +124,6 @@
                                        class="form-control" required />
                             </div>
                         </div>
-                        
-
-
                     </div>
                 </div>
                 <div class="modal-footer">
