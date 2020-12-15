@@ -7,6 +7,7 @@
         self.saveReserve = saveReserve;
         self.getCurrentUserReservation = getCurrentUserReservation;
         self.changeReserveStatus = changeReserveStatus;
+        self.secretaryReservationList = secretaryReservationList;
         initializeService();
 
         function initializeService() {
@@ -56,8 +57,16 @@
             });
         }
 
-        function changeReserveStatus(reserveId, state) {
+        function secretaryReservationList() {
+            return reserveRepository.secretaryReservationList().then(function (response) {
+                return response;
+            }, function (error) {
+                console.error(error);;
+                throw error;
+            });
+        }
 
+        function changeReserveStatus(reserveId, state) {
             return reserveRepository.changeReserveStatus(reserveId, state).then(function (response) {
                 self.userReserves = response;
                 return response;
@@ -65,7 +74,6 @@
                 console.error(error);;
                 throw error;
             });
-            
         }
 
         return self;

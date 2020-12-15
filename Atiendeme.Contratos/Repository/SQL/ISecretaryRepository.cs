@@ -24,5 +24,7 @@ namespace Atiendeme.Contratos.Repository.SQL
         List<SecretaryDoctor> RemoveSecretaryDoctor(List<SecretaryDoctor> secretaryDoctor);
 
         Task<List<SecretaryDoctor>> GetSecretaryDoctorByDoctorId(string doctorId);
+
+        Task<List<SecretaryDoctor>> GetSecretaryDoctorComplete(string secretaryId);
     }
 }

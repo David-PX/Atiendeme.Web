@@ -32,6 +32,12 @@
         .when('/patient/viewdoctors', {
             template: '<doctor-view-template></doctor-view-template>'
         })
+
+        //
+        .when('/secretary/viewreserve', {
+            template: '<view-reserve-template></view-reserve-template>'
+        })
+
         .otherwise({ redirectTo: '/dashboard' });
 });
 

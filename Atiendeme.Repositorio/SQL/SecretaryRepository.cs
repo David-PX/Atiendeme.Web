@@ -122,6 +122,16 @@ namespace Atiendeme.Repositorio.SQL
             return result;
         }
 
+        public async Task<List<SecretaryDoctor>> GetSecretaryDoctorComplete(string secretaryId)
+        {
+            var result = await _applicationDbContext.SecretaryDoctor
+                                .Where(secretaryDoctor => secretaryDoctor.SecretaryId == secretaryId)
+                                .Include(x => x.Doctor)
+                                .ToListAsync();
+
+            return result;
+        }
+
         public async Task<List<SecretaryDoctor>> GetSecretaryDoctorByDoctorId(string doctorId)
         {
             var result = await _applicationDbContext.SecretaryDoctor.Where(secretaryDoctor => secretaryDoctor.DoctorId == doctorId).ToListAsync();

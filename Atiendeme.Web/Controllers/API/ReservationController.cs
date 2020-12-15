@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -61,6 +62,19 @@ namespace Atiendeme.Web.Controllers.API
             return Ok(result);
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<Reservations>>> SecretaryReservationList()
+        {
+            var userId = User.GetUserId();
+
+            var doctorsUnderSecretary = await _atiendemeUnitOfWork.SecretaryRepository.GetSecretaryDoctorComplete(userId);
+
+            var doctorIds = doctorsUnderSecretary.Select(x => x.Doctor.Id).ToList();
+            var result = await _atiendemeUnitOfWork.ReservationRepository.GetReservationFromDoctorsAsync(doctorIds);
+
+            return Ok(result);
+        }
+
         [HttpGet("[action]/{day}")]
         public async Task<ActionResult<List<Reservations>>> ReservationByDay(DateTime day)
         {
@@ -102,9 +116,29 @@ namespace Atiendeme.Web.Controllers.API
             var result = _atiendemeUnitOfWork.ReservationRepository.ChangeReserveStatus(reserve);
 
             var currentUserEmail = User.GetUserEmail();
-            await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
-                $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido cancelada.");
 
+            switch (changeReserveStatus.State)
+            {
+                case "Cancelada":
+                    await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                              $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido cancelada.");
+                    break;
+
+                case "Completada":
+                    await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                              $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido Completada.");
+                    break;
+
+                case "En Proceso":
+                    await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                              $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} se encuentra en proceso.");
+                    break;
+
+                case "Aceptada":
+                    await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                              $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido aceptada.");
+                    break;
+            }
             return Ok(result);
         }
 

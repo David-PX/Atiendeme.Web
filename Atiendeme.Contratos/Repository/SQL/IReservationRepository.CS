@@ -23,6 +23,8 @@ namespace Atiendeme.Contratos.Repository.SQL
 
         Task<Reservations> SaveReservation(Reservations reservation);
 
+        Task<List<Reservations>> GetReservationFromDoctorsAsync(List<string> doctorsId);
+
         bool DeleteReservation(Reservations reservation);
 
         Reservations ChangeReserveStatus(Reservations changeReserveStatus);
