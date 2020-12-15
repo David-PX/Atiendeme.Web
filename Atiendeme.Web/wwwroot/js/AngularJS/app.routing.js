@@ -14,14 +14,15 @@
         .when('/admin/specialties', {
             template: '<specialties-template></specialties-template>'
         })
-        .when('/admin/dependent', {
-            template: '<dependent-template></dependent-template>'
-        })
+
         .when('/admin/secretaries', {
             template: '<secretaries-template></secretaries-template>'
         })
 
         //
+        .when('/patient/dependent', {
+            template: '<dependent-template></dependent-template>'
+        })
         .when('/patient/reserve', {
             template: '<reserve-template></reserve-template>'
         })

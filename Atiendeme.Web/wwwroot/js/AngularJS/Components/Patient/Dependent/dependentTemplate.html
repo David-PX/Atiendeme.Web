@@ -30,7 +30,7 @@
                                         <th width="40">Relacion</th>
                                         <th width="40">Edad</th>
                                         <th width="40">Email</th>
-                                        <th width="40">Carta</th>
+                                        <th width="40">Identificación</th>
                                         <th width="20">Acciones </th>
 
 
@@ -86,18 +86,24 @@
                             </div>
                             <div class="form-group">
                                 <label>Apellido</label>
-                                <input type="text" ng-model="dependent.form.lastname"
-                                       ng-class="{'is-invalid':dependent.dependentForm.lastname.$error.required && dependent.dependentForm.lastname.$dirty}"
-                                       name="lastname"
+                                <input type="text" ng-model="dependent.form.lastName"
+                                       ng-class="{'is-invalid':dependent.dependentForm.lastName.$error.required && dependent.dependentForm.lastName.$dirty}"
+                                       name="lastName"
                                        class="form-control" required />
                             </div>
 
                             <div class="form-group">
                                 <label>Relacion</label>
-                                <input type="text" ng-model="dependent.form.relationship"
-                                       ng-class="{'is-invalid':dependent.dependentForm.relationship.$error.required && dependent.dependentForm.relationship.$dirty}"
-                                       name="relationship"
-                                       class="form-control" required />
+
+                                <select class="form-control"
+                                        ng-model="dependent.form.relationship"
+                                        name="relationship"
+                                        ng-class="{'is-invalid':dependent.dependentForm.relationship.$error.required && dependent.dependentForm.relationship.$dirty}"
+                                        id="relationship" required>
+                                    <option value="Padre">Padre</option>
+                                    <option value="Conyuge">Conyuge</option>
+                                    <option value="Hijo">Hijo</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -117,7 +123,7 @@
                                        class="form-control" required />
                             </div>
                             <div class="form-group">
-                                <label>Carta</label>
+                                <label>Identificacion</label>
                                 <input type="text" ng-model="dependent.form.idCard"
                                        ng-class="{'is-invalid':dependent.dependentForm.idCard.$error.required && dependent.dependentForm.idCard.$dirty}"
                                        name="idCard"

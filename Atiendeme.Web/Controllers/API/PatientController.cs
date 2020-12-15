@@ -36,6 +36,13 @@ namespace Atiendeme.Web.Controllers.API
         {
             var search = await _atiendemeUnitOfWork.PatientRepository.GetDependent(dependentsDto.Id);
 
+            search.Age = dependentsDto.Age;
+            search.Email = dependentsDto.Email;
+            search.IdCard = dependentsDto.IdCard;
+            search.LastName = dependentsDto.LastName;
+            search.Name = dependentsDto.Name;
+            search.Relationship = dependentsDto.Relationship;
+
             var result = _atiendemeUnitOfWork.PatientRepository.UpdateDependent(search);
 
             if (result == null)

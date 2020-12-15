@@ -29,6 +29,9 @@
             self.userService = userService;
             self.dependentService = dependentService;
 
+
+            self.dependentService.getDependentFromCurrentUser();
+
             self.localLanguage = {
                 selectAll: "Todos all",
                 selectNone: "Ninguno",

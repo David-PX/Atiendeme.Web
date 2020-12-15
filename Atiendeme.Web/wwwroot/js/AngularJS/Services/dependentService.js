@@ -41,6 +41,7 @@
 
             if (!form.id) {
                 return dependentRepository.saveDependent(form).then(function (response) {
+                    getDependent();
                     return getDependentFromCurrentUser();
                 }, function (error) {
                     console.error(error);;
@@ -48,6 +49,7 @@
                 })
             } else {
                 return dependentRepository.updateDependent(form).then(function (response) {
+                    getDependent();
                     return getDependentFromCurrentUser();
                 }, function (error) {
                     console.error(error);;
@@ -60,7 +62,8 @@
 
         function deleteDependent(id) {
             return dependentRepository.deleteDependent(id).then(function (response) {
-                return getDependent();
+                getDependent();
+                return getDependentFromCurrentUser();
             }, function (error) {
                 console.error(error);;
                 throw error;
