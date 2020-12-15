@@ -7,7 +7,7 @@
 
         self.form = {
             name: "",
-            lastname: "",
+            lastName: "",
             relationship: "",
             age: "",
             email: "",
@@ -96,7 +96,7 @@
         function resetForm() {
             self.form = {
                 name: "",
-                lastname: "",
+                lastName: "",
                 relationship: "",
                 age: "",
                 email: "",

@@ -31,20 +31,23 @@
                                         <th width="40">Edad</th>
                                         <th width="40">Email</th>
                                         <th width="40">Carta</th>
-                                        
+                                        <th width="20">Acciones </th>
+
 
                                     </tr>
                                 </thead>
+                                
                                 <tbody class="">
-                                    <tr ng-repeat="_dependent in dependent.dependentService.dependent">
+                                    <tr ng-repeat="_dependent in dependent.dependentService.currentUserDependents">
+                                        
                                         <td>{{_dependent.name}}</td>
-                                        <td>{{_dependent.lastname}} </td>
+                                        <td>{{_dependent.lastName}} </td>
                                         <td>{{_dependent.relationship}} </td>
                                         <td>{{_dependent.age}} </td>
                                         <td>{{_dependent.email}} </td>
                                         <td>{{_dependent.idCard}} </td>
-                                        
-                                      
+
+
 
                                         <td>
                                             <a class="edit" ng-click="dependent.editDependent(_dependent)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>

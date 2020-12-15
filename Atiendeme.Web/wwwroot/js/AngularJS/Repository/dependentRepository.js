@@ -4,7 +4,7 @@
     function dependentRepository($http) {
 
         function getDependent() {
-            var url = "/api/Patient/";
+            var url = "/api/Patient";
             var req = requestBuilder(url);
 
             return $http(req).then(
