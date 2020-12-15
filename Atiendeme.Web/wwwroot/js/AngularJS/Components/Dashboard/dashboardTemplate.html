@@ -13,35 +13,63 @@
     <div class="container">
         <div class="card rounded-0">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Administrador'">
+                <div class="row" ng-show="dashboard.userService.currentUser.role === 'Administrador'">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
                         <div class="mx-auto">
                             <a href="#/admin/offices" class="btn btn-outline-info">Manejo de Consultorios</a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Administrador'">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
                         <div class="mx-auto">
                             <a href="#/admin/doctors" class="btn btn-outline-info">Manejo de Doctores</a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Administrador'">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
                         <div class="mx-auto">
                             <a href="#/admin/offices" class="btn btn-outline-info">Manejo de Servicios</a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Paciente'">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                        <div class="mx-auto">
+                            <a href="#/admin/secretaries" class="btn btn-outline-info">Manejo de Secretarias</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="dashboard.userService.currentUser.role === 'Paciente'">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
                         <div class="mx-auto">
                             <a href="#/patient/reserve" class="btn btn-outline-info">Elaborar Cita</a>
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 d-flex stat my-3" ng-show="dashboard.userService.currentUser.role === 'Paciente'">
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
                         <div class="mx-auto">
                             <a href="#/patient/myreserve" class="btn btn-outline-info">Ver mis Cita</a>
                         </div>
                     </div>
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                        <div class="mx-auto">
+                            <a href="#/patient/viewdoctors" class="btn btn-outline-info">Ver Doctores</a>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="dashboard.userService.currentUser.role === 'Doctor'">
+                        <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                            <div class="mx-auto">
+                                <a href="#/doctor/doctorreserves" class="btn btn-outline-info">Ver Citas</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row" ng-show="dashboard.userService.currentUser.role === 'Secretario'">
+                        <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                            <div class="mx-auto">
+                                <a href="#/secretary/viewreserve" class="btn btn-outline-info">Ver Citas</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 </section>

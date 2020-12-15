@@ -21,7 +21,7 @@
 
         <div class="menu" ng-show="layout.userService.currentUser.role === 'Paciente'">
             <a href="#/" class="d-block text-light p-3 border-0 active-menu-option">Inicio</a>
-            <a href="#/patient/reserve" class="d-block text-light p-3 border-0">Hacer Cita</a>
+            <a href="#/patient/reserve" class="d-block text-light p-3 border-0">Elaborar Cita</a>
             <a href="#/patient/myreserve" class="d-block text-light p-3 border-0">Ver mis Citas</a>
             <a href="#/patient/viewdoctors" class="d-block text-light p-3 border-0">Ver Doctores</a>
         </div>
@@ -57,9 +57,7 @@
                                 <img src="../../../assets/images/usuario.jpg" class="img-fluid rounded-circle avatar mr-2" alt="https://generated.photos/" /> {{layout.userService.currentUser.name}} {{layout.userService.currentUser.lastName}}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': layout.showNavBar}" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="Identity/Account/Manage/Index">Mi perfil</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="Identity/Account/Logout">Cerrar sesión</a>
+                                <a class="dropdown-item" href="Identity/Account/Manage/Index">Mi perfil</a> 
                             </div>
                         </li>
                     </ul>
