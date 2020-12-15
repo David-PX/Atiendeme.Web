@@ -57,8 +57,9 @@
             self.form = angular.copy(doctor);
 
             self.form.doctors = [];
+ 
             self.form.secretaryDoctors.forEach(x => {
-                x.doctors.push(x.doctor)
+                self.form.doctors.push(x.doctor)
             })
 
             self.doctorService.doctors.forEach(function (_doctor) {
