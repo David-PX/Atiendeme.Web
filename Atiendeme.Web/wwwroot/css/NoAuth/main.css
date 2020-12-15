@@ -753,6 +753,7 @@ th {
 .section-gap {
     padding: 20px 0
 }
+
 section-gap-test {
     padding: 40px 0
 }
@@ -1189,22 +1190,22 @@ section-gap-test {
 
 .navbar-nav a {
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     color: #fff;
-    padding: 32px 20px 
-} 
-    
+    padding: 32px 20px
+}
+
 @media (max-width: 1025px) {
     .navbar-nav a {
         font-size: 10px;
     }
 }
 
-    .navbar-nav a:hover,
-    .navbar-nav a.active {
-        color: #cea06c
-    }
+.navbar-nav a:hover,
+.navbar-nav a.active {
+    color: #cea06c
+}
 
 @media (max-width: 992px) {
     .navbar-nav {
@@ -4264,7 +4265,6 @@ h6 {
     background: -o-linear-gradient(bottom, #0c0c0c3b 0%, #263a4e 100%);
     /* background: linear-gradient(to top, #0c0c0c 0%, #85d8e0 100%); */
 }
-
 
 .normal-p-size {
     font-size: 13px;

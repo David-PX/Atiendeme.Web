@@ -79,6 +79,7 @@ namespace Atiendeme.Repositorio.SQL
         {
             return await _applicationDbContext.Reservations.Where(r =>
                 r.DoctorId == doctorId && r.OfficeId == officeId && (r.StartTime.Date <= day.Date && r.EndTime.Date >= day.Date)
+                && r.State != "Cancelada"
                 ).ToListAsync();
         }
 
