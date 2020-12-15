@@ -52,7 +52,7 @@ namespace Atiendeme.Repositorio.SQL
                                    UserName = u.UserName,
                                    Birthday = u.Birthday,
                                    Role = r.Name
-                               }).ToListAsync();
+                               }).AsNoTracking().ToListAsync();
 
             for (int i = 0; i < users.Count; i++)
             {

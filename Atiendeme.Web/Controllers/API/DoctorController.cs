@@ -250,6 +250,10 @@ namespace Atiendeme.Web.Controllers.API
             if (search == null)
                 return NotFound();
 
+            var userSecretaryDoctor = await _atiendemeUnitOfWork.SecretaryRepository.GetSecretaryDoctorByDoctorId(doctorId);
+
+            var resultRemoveSecretary = _atiendemeUnitOfWork.SecretaryRepository.RemoveSecretaryDoctor(userSecretaryDoctor);
+
             var result = _atiendemeUnitOfWork.DoctorRepository.RemoveDoctor(search);
 
             if (result == null)

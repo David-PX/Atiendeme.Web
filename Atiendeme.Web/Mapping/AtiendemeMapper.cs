@@ -29,6 +29,12 @@ namespace Atiendeme.Web.Mapping
             CreateMap<OfficesDoctorsDto, OfficesDoctors>()
                    .ForMember(dest => dest.Doctor, opt => opt.AddTransform(s => null))
                    .ForMember(dest => dest.Office, opt => opt.AddTransform(s => null));
+
+
+            CreateMap<ApplicationUser, SecretaryDto>().ReverseMap();
+            CreateMap<ApplicationUserDto, SecretaryDto>().ReverseMap();
+            
+            
         }
     }
 }

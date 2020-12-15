@@ -10,6 +10,8 @@ namespace Atiendeme.Contratos.Repository
 
         IOfficeRepository OfficeRepository { get; }
 
+        ISecretaryRepository SecretaryRepository { get; }
+
         IReservationRepository ReservationRepository { get; }
 
         IUserRepository UserRepository { get; }

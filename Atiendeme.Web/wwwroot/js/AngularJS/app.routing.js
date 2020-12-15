@@ -17,6 +17,9 @@
         .when('/admin/specialties', {
             template: '<specialties-template></specialties-template>'
         })
+        .when('/admin/secretaries', {
+            template: '<secretaries-template></secretaries-template>'
+        })
 
         //
         .when('/patient/reserve', {

@@ -23,6 +23,8 @@ namespace Atiendeme.Contratos.DAL.SQL
 
         DbSet<DoctorLaborDays> DoctorLaborDays { get; set; }
 
+        public DbSet<SecretaryDoctor> SecretaryDoctor { get; set; }
+
         DbSet<Reservations> Reservations { get; set; }
 
         DbSet<Dependents> Dependents { get; set; }

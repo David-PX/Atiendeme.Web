@@ -22,6 +22,8 @@ namespace Atiendeme.DAL.SQL
 
         public DbSet<Specialties> Specialties { get; set; }
 
+        public DbSet<SecretaryDoctor> SecretaryDoctor { get; set; }
+
         public DbSet<SpecialtiesDoctor> SpecialtiesDoctors { get; set; }
 
         public DbSet<Offices> Offices { get; set; }
