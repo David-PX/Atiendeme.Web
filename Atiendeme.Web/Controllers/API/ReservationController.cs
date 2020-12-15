@@ -129,27 +129,27 @@ namespace Atiendeme.Web.Controllers.API
 
             var result = _atiendemeUnitOfWork.ReservationRepository.ChangeReserveStatus(reserve);
 
-            var currentUserEmail = User.GetUserEmail();
+            string userEmail = reserve.ForDependent ? reserve.Dependent.Email : reserve.Patient.Email;
 
             switch (changeReserveStatus.State)
             {
                 case "Cancelada":
-                    await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                    await _emailSender.SendEmailAsync(userEmail, "Atiendeme - Reservación",
                               $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido cancelada.");
                     break;
 
                 case "Completada":
-                    await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                    await _emailSender.SendEmailAsync(userEmail, "Atiendeme - Reservación",
                               $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido Completada.");
                     break;
 
                 case "En Proceso":
-                    await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                    await _emailSender.SendEmailAsync(userEmail, "Atiendeme - Reservación",
                               $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} se encuentra en proceso.");
                     break;
 
                 case "Aceptada":
-                    await _emailSender.SendEmailAsync(currentUserEmail, "Atiendeme - Reservación",
+                    await _emailSender.SendEmailAsync(userEmail, "Atiendeme - Reservación",
                               $"Su cita para el {reserve.StartTime.Date:MMM ddd d HH:mm yyyy} ha sido aceptada.");
                     break;
             }

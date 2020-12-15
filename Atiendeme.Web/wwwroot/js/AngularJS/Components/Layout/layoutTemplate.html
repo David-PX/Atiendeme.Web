@@ -11,19 +11,29 @@
         <div class="logo">
             <h4 class="text-light font-weight-bold mb-0"> {{layout.userService.currentUser.role}}</h4>
         </div>
-        <div class="menu">
+        <div class="menu" ng-show="layout.userService.currentUser.role === 'Administrador'">
             <a href="#/" class="d-block text-light p-3 border-0 active-menu-option">Inicio</a>
-            <a href="#/admin/offices" ng-show="layout.userService.currentUser.role === 'Administrador'" class="d-block text-light p-3 border-0">Consultorios</a>
-            <a href="#/admin/doctors" ng-show="layout.userService.currentUser.role === 'Administrador'" class="d-block text-light p-3 border-0">Doctores</a>
-            <a href="#/admin/specialties" ng-show="layout.userService.currentUser.role === 'Administrador'" class="d-block text-light p-3 border-0">Servicios</a>
-            <a href="#/admin/secretaries" ng-show="layout.userService.currentUser.role === 'Administrador'" class="d-block text-light p-3 border-0">Ver Secretarias</a>
-            <a href="#/patient/reserve" ng-show="layout.userService.currentUser.role === 'Paciente'" class="d-block text-light p-3 border-0">Cita</a>
-            <a href="#/patient/myreserve" ng-show="layout.userService.currentUser.role === 'Paciente'" class="d-block text-light p-3 border-0">Ver mis Citas</a>
-            <a href="#/patient/viewdoctors" ng-show="layout.userService.currentUser.role === 'Paciente'" class="d-block text-light p-3 border-0">Ver Doctores</a>
-            <a href="#/doctor/doctorreserves" class="d-block text-light p-3 border-0">Ver Citas</a>
+            <a href="#/admin/offices" class="d-block text-light p-3 border-0">Consultorios</a>
+            <a href="#/admin/doctors" class="d-block text-light p-3 border-0">Doctores</a>
+            <a href="#/admin/specialties" class="d-block text-light p-3 border-0">Servicios</a>
+            <a href="#/admin/secretaries" class="d-block text-light p-3 border-0">Ver Secretarias</a>
+        </div>
 
-            <!--ng-show="layout.userService.currentUser.role === 'Paciente'"-->
-            <a href="#/doctor/doctorreserves" class="d-block text-light p-3 border-0">Citas</a>
+        <div class="menu" ng-show="layout.userService.currentUser.role === 'Paciente'">
+            <a href="#/" class="d-block text-light p-3 border-0 active-menu-option">Inicio</a>
+            <a href="#/patient/reserve" class="d-block text-light p-3 border-0">Hacer Cita</a>
+            <a href="#/patient/myreserve" class="d-block text-light p-3 border-0">Ver mis Citas</a>
+            <a href="#/patient/viewdoctors" class="d-block text-light p-3 border-0">Ver Doctores</a>
+        </div>
+
+        <div class="menu" ng-show="layout.userService.currentUser.role === 'Doctor'">
+            <a href="#/" class="d-block text-light p-3 border-0 active-menu-option">Inicio</a>
+            <a href="#/doctor/doctorreserves" class="d-block text-light p-3 border-0">Ver Citas</a>
+        </div>
+
+        <div class="menu" ng-show="layout.userService.currentUser.role === 'Secretario'">
+            <a href="#/" class="d-block text-light p-3 border-0 active-menu-option">Inicio</a>
+            <a href="#/secretary/viewreserve" class="d-block text-light p-3 border-0">Ver Citas</a>
         </div>
     </div>
     <!-- Fin sidebar -->

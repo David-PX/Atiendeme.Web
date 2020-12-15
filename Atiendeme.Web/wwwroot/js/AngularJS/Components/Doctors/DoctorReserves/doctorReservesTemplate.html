@@ -23,6 +23,7 @@
                                         <th>Oficina</th>
                                         <th>Servicio</th>
                                         <th>Dependiente</th>
+                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody class="">
@@ -32,6 +33,10 @@
                                         <td>{{reserve.office.name}} </td>
                                         <td>{{reserve.specialty.name}} </td>
                                         <td>{{reserve.dependent.name}} </td>
+                                        <td>
+                                            <a ng-show="reserve.state === 'En Proceso'"
+                                               class="edit" ng-click="doctorR.showModal(reserve)"><i class="material-icons">book_online</i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -41,4 +46,77 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
+
+<!-- Edit Modal HTML -->
+<div id="currentReserve" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Cita</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-center card-box">
+                                <div class="member-card pt-4 pb-2">
+                                    <div class="thumb-lg member-thumb mx-auto">
+                                        <img src="../../../assets/images/laura-facebook.jpg" class="rounded-circle img-thumbnail" alt="profile-image" style="width: 300px; height: 300px;">
+                                    </div>
+                                    <div class="">
+                                        <h4>{{doctorR.reserveSelected.user.name}} {{doctorR.reserveSelected.user.lastName}}</h4>
+                                        <p class="text-muted">{{doctorR.reserveSelected.user.email}} | {{doctorR.reserveSelected.user.phoneNumber}} <span>| </span><span><a href="#" class="text-pink">atiendeme.com</a></span></p>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" disabled="disabled" value="{{doctorR.reserveSelected.user.email}}" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" ng-show="!doctorR.reserveSelected.forDependent">
+                                    <div class="form-group">
+                                        <label>Télefono</label>
+                                        <input type="text" disabled="disabled" value="{{doctorR.reserveSelected.user.phoneNumber}}"  class="form-control" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12" ng-show="doctorR.reserveSelected.forDependent">
+                                    <div class="form-group">
+                                        <label>Edad</label>
+                                        <input class="form-control" value="{{doctorR.reserveSelected.user.age}}" disabled="disabled"/>
+                                    </div>
+                                </div> 
+                                <div class="col-md-12" ng-show="doctorR.reserveSelected.forDependent">
+                                    <div class="form-group">
+                                        <label>Parentesco</label>
+                                        <input class="form-control"  value="{{doctorR.reserveSelected.user.relationship}}"  disabled="disabled"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div> 
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" ng-click="doctorR.closeModal()" data-dismiss="modal" value="Cancelar">
+                    <input type="button" class="btn btn-success" ng-click="doctorR.changeReserveStatus();" value="Terminar Cita">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

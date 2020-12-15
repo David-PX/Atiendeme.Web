@@ -58,7 +58,7 @@ namespace Atiendeme.Repositorio.SQL
                                 .Include(x => x.Dependent)
                                 .Include(x => x.Office)
                                 .Include(x => x.Specialty)
-                                    .Where(r => r.DoctorId == doctorId)
+                                     .Where(r => r.DoctorId == doctorId)
                                      .AsNoTracking()
                                         .ToListAsync();
         }

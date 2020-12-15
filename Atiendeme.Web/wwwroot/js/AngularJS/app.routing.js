@@ -5,9 +5,6 @@
         when('/dashboard', {
             template: '<dashboard-template></dashboard-template>'
         })
-        .when('/dashboard', {
-            template: '<dashboard-template></dashboard-template>'
-        })
         .when('/admin/offices', {
             template: '<offices-template></offices-template>'
         })
