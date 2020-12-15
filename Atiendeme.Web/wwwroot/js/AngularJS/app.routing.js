@@ -38,6 +38,11 @@
             template: '<view-reserve-template></view-reserve-template>'
         })
 
+        //
+        .when('/doctor/doctorreserves', {
+            template: '<doctor-reserves-template></doctor-reserves-template>'
+        })
+
         .otherwise({ redirectTo: '/dashboard' });
 });
 

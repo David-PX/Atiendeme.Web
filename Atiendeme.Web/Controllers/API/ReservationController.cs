@@ -45,6 +45,20 @@ namespace Atiendeme.Web.Controllers.API
             return Ok(result);
         }
 
+        [HttpGet("[action]/{id}")]
+        public async Task<ActionResult<Reservations>> DoctorReservations(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return BadRequest("Id no puede ser nulo");
+
+            var result = await _atiendemeUnitOfWork.ReservationRepository.GetReservationFromDoctorAsync(id);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<Reservations>>> Reservation()
         {

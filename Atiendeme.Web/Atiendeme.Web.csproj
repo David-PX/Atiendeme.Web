@@ -38,4 +38,8 @@
     <ProjectReference Include="..\Atiendeme.Services\Atiendeme.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\AngularJS\Components\Doctors\CurrentReserve\" />
+  </ItemGroup>
+
 </Project>

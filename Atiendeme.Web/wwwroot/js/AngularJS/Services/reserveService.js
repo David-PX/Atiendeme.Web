@@ -8,6 +8,7 @@
         self.getCurrentUserReservation = getCurrentUserReservation;
         self.changeReserveStatus = changeReserveStatus;
         self.secretaryReservationList = secretaryReservationList;
+        self.doctorReservations = doctorReservations;
         initializeService();
 
         function initializeService() {
@@ -50,6 +51,14 @@
         function getCurrentUserReservation() {
             return reserveRepository.getCurrentUserReservation().then(function (response) {
                 self.userReserves = response;
+                return response;
+            }, function (error) {
+                console.error(error);;
+                throw error;
+            });
+        }
+        function doctorReservations(doctorId) {
+            return reserveRepository.doctorReservations(doctorId).then(function (response) {
                 return response;
             }, function (error) {
                 console.error(error);;

@@ -52,19 +52,27 @@ namespace Atiendeme.Repositorio.SQL
 
         public async Task<List<Reservations>> GetReservationFromDoctorAsync(string doctorId)
         {
-            return await _applicationDbContext.Reservations.Where(r => r.DoctorId == doctorId).ToListAsync();
+            return await _applicationDbContext.Reservations
+                                .Include(x => x.Doctor)
+                                .Include(x => x.Patient)
+                                .Include(x => x.Dependent)
+                                .Include(x => x.Office)
+                                .Include(x => x.Specialty)
+                                    .Where(r => r.DoctorId == doctorId)
+                                     .AsNoTracking()
+                                        .ToListAsync();
         }
 
         public async Task<List<Reservations>> GetReservationFromDoctorsAsync(List<string> doctorsId)
         {
             return await _applicationDbContext.Reservations
-                 .              Include(x => x.Doctor)
+                 .Include(x => x.Doctor)
                                 .Include(x => x.Patient)
                                 .Include(x => x.Dependent)
                                 .Include(x => x.Office)
                                 .Include(x => x.Specialty)
+                                .Where(r => doctorsId.Any(x => x == r.DoctorId))
                                 .AsNoTracking().ToListAsync();
-            //return await _applicationDbContext.Reservations.Where(r => doctorsId.Any(x => x == r.DoctorId)).ToListAsync();
         }
 
         public async Task<List<Reservations>> GetReservationsFromDoctor(string doctorId, int officeId, DateTime day)

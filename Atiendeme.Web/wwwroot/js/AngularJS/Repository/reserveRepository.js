@@ -51,6 +51,22 @@
                 });
         }
 
+        function doctorReservations(id) {
+            var url = "/api/Reservation/DoctorReservations/" + id;
+            var req = requestBuilder(url);
+
+            return $http(req).then(
+                function (response) {
+                    if (response.status < 205) {
+                        return response.data;
+                    }
+                    else
+                        throw response;
+                }, function (error) {
+                    throw error;
+                });
+        }
+
         function changeReserveStatus(reserveId, state) {
             var url = "/api/Reservation/ChangeReserveStatus";
             var req = requestBuilder(url, 'PATCH', {
@@ -89,7 +105,8 @@
             saveReserve: saveReserve,
             getCurrentUserReservation: getCurrentUserReservation,
             changeReserveStatus: changeReserveStatus,
-            secretaryReservationList: secretaryReservationList
+            secretaryReservationList: secretaryReservationList,
+            doctorReservations: doctorReservations
         };
     }
 }());
