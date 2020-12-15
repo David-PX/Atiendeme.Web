@@ -27,26 +27,22 @@
                 "Esta acción no puede se puede deshacer.",
                 'warning',
                 true,
-                "Cancelar",
-                "Cancelar")
+                "Cerrar",
+                "Cancelar Cita")
                 .then((result) => {
                     if (result) {
-                        self.reserveService.changeReserveStatus(reserveId,"Cancelada").then(function (response) {
-
+                        self.reserveService.changeReserveStatus(reserveId, "Cancelada").then(function (response) {
                             notificationService.showToast("Cancelada", "Solicitud Cancelada", "error");
                             self.reserveService.getCurrentUserReservation().then(response => {
                                 self.userReservations = response;
                                 $scope.$apply();
-
                             });
                         }, function (error) {
                             console.error(error);
                             notificationService.showToast("Ha ocurrido un error", "Error", "error");
                         });
-                   
                     }
                 });
         }
-
     }
 })();
