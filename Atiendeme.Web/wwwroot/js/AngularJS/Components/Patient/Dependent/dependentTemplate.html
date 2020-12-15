@@ -1,0 +1,139 @@
+﻿<link rel="stylesheet" href="../../../../../css/Portal/table.css">
+
+<!--CHECK TO FIX THAT SHIT-->
+
+<section class="bg-mix py-3">
+    <div class="container">
+        <div class="card rounded-0">
+            <div class="card-body">
+
+                <div class="container-xl">
+                    <div class="table-responsive table-stripped">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h2>Manejar <b>Dependientes</b></h2>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a class="btn btn-success" ng-click="dependent.addDependent()"><i class="material-icons">&#xE147;</i> <span>Agregar nuevo Dependiente</span></a>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                            <table class="table table-striped table-hover">
+                                <thead class="m-5">
+                                    <tr>
+                                        <th width="40">Nombre</th>
+                                        <th width="40">Apellido</th>
+                                        <th width="40">Relacion</th>
+                                        <th width="40">Edad</th>
+                                        <th width="40">Email</th>
+                                        <th width="40">Carta</th>
+                                        <th width="20">Acciones </th>
+
+
+                                    </tr>
+                                </thead>
+                                
+                                <tbody class="">
+                                    <tr ng-repeat="_dependent in dependent.dependentService.currentUserDependents">
+                                        
+                                        <td>{{_dependent.name}}</td>
+                                        <td>{{_dependent.lastName}} </td>
+                                        <td>{{_dependent.relationship}} </td>
+                                        <td>{{_dependent.age}} </td>
+                                        <td>{{_dependent.email}} </td>
+                                        <td>{{_dependent.idCard}} </td>
+
+
+
+                                        <td>
+                                            <a class="edit" ng-click="dependent.editDependent(_dependent)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a class="delete" ng-click="dependent.deleteDependent(_dependent)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Edit Modal HTML -->
+<div id="dependentModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Dependiente</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row" ng-form="dependent.dependentForm">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" ng-model="dependent.form.name"
+                                       ng-class="{'is-invalid':dependent.dependentForm.name.$error.required && dependent.dependentForm.name.$dirty}"
+                                       name="name"
+                                       class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Apellido</label>
+                                <input type="text" ng-model="dependent.form.lastname"
+                                       ng-class="{'is-invalid':dependent.dependentForm.lastname.$error.required && dependent.dependentForm.lastname.$dirty}"
+                                       name="lastname"
+                                       class="form-control" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Relacion</label>
+                                <input type="text" ng-model="dependent.form.relationship"
+                                       ng-class="{'is-invalid':dependent.dependentForm.relationship.$error.required && dependent.dependentForm.relationship.$dirty}"
+                                       name="relationship"
+                                       class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Edad</label>
+                                <input type="number" ng-model="dependent.form.age"
+                                       ng-class="{'is-invalid':dependent.dependentForm.age.$error.required && dependent.dependentForm.age.$dirty}"
+                                       name="age"
+                                       class="form-control" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" ng-model="dependent.form.email"
+                                       ng-class="{'is-invalid':dependent.dependentForm.email.$error.required && dependent.dependentForm.email.$dirty}"
+                                       name="email"
+                                       class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Carta</label>
+                                <input type="text" ng-model="dependent.form.idCard"
+                                       ng-class="{'is-invalid':dependent.dependentForm.idCard.$error.required && dependent.dependentForm.idCard.$dirty}"
+                                       name="idCard"
+                                       class="form-control" required />
+                            </div>
+                        </div>
+                        
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="button" class="btn btn-success" ng-click="dependent.saveDependent();" value="Guardar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

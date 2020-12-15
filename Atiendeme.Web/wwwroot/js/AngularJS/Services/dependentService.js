@@ -14,14 +14,7 @@
         initializeService();
 
         function initializeService() {
-            var promises = [];
- 
-            $q.all(promises).then(function (response) {
-                $rootScope.$broadcast('dependentServiceLoaded', self.context);
-            },
-                function (error) {
-                    console.error(error);
-                });
+          
         }
 
         function getDependent() {
@@ -48,14 +41,14 @@
 
             if (!form.id) {
                 return dependentRepository.saveDependent(form).then(function (response) {
-                    return getDependent();
+                    return getDependentFromCurrentUser();
                 }, function (error) {
                     console.error(error);;
                     throw error;
                 })
             } else {
                 return dependentRepository.updateDependent(form).then(function (response) {
-                    return getDependent();
+                    return getDependentFromCurrentUser();
                 }, function (error) {
                     console.error(error);;
                     throw error;

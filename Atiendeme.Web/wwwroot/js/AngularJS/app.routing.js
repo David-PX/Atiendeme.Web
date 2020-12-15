@@ -14,6 +14,9 @@
         .when('/admin/specialties', {
             template: '<specialties-template></specialties-template>'
         })
+        .when('/admin/dependent', {
+            template: '<dependent-template></dependent-template>'
+        })
         .when('/admin/secretaries', {
             template: '<secretaries-template></secretaries-template>'
         })
