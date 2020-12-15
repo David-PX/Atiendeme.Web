@@ -111,7 +111,7 @@ namespace Atiendeme.Web.Controllers.API
 
             var finalSpecialties = medico.Specialties.Select(x => new SpecialtiesDoctor()
             {
-                DoctorId = medico.Id,
+                DoctorId = doctor.Id,
                 SpecialtyId = x.Id
             }).ToList();
 
