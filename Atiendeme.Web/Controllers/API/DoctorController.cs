@@ -101,9 +101,22 @@ namespace Atiendeme.Web.Controllers.API
                     });
             });
 
-            var resultSaveDoctorDays = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(_doctorLaborDays);
+            var resultSaveDoctorDays = new List<DoctorLaborDays>();
+            OfficesDoctors[] resultSaveDoctorOffices;
+            if (_doctorLaborDays.Count > 0)
+                resultSaveDoctorDays = await _atiendemeUnitOfWork.DoctorRepository.SaveDoctorLaborDays(_doctorLaborDays);
 
-            var resultSaveDoctorOffices = await _atiendemeUnitOfWork.OfficeRepository.SaveOfficesDoctor(officesDoctors.ToArray());
+            if (officesDoctors.Count > 0)
+                resultSaveDoctorOffices = await _atiendemeUnitOfWork.OfficeRepository.SaveOfficesDoctor(officesDoctors.ToArray());
+
+            var finalSpecialties = medico.Specialties.Select(x => new SpecialtiesDoctor()
+            {
+                DoctorId = medico.Id,
+                SpecialtyId = x.Id
+            }).ToList();
+
+            if (finalSpecialties.Count > 0)
+                await _atiendemeUnitOfWork.SpecialtiesRepository.SaveSpecialtiesFromDoctor(finalSpecialties);
 
             //Agrega los horarios del medico
             DoctorDto mapperResult = _mapper.Map<DoctorDto>(doctor);

@@ -107,7 +107,7 @@ namespace Atiendeme.Repositorio.SQL
 
                 if (addRoleResult.Succeeded)
                 {
-                    var _medico = await _applicationDbContext.AspNetUsers.FirstOrDefaultAsync(medico => medico.Email == medico.Email);
+                    var _medico = await _applicationDbContext.AspNetUsers.FirstOrDefaultAsync(_medico => _medico.Email == medico.Email);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(medico);
 
